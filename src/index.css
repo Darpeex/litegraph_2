@@ -1,13 +1,36 @@
-body {
+/* normalize.css */
+@import url(./vendor/normalize.css);
+
+/* fonts.css */
+/* @import url(./vendor/fonts/fonts.css); */
+
+.page * {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.page {
+  margin: 0 auto;
+  color: black;
+  min-width: 320px;
+  max-width: 1440px;
+  font-style: normal;
+  line-height: normal;
+  background-color: #ffffff;
+  font-family: 'Mulish', sans-serif;
+
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  /* display: grid; - Для липкого футера */
+  /* grid-template-rows: auto 1fr auto; */
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
+
+/* * { outline: 1px solid red; } */

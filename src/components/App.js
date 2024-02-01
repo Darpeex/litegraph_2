@@ -1,9 +1,12 @@
 import './App.css';
+import { useEffect } from 'react';
 import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 
 function App() {
   const graph = new LGraph(); // создаём граф
-  const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
+  useEffect(() => {
+    const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
+  }, []);
 
   const node_const = LiteGraph.createNode('basic/const'); // Создаём узел с постоянным числом
   node_const.pos = [200, 200]; // Определяем его координаты X, Y
@@ -21,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <div className="page">
-        <canvas id="mycanvas" width="1024" height="720"></canvas>
+        <canvas id="mycanvas" width="1200" height="876"></canvas>
       </div>
     </div>
   );

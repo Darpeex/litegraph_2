@@ -1,4 +1,5 @@
 import './App.css';
+import 'litegraph.js/css/litegraph.css';
 import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 
 function App() {

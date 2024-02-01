@@ -1,6 +1,9 @@
 /* normalize.css */
 @import url(./vendor/normalize.css);
 
+/* litegraph.css */
+@import 'litegraph.js/css/litegraph.css';
+
 /* fonts.css */
 /* @import url(./vendor/fonts/fonts.css); */
 
@@ -17,12 +20,6 @@
   font-style: normal;
   line-height: normal;
   background-color: #74a363;
-
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  /* display: grid; - Для липкого футера */
-  /* grid-template-rows: auto 1fr auto; */
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;

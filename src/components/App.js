@@ -20,6 +20,15 @@ function App() {
     node_const.connect(0, node_watch, 0); // Узел с константой соединяем с отображающим узлом
 
     graph.start(); // Запускаем график
+
+    function resizeCanvas() {
+      canvas.resize(window.innerWidth, window.innerHeight); // Устанавливаем размеры холста равными размерам окна
+      canvas.draw(true); // Перерисовываем холст
+    }
+
+    // Вызываем функцию resizeCanvas при загрузке страницы и при изменении размеров окна
+    window.onload = resizeCanvas;
+    window.onresize = resizeCanvas;
   }, []);
 
   return (

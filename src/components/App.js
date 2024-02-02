@@ -1,9 +1,10 @@
 import './App.css';
 import { useEffect } from 'react';
-import { LGraph, LiteGraph, LGraphNode, LGraphCanvas } from 'litegraph.js';
+import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 
 function App() {
   useEffect(() => {
+    // useEffect решил проблему с отрисовкой при перезагрузке (2 строка) и с перемещением элементов (всё остальное)
     const graph = new LGraph(); // создаём граф
     const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 

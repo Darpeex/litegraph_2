@@ -29,8 +29,8 @@
   text-rendering: optimizeLegibility;
 }
 
-canvas {
+#mycanvas {
   border: 1px solid rgb(135, 135, 255);
 }
 
-/* * { outline: 1px solid red; } */
+/* { outline: 1px solid red; } */

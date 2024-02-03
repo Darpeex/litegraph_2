@@ -17,3 +17,4 @@
 Но это касается крупных проектов и не нужно для первых учебных примеров кода.
 
 <!-- Если нужно пояснение к 3-4 пунктам: https://www.youtube.com/watch?v=lTeza7Vxo8c -->
+<!-- Ссылка на автора иконки приложения https://www.freepik.com/icon/graphic-file_803122#fromView=search&term=%D1%81%D1%85%D0%B5%D0%BC%D0%BD%D1%8B%D0%B9+%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80&track=ais&page=1&position=2&uuid=38266817-1e90-4215-9810-e15e680179a4 -->

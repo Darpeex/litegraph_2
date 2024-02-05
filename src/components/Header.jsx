@@ -18,7 +18,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -41,7 +41,7 @@ function Header() {
           {/* Опции */}
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {options.map((page) => (
-              <Button key={page} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button key={page} sx={{ my: 2, color: 'white', display: 'block', p: 0, margin: 0, pl: 2 }}>
                 {page}
               </Button>
             ))}
@@ -49,7 +49,7 @@ function Header() {
 
           {/* Запуск задачи */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
             <Tooltip title="Запуск задачи">
               <IconButton size="large" aria-label="Запуск задачи" color="inherit">
                 <PlayArrowIcon />
@@ -61,7 +61,6 @@ function Header() {
               </IconButton>
             </Tooltip>
           </Box>
-          <Box sx={{ flexGrow: 1 }} />
 
           {/* Кнопка профиля */}
           <Box sx={{ flexGrow: 0 }}>

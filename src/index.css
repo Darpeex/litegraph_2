@@ -15,6 +15,7 @@
 .page {
   width: 100vw;
   height: 100vh;
+  /* height: calc(100vh - 36px); */
   margin: 0 auto;
   color: black;
   font-style: normal;

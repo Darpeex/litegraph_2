@@ -9,12 +9,12 @@ function Main() {
 
     function createNodes() {
       const node_const = LiteGraph.createNode('basic/const'); // Создаём узел с постоянным числом
-      node_const.pos = [200, 200]; // Определяем его координаты X, Y
+      node_const.pos = [500, 200]; // Определяем его координаты X, Y
       graph.add(node_const); // Добавляем этот узел в графы, которые отображаются на холсте
       node_const.setValue(4.5); // Задаём постоянное значение
 
       const node_watch = LiteGraph.createNode('basic/watch'); // Создаём узел, который отображает входные данные
-      node_watch.pos = [700, 200]; // Определяем его координаты X, Y
+      node_watch.pos = [900, 200]; // Определяем его координаты X, Y
       graph.add(node_watch); // Добавляем этот узел в графы, которые отображаются на холсте
 
       node_const.connect(0, node_watch, 0); // Узел с константой соединяем с отображающим узлом
@@ -68,7 +68,7 @@ function Main() {
     LiteGraph.registerNodeType('basic/multiplication', MyAddNode);
 
     const node_multiplication = LiteGraph.createNode('basic/multiplication'); // Создаём собственный узел
-    node_multiplication.pos = [200, 400]; // Определяем его координаты X, Y
+    node_multiplication.pos = [500, 400]; // Определяем его координаты X, Y
     graph.add(node_multiplication); // Добавляем этот узел в графы, которые отображаются на холсте
   }, []);
 

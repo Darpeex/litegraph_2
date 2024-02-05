@@ -1,5 +1,7 @@
-import * as React from 'react';
+import SideMenu from './SideMenu';
+import { useState } from 'react';
 import { Container } from '@mui/system';
+import MenuIcon from '@mui/icons-material/Menu';
 import StopIcon from '@mui/icons-material/Stop';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
@@ -8,7 +10,8 @@ const options = ['Файл', 'Настройки', 'Терминал'];
 const settings = ['Профиль', 'Выход'];
 
 function Header() {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -17,11 +20,26 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleOpenSideMenu = () => {
+    setMenuOpen(true);
+  };
+
   return (
     <AppBar position="fixed">
-      <Container maxWidth="xl">
+      <Container maxWidth="x2">
         <Toolbar disableGutters>
-          <Typography
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={handleOpenSideMenu}>
+            <MenuIcon />
+          </IconButton>
+
+          {/* Логотип, если нужен */}
+          {/* <Typography
             noWrap
             variant="h6"
             component="a"
@@ -36,7 +54,7 @@ function Header() {
               textDecoration: 'none',
             }}>
             LOGO
-          </Typography>
+          </Typography> */}
 
           {/* Опции */}
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -93,6 +111,7 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
+      <SideMenu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)} />
     </AppBar>
   );
 }

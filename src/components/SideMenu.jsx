@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CableIcon from '@mui/icons-material/Cable';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -6,11 +7,12 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/material';
 
 const SideMenu = ({ menuOpen, closeMenu }) => {
-  const tools = ['Функциональные блоки', 'Программные блоки'];
-  const icons = [<FunctionsIcon />, <CalculateIcon />];
+  const tools = ['Функциональные блоки', 'Программные блоки', 'Трансферы'];
+  const icons = [<FunctionsIcon />, <CalculateIcon />, <CableIcon />];
   const functionalBlocks = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
-  const programBlocks = ['Число Фибоначчи'];
-  const blockLists = [functionalBlocks, programBlocks];
+  const programBlocks = ['Число Фибоначчи', 'Блок с условием'];
+  const transfers = ['Тип связи 1', 'Тип связи 2'];
+  const blockLists = [functionalBlocks, programBlocks, transfers];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);

@@ -11,15 +11,7 @@ import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 export const graph = new LGraph(); // создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 
-const node_constNumber = LiteGraph.createNode('basic/constNumber'); // Создаём узел с постоянным числом
-node_constNumber.pos = [500, 200]; // Определяем его координаты X, Y
-graph.add(node_constNumber); // Добавляем этот узел в графы, которые отображаются на холсте
 
-const node_watch = LiteGraph.createNode('basic/result'); // Создаём узел, который отображает входные данные
-node_watch.pos = [900, 200]; // Определяем его координаты X, Y
-graph.add(node_watch); // Добавляем этот узел в графы, которые отображаются на холсте
-
-node_constNumber.connect(0, node_watch, 0); // Узел с константой соединяем с отображающим узлом
 
 function Main() {
   useEffect(() => {

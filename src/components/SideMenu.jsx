@@ -4,15 +4,17 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { handleMountConstantNumberBlock, handleMountResultBlock } from './nodes/functions';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/material';
 
 const SideMenu = ({ menuOpen, closeMenu }) => {
   const tools = ['Функциональные блоки', 'Программные блоки', 'Трансферы'];
   const icons = [<FunctionsIcon />, <CalculateIcon />, <CableIcon />];
-  const functionalBlocks = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
-  const programBlocks = ['Число Фибоначчи', 'Блок с условием'];
-  const transfers = ['Тип связи 1', 'Тип связи 2'];
-  const blockLists = [functionalBlocks, programBlocks, transfers];
+  const functionalBlocksNames = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
+  const programBlocksNames = ['Число Фибоначчи', 'Блок с условием'];
+  const transfersNames = ['Тип связи 1', 'Тип связи 2'];
+  const functionalBlocks = [handleMountConstantNumberBlock, handleMountResultBlock];
+  const blockLists = [functionalBlocksNames, programBlocksNames, transfersNames];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
@@ -47,8 +49,17 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
             </ListItemButton>
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {blockLists[index].map((block) => (
-                  <ListItemButton key={block} sx={{ pl: 4 }}>
+                {blockLists[index].map((block, index) => (
+                  <ListItemButton
+                    key={block}
+                    sx={{ pl: 4 }}
+                    onClick={() => {
+                      if (functionalBlocks.length > index) {
+                        functionalBlocks[index](closeMenu);
+                      } else {
+                        alert('Функция временно не доступна');
+                      }
+                    }}>
                     <ListItemText primary={block} />
                   </ListItemButton>
                 ))}

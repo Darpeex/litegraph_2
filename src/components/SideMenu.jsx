@@ -18,17 +18,18 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
   const tools = ['Функциональные блоки', 'Программные блоки', 'Трансферы'];
   const icons = [<FunctionsIcon />, <CalculateIcon />, <CableIcon />];
   const functionalBlocksNames = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
-  const programBlocksNames = ['Число Фибоначчи', 'Блок с условием'];
-  const transfersNames = ['Тип связи 1', 'Тип связи 2'];
-  const blockLists = [functionalBlocksNames, programBlocksNames, transfersNames];
-  const functionalBlocksList = [
-    handleMountConstantNumberBlock,
-    handleMountResultBlock,
+  const functionalBlocks = [
     handleMountAdditionalBlock,
     handleMountSubstractionBlock,
     handleMountMultiplicationBlock,
     handleMountDivisionBlock,
   ];
+  const programBlocksNames = ['Число Фибоначчи', 'Блок с условием'];
+  const programBlocks = [handleMountConstantNumberBlock, handleMountResultBlock];
+  const transfersNames = ['Тип связи 1', 'Тип связи 2'];
+  const transfers = [handleMountConstantNumberBlock, handleMountResultBlock];
+  const blockLists = [functionalBlocksNames, programBlocksNames, transfersNames];
+  const functionalBlocksList = [functionalBlocks, programBlocks, transfers];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
@@ -63,13 +64,15 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
             </ListItemButton>
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {blockLists[index].map((block, index) => (
+                {blockLists[index].map((block, blockListIndex) => (
+                  // index -  инструменты (3)
+                  // blockListIndex - индекс кнопки (4 2 2)
                   <ListItemButton
                     key={block}
                     sx={{ pl: 4 }}
                     onClick={() => {
-                      if (functionalBlocksList.length > index) {
-                        functionalBlocksList[index](closeMenu);
+                      if (blockLists[index].length > blockListIndex) {
+                        functionalBlocksList[index][blockListIndex](closeMenu);
                       } else {
                         alert('Функция временно не доступна');
                       }

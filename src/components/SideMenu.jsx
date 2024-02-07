@@ -4,8 +4,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { handleMountConstantNumberBlock, handleMountResultBlock } from './nodes/functions';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/material';
+import {
+  handleMountConstantNumberBlock,
+  handleMountResultBlock,
+  handleMountAdditionalBlock,
+  handleMountSubstractionBlock,
+  handleMountMultiplicationBlock,
+  handleMountDivisionBlock,
+} from './nodes/functions';
 
 const SideMenu = ({ menuOpen, closeMenu }) => {
   const tools = ['Функциональные блоки', 'Программные блоки', 'Трансферы'];
@@ -13,8 +20,15 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
   const functionalBlocksNames = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
   const programBlocksNames = ['Число Фибоначчи', 'Блок с условием'];
   const transfersNames = ['Тип связи 1', 'Тип связи 2'];
-  const functionalBlocks = [handleMountConstantNumberBlock, handleMountResultBlock];
   const blockLists = [functionalBlocksNames, programBlocksNames, transfersNames];
+  const functionalBlocksList = [
+    handleMountConstantNumberBlock,
+    handleMountResultBlock,
+    handleMountAdditionalBlock,
+    handleMountSubstractionBlock,
+    handleMountMultiplicationBlock,
+    handleMountDivisionBlock,
+  ];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
@@ -54,8 +68,8 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
                     key={block}
                     sx={{ pl: 4 }}
                     onClick={() => {
-                      if (functionalBlocks.length > index) {
-                        functionalBlocks[index](closeMenu);
+                      if (functionalBlocksList.length > index) {
+                        functionalBlocksList[index](closeMenu);
                       } else {
                         alert('Функция временно не доступна');
                       }

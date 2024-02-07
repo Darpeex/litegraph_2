@@ -6,18 +6,27 @@ import StopIcon from '@mui/icons-material/Stop';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-const options = ['Файл', 'Настройки', 'Терминал'];
-const settings = ['Профиль', 'Выход'];
+const options = ['Настройки', 'Терминал'];
+const fileFeatures = ['Создать файл', 'Открыть файл', 'Сохранить как'];
+const accauntFeatures = ['Профиль', 'Выход'];
 
 function Header() {
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [isOpenUserFeatures, setOpenUserFeatures] = useState(null);
+  const [isOpenFileFeatures, setOpenFileFeatures] = useState(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setOpenUserFeatures(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    setOpenUserFeatures(null);
+  };
+
+  const handleOpenFileMenu = (event) => {
+    setOpenFileFeatures(event.currentTarget);
+  };
+  const handleCloseFileMenu = () => {
+    setOpenFileFeatures(null);
   };
 
   const handleOpenSideMenu = () => {
@@ -38,23 +47,35 @@ function Header() {
             <MenuIcon />
           </IconButton>
 
-          {/* Логотип, если нужен */}
-          {/* <Typography
-            noWrap
-            variant="h6"
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}>
-            LOGO
-          </Typography> */}
+          {/* Кнопка файла */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip>
+              <Button color="inherit" variant="text" onClick={handleOpenFileMenu}>
+                Файл
+              </Button>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={isOpenFileFeatures}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(isOpenFileFeatures)}
+              onClose={handleCloseFileMenu}>
+              {fileFeatures.map((feature) => (
+                <MenuItem key={feature} onClick={handleCloseFileMenu}>
+                  <Typography textAlign="center">{feature}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
 
           {/* Опции */}
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -90,7 +111,7 @@ function Header() {
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
-              anchorEl={anchorElUser}
+              anchorEl={isOpenUserFeatures}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -100,11 +121,11 @@ function Header() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={Boolean(anchorElUser)}
+              open={Boolean(isOpenUserFeatures)}
               onClose={handleCloseUserMenu}>
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {accauntFeatures.map((feature) => (
+                <MenuItem key={feature} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{feature}</Typography>
                 </MenuItem>
               ))}
             </Menu>

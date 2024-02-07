@@ -32,6 +32,6 @@ ConstantNumber.prototype.onDrawBackground = function (ctx) {
   this.outputs[0].label = this.properties['value'].toFixed(3);
 };
 
-LiteGraph.registerNodeType('basic/constNum', ConstantNumber);
+LiteGraph.registerNodeType('basic/constNumber', ConstantNumber);
 
 export default ConstantNumber;

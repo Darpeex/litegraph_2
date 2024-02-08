@@ -2,7 +2,7 @@
 import { LiteGraph } from 'litegraph.js';
 
 const nodeStyles = () => {
-  LiteGraph.NODE_DEFAULT_COLOR = '#37474f'; // Цвет шапки узла
+  LiteGraph.NODE_DEFAULT_COLOR = '#1565c0'; // Цвет шапки узла
   LiteGraph.NODE_DEFAULT_BGCOLOR = '#455a64'; // Цвет фона узла
   LiteGraph.NODE_DEFAULT_BOXCOLOR = '#607d8b'; // Цвет рамки узла
   LiteGraph.DEFAULT_SHADOW_COLOR = 'rgba(0, 0, 0, 0.5)'; // Цвет тени

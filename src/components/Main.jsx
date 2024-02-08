@@ -8,14 +8,13 @@ import ResultNode from './nodes/ResultNode'; // видимо, без подтя�
 import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 
+nodeStyles(); // Стили узлов по умолчанию
 export const graph = new LGraph(); // создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 
 console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 
 function Main() {
-  nodeStyles(); // Стили узлов по умолчанию
-
   useEffect(() => {
     function resizeCanvas() {
       canvas.resize(window.innerWidth, window.innerHeight); // Устанавливаем размеры холста равными размерам окна

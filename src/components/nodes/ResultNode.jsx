@@ -7,7 +7,7 @@ function ResultNode() {
   this.addInput('value', 0, { label: '' });
   this.value = 0;
 
-  ResultNode.title_color = '#2e7d32'; // Цвет заголовка
+  ResultNode.title_color = '#52b202'; // Цвет заголовка
   ResultNode.shape = LiteGraph.SQUARE_SHAPE; // Форма блока
 }
 
@@ -45,13 +45,18 @@ ResultNode.toString = function (o) {
   }
 };
 
-// Переопределите метод onDrawBackground
-ResultNode.prototype.onDrawBackground = function (ctx) {
+// Переопределение метода onDrawBackground
+ResultNode.prototype.onDrawBackground = function () {
   //показать текущее значение
   this.inputs[0].label = ResultNode.toString(this.value);
-  ctx.fillStyle = '#43a047'; // Цвет блока
-  ctx.fillRect(0, 0, this.size[0], this.size[1]); // Я так понял, заливка
 };
+
+// ResultNode.prototype.onDrawBackground = function (ctx) {
+//показать текущее значение
+// this.inputs[0].label = ResultNode.toString(this.value);
+// ctx.fillStyle = '#1e88e5'; // Цвет блока
+// ctx.fillRect(0, 0, this.size[0], this.size[1]); // Видимо, заливка
+// };
 
 //зарегистрировать в системе
 LiteGraph.registerNodeType('basic/result', ResultNode);

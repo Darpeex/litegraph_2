@@ -8,7 +8,7 @@ function ConstantNumber() {
   this.widgets_up = true;
   this.size = [180, 30];
 
-  ConstantNumber.title_color = '#1565c0'; // Цвет заголовка
+  ConstantNumber.title_color = '#37474f'; // Цвет заголовка
   ConstantNumber.shape = LiteGraph.SQUARE_SHAPE; // Форма блока
 }
 
@@ -30,12 +30,9 @@ ConstantNumber.prototype.setValue = function (v) {
   this.setProperty('value', v);
 };
 
-ConstantNumber.prototype.onDrawBackground = function (ctx) {
+ConstantNumber.prototype.onDrawBackground = function () {
   // посмотреть текущее значение
   this.outputs[0].label = this.properties['value'].toFixed(3);
-
-  ctx.fillStyle = '#1e88e5'; // Цвет блока
-  ctx.fillRect(0, 0, this.size[0], this.size[1]); // Я так понял, заливка
 };
 
 LiteGraph.registerNodeType('basic/constNumber', ConstantNumber);

@@ -11,9 +11,6 @@ function MultiplyNode() {
   //добавьте некоторые свойства
   this.properties = { precision: 1 };
   this.size = [150, 70];
-
-  MultiplyNode.title_color = '#f44336';
-  MultiplyNode.shape = LiteGraph.ROUND_SHAPE;
 }
 
 //имя для отображения на холсте

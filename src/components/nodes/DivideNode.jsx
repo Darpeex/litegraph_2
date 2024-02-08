@@ -11,9 +11,6 @@ function DivideNode() {
   //свойства
   this.properties = { precision: 1 };
   this.size = [150, 70];
-
-  DivideNode.title_color = '#9c27b0';
-  DivideNode.shape = LiteGraph.ROUND_SHAPE;
 }
 
 //имя отображения на холсте

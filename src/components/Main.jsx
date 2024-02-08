@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import nodeStyles from './nodes/nodeStyles';
 import AddNode from './nodes/AddNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import SubtractNode from './nodes/SubtractNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import DivideNode from './nodes/DivideNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
@@ -13,6 +14,8 @@ const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холс�
 console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 
 function Main() {
+  nodeStyles(); // Стили узлов по умолчанию
+
   useEffect(() => {
     function resizeCanvas() {
       canvas.resize(window.innerWidth, window.innerHeight); // Устанавливаем размеры холста равными размерам окна

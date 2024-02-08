@@ -15,24 +15,24 @@ export const handleMountResultBlock = () => {
 
 // Сложение
 export const handleMountAdditionalBlock = () => {
-  const node_addition = LiteGraph.createNode('basic/addition'); // Создаём узел, который отображает входные данные
-  graph.add(node_addition); // Добавляем этот узел в графы, которые отображаются на холсте
+  const node_addition = LiteGraph.createNode('basic/addition');
+  graph.add(node_addition);
 };
 
 // Вычитание
 export const handleMountSubstractionBlock = () => {
-  const node_substraction = LiteGraph.createNode('basic/substraction'); // Создаём узел, который отображает входные данные
-  graph.add(node_substraction); // Добавляем этот узел в графы, которые отображаются на холсте
+  const node_substraction = LiteGraph.createNode('basic/substraction');
+  graph.add(node_substraction);
 };
 
 // Умножение
 export const handleMountMultiplicationBlock = () => {
-  const node_multiplication = LiteGraph.createNode('basic/multiplication'); // Создаём узел, который отображает входные данные
-  graph.add(node_multiplication); // Добавляем этот узел в графы, которые отображаются на холсте
+  const node_multiplication = LiteGraph.createNode('basic/multiplication');
+  graph.add(node_multiplication);
 };
 
 // Деление
 export const handleMountDivisionBlock = () => {
-  const node_division = LiteGraph.createNode('basic/division'); // Создаём узел, который отображает входные данные
-  graph.add(node_division); // Добавляем этот узел в графы, которые отображаются на холсте
+  const node_division = LiteGraph.createNode('basic/division');
+  graph.add(node_division);
 };

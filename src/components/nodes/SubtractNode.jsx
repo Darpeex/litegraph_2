@@ -11,9 +11,6 @@ function SubtractNode() {
   //добавьте некоторые свойства
   this.properties = { precision: 1 };
   this.size = [150, 70];
-
-  SubtractNode.title_color = '#64B411';
-  SubtractNode.shape = LiteGraph.ROUND_SHAPE;
 }
 
 //имя для отображения на холсте

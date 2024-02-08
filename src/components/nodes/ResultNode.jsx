@@ -43,7 +43,7 @@ ResultNode.toString = function (o) {
 };
 
 ResultNode.prototype.onDrawBackground = function (ctx) {
-  //show the current value
+  //показать текущее значение
   this.inputs[0].label = ResultNode.toString(this.value);
 };
 

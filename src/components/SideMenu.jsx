@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import CableIcon from '@mui/icons-material/Cable';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -53,20 +52,20 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
           <ListItemText primary="Инструменты" />
         </ListItem>
         <Divider />
-        {tools.map((text, index) => (
+        {tools.map((toolName, index) => (
           <>
-            <ListItemButton onClick={() => handleClick(index)} key={text}>
+            <ListItemButton onClick={() => handleClick(index)} key={toolName}>
               <ListItemIcon>{icons[index]}</ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={toolName} />
               {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {blockLists[index].map((block, blockListIndex) => (
-                  // index -  инструменты (3) -> (2)
-                  // blockListIndex - индекс кнопки (4 2 2) -> (4 2)
+                {blockLists[index].map((blockName, blockListIndex) => (
+                  // index - индекс инструментов (tools) (2 инструмента в списке)
+                  // blockListIndex - индекс названий и функций кнопок (blockLists и functionalBlocksList) (4 и 2 кнопки в списке каждого инструмента)
                   <ListItemButton
-                    key={block}
+                    key={blockName}
                     sx={{ pl: 4 }}
                     onClick={() => {
                       if (blockLists[index].length > blockListIndex) {
@@ -75,7 +74,7 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
                         alert('Функция временно не доступна');
                       }
                     }}>
-                    <ListItemText primary={block} />
+                    <ListItemText primary={blockName} />
                   </ListItemButton>
                 ))}
               </List>

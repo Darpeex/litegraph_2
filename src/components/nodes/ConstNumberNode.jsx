@@ -28,7 +28,7 @@ ConstantNumber.prototype.setValue = function (v) {
 };
 
 ConstantNumber.prototype.onDrawBackground = function (ctx) {
-  //show the current value
+  // посмотреть текущее значение
   this.outputs[0].label = this.properties['value'].toFixed(3);
 };
 

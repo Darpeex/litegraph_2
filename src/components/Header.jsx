@@ -6,15 +6,16 @@ import StopIcon from '@mui/icons-material/Stop';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-const options = ['Настройки', 'Терминал'];
-const fileFeatures = ['Создать файл', 'Открыть файл', 'Сохранить как'];
-const accauntFeatures = ['Профиль', 'Выход'];
+const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar) - далее будет понятно, что с ними делать, пока оставляю
+const fileFeatures = ['Создать файл', 'Открыть файл', 'Сохранить как']; // возможности, выпадающие по кнопке Файла
+const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
 
 function Header() {
-  const [isOpenUserFeatures, setOpenUserFeatures] = useState(null);
-  const [isOpenFileFeatures, setOpenFileFeatures] = useState(null);
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
+  const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
+  const [isSideMenuOpen, setSideMenuOpen] = useState(false); // открыто ли боковое меню
 
+  // Открыть, закрыть список возможностей Профиля
   const handleOpenUserMenu = (event) => {
     setOpenUserFeatures(event.currentTarget);
   };
@@ -22,6 +23,7 @@ function Header() {
     setOpenUserFeatures(null);
   };
 
+  // Открыть, закрыть список возможностей Файла
   const handleOpenFileMenu = (event) => {
     setOpenFileFeatures(event.currentTarget);
   };
@@ -29,8 +31,9 @@ function Header() {
     setOpenFileFeatures(null);
   };
 
+  // Открыть боковое меню (SideMenu)
   const handleOpenSideMenu = () => {
-    setMenuOpen(true);
+    setSideMenuOpen(true);
   };
 
   return (
@@ -86,7 +89,7 @@ function Header() {
             ))}
           </Box>
 
-          {/* Запуск задачи */}
+          {/* Запуск и Остановка задачи */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
             <Tooltip title="Запуск задачи">
@@ -132,7 +135,7 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
-      <SideMenu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)} />
+      <SideMenu menuOpen={isSideMenuOpen} closeMenu={() => setSideMenuOpen(false)} />
     </AppBar>
   );
 }

@@ -4,14 +4,13 @@ import SubtractNode from './nodes/SubtractNode'; // видимо, без под�
 import DivideNode from './nodes/DivideNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import MultiplyNode from './nodes/MultiplyNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import ResultNode from './nodes/ResultNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
-import ConstantNumber from './nodes/ConstNumberNode';
+import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 
-// useEffect решил проблему с отрисовкой при перезагрузке (2 строка) и с перемещением элементов (всё остальное)
 export const graph = new LGraph(); // создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 
-
+console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 
 function Main() {
   useEffect(() => {
@@ -26,9 +25,6 @@ function Main() {
   }, []);
 
   graph.start(); // Запускаем график
-
-  console.log(LiteGraph.registered_node_types);
-
   return (
     <main className="Main">
       <div className="page"></div>

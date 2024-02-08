@@ -12,8 +12,8 @@ function AddNode() {
   this.properties = { precision: 1 };
   this.size = [150, 70];
 
-  AddNode.title_color = '#1164B4';
-  AddNode.shape = LiteGraph.ROUND_SHAPE;
+  AddNode.title_color = '#1976d2';
+  AddNode.shape = LiteGraph.CARD_SHAPE;
 }
 
 //имя отображения на холсте

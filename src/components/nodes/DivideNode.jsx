@@ -12,7 +12,7 @@ function DivideNode() {
   this.properties = { precision: 1 };
   this.size = [150, 70];
 
-  DivideNode.title_color = '#612211';
+  DivideNode.title_color = '#9c27b0';
   DivideNode.shape = LiteGraph.ROUND_SHAPE;
 }
 

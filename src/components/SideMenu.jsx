@@ -15,8 +15,8 @@ import {
 } from './nodes/functions';
 
 const SideMenu = ({ menuOpen, closeMenu }) => {
-  const tools = ['Функциональные блоки', 'Программные блоки', 'Трансферы'];
-  const icons = [<FunctionsIcon />, <CalculateIcon />, <CableIcon />];
+  const tools = ['Функциональные блоки', 'Программные блоки'];
+  const icons = [<FunctionsIcon />, <CalculateIcon />];
   const functionalBlocksNames = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
   const functionalBlocks = [
     handleMountAdditionalBlock,
@@ -24,12 +24,10 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
     handleMountMultiplicationBlock,
     handleMountDivisionBlock,
   ];
-  const programBlocksNames = ['Число Фибоначчи', 'Блок с условием'];
+  const programBlocksNames = ['Задать число', 'Вывести результат'];
   const programBlocks = [handleMountConstantNumberBlock, handleMountResultBlock];
-  const transfersNames = ['Тип связи 1', 'Тип связи 2'];
-  const transfers = [handleMountConstantNumberBlock, handleMountResultBlock];
-  const blockLists = [functionalBlocksNames, programBlocksNames, transfersNames];
-  const functionalBlocksList = [functionalBlocks, programBlocks, transfers];
+  const blockLists = [functionalBlocksNames, programBlocksNames];
+  const functionalBlocksList = [functionalBlocks, programBlocks];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
@@ -65,8 +63,8 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {blockLists[index].map((block, blockListIndex) => (
-                  // index -  инструменты (3)
-                  // blockListIndex - индекс кнопки (4 2 2)
+                  // index -  инструменты (3) -> (2)
+                  // blockListIndex - индекс кнопки (4 2 2) -> (4 2)
                   <ListItemButton
                     key={block}
                     sx={{ pl: 4 }}

@@ -12,7 +12,7 @@ function MultiplyNode() {
   this.properties = { precision: 1 };
   this.size = [150, 70];
 
-  MultiplyNode.title_color = '#1164B4';
+  MultiplyNode.title_color = '#f44336';
   MultiplyNode.shape = LiteGraph.ROUND_SHAPE;
 }
 

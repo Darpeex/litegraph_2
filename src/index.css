@@ -1,6 +1,3 @@
-/* normalize.css */
-@import url(./vendor/normalize.css);
-
 /* litegraph.css */
 @import 'litegraph.js/css/litegraph.css';
 
@@ -17,14 +14,10 @@ html {
 }
 
 .page {
-  /* width: 100vw;
-  height: 100vh; */
-  /* height: calc(100vh - 36px); */
   margin: 0 auto;
   color: black;
   font-style: normal;
   line-height: normal;
-  /* background-color: #000000; */
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;

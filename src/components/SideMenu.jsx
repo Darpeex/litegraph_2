@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FunctionsIcon from '@mui/icons-material/Functions';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import React, { useState } from 'react';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/material';
+import {
+  ExpandLess,
+  ExpandMore,
+  Settings as SettingsIcon,
+  Functions as FunctionsIcon,
+  Calculate as CalculateIcon,
+} from '@mui/icons-material';
 import {
   handleMountConstantNumberBlock,
   handleMountResultBlock,
@@ -14,19 +17,27 @@ import {
 } from './nodes/functions';
 
 const SideMenu = ({ menuOpen, closeMenu }) => {
-  const tools = ['Функциональные блоки', 'Программные блоки'];
-  const icons = [<FunctionsIcon />, <CalculateIcon />];
-  const functionalBlocksNames = ['Сложение', 'Вычитание', 'Умножение', 'Деление'];
-  const functionalBlocks = [
-    handleMountAdditionalBlock,
-    handleMountSubstractionBlock,
-    handleMountMultiplicationBlock,
-    handleMountDivisionBlock,
+  // Инструменты - раскрывающиеся списки с кнопками вызовов блоков
+  const tools = [
+    {
+      name: 'Функциональные блоки',
+      icon: <FunctionsIcon />,
+      blocks: [
+        { name: 'Сложение', handler: handleMountAdditionalBlock },
+        { name: 'Вычитание', handler: handleMountSubstractionBlock },
+        { name: 'Умножение', handler: handleMountMultiplicationBlock },
+        { name: 'Деление', handler: handleMountDivisionBlock },
+      ],
+    },
+    {
+      name: 'Программные блоки',
+      icon: <CalculateIcon />,
+      blocks: [
+        { name: 'Задать число', handler: handleMountConstantNumberBlock },
+        { name: 'Вывести результат', handler: handleMountResultBlock },
+      ],
+    },
   ];
-  const programBlocksNames = ['Задать число', 'Вывести результат'];
-  const programBlocks = [handleMountConstantNumberBlock, handleMountResultBlock];
-  const blockLists = [functionalBlocksNames, programBlocksNames];
-  const functionalBlocksList = [functionalBlocks, programBlocks];
 
   // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
@@ -42,6 +53,12 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
     });
   };
 
+  // Вызов функции отрисовки блока и закрытие SideMenu
+  const handleBlockClick = (handler) => {
+    handler();
+    closeMenu();
+  };
+
   return (
     <Drawer anchor="left" open={menuOpen} onClose={closeMenu}>
       <List sx={{ width: '350px' }}>
@@ -52,29 +69,23 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
           <ListItemText primary="Инструменты" />
         </ListItem>
         <Divider />
-        {tools.map((toolName, index) => (
+        {tools.map((tool, index) => (
           <>
-            <ListItemButton onClick={() => handleClick(index)} key={toolName}>
-              <ListItemIcon>{icons[index]}</ListItemIcon>
-              <ListItemText primary={toolName} />
+            <ListItemButton onClick={() => handleClick(index)} key={tool.name}>
+              <ListItemIcon>{tool.icon}</ListItemIcon>
+              <ListItemText primary={tool.name} />
               {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {blockLists[index].map((blockName, blockListIndex) => (
-                  // index - индекс инструментов (tools) (2 инструмента в списке)
-                  // blockListIndex - индекс названий и функций кнопок (blockLists и functionalBlocksList) (4 и 2 кнопки в списке каждого инструмента)
+                {tool.blocks.map((block) => (
                   <ListItemButton
-                    key={blockName}
+                    key={block.name}
                     sx={{ pl: 4 }}
                     onClick={() => {
-                      if (blockLists[index].length > blockListIndex) {
-                        functionalBlocksList[index][blockListIndex](closeMenu);
-                      } else {
-                        alert('Функция временно не доступна');
-                      }
+                      handleBlockClick(block.handler);
                     }}>
-                    <ListItemText primary={blockName} />
+                    <ListItemText primary={block.name} />
                   </ListItemButton>
                 ))}
               </List>
@@ -86,4 +97,6 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
   );
 };
 
-export default SideMenu;
+// React.memo - чтобы предотвратить ненужные ререндеры
+// так компонент перерисовывается, когда его пропсы изменяются.
+export default React.memo(SideMenu);

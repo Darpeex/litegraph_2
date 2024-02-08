@@ -1,13 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import CssBaseline from '@mui/material/CssBaseline'; // normalize.css от MUI
+import { CssBaseline, GlobalStyles, createTheme, ThemeProvider } from '@mui/material'; // normalize.css от MUI
 import App from './components/App';
 import './index.css';
 
+const theme = createTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          backgroundColor: 'black',
+        },
+      },
+    },
+  },
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme}>
     <CssBaseline />
+    <GlobalStyles styles={{ body: { backgroundColor: 'black' } }} />
     <App />
-  </React.StrictMode>,
+  </ThemeProvider>,
+  document.getElementById('root'),
 );

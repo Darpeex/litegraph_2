@@ -1,9 +1,6 @@
 /* litegraph.css */
 @import 'litegraph.js/css/litegraph.css';
 
-/* fonts.css */
-/* @import url(./vendor/fonts/fonts.css); */
-
 html {
   background-color: #000000;
 }

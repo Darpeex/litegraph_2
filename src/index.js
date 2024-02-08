@@ -23,5 +23,4 @@ root.render(
     <GlobalStyles styles={{ body: { backgroundColor: 'black' } }} />
     <App />
   </ThemeProvider>,
-  document.getElementById('root'),
 );

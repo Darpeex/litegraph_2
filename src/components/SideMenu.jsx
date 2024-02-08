@@ -70,8 +70,8 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
         </ListItem>
         <Divider />
         {tools.map((tool, index) => (
-          <>
-            <ListItemButton onClick={() => handleClick(index)} key={tool.name}>
+          <React.Fragment key={tool.name}>
+            <ListItemButton onClick={() => handleClick(index)}>
               <ListItemIcon>{tool.icon}</ListItemIcon>
               <ListItemText primary={tool.name} />
               {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
@@ -90,7 +90,7 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
                 ))}
               </List>
             </Collapse>
-          </>
+          </React.Fragment>
         ))}
       </List>
     </Drawer>

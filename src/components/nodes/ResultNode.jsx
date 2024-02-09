@@ -51,13 +51,6 @@ ResultNode.prototype.onDrawBackground = function () {
   this.inputs[0].label = ResultNode.toString(this.value);
 };
 
-// ResultNode.prototype.onDrawBackground = function (ctx) {
-//показать текущее значение
-// this.inputs[0].label = ResultNode.toString(this.value);
-// ctx.fillStyle = '#1e88e5'; // Цвет блока
-// ctx.fillRect(0, 0, this.size[0], this.size[1]); // Видимо, заливка
-// };
-
 //зарегистрировать в системе
 LiteGraph.registerNodeType('basic/result', ResultNode);
 

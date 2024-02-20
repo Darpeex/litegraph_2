@@ -33,6 +33,17 @@ body {
   outline: 1px solid red;
 } */
 
+
+/* Стили для встроенного в litegraph.js контекстного меню */
 .graphdialog {
-  border: 2px solid #1565c0;
+  padding: 5px;
+  color: aliceblue;
+  border: 1px solid #607d8b;
+  background-color: #455a64;
+}
+
+.rounded button {
+  height: 20px;
+  margin-top: 5.9px;
+  background-color: #7299ad;
 }

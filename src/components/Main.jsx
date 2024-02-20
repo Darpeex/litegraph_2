@@ -12,6 +12,17 @@ nodeStyles(); // Стили узлов по умолчанию
 export const graph = new LGraph(); // создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 
+// Отменяем стандартное контекстное меню по двойному клику
+LGraphCanvas.prototype.showSearchBox = function (event) {
+  return false;
+};
+
+// При двойном клике по узлу вызываем модальное окно
+canvas.onNodeDblClicked = function (node, event) {
+  // Здесь ваш код для открытия модального окна
+  console.log(node);
+};
+
 console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 
 function Main() {

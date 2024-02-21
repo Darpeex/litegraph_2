@@ -17,6 +17,11 @@ LGraphCanvas.prototype.showSearchBox = function (event) {
   return false;
 };
 
+// Отменяем вызов меню по ПКМ
+LGraphCanvas.prototype.processContextMenu = function (node, event) {
+  return false;
+};
+
 // При двойном клике по узлу вызываем модальное окно
 canvas.onNodeDblClicked = function (node, event) {
   // Здесь ваш код для открытия модального окна

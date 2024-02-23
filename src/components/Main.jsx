@@ -13,18 +13,18 @@ export const graph = new LGraph(); // создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст и передаём html-элемент и graph в параметры
 
 // Отменяем стандартное контекстное меню по двойному клику
-LGraphCanvas.prototype.showSearchBox = function (event) {
+LGraphCanvas.prototype.showSearchBox = function () {
   return false;
 };
 
 // Отменяем вызов меню по ПКМ
-LGraphCanvas.prototype.processContextMenu = function (node, event) {
+LGraphCanvas.prototype.processContextMenu = function () {
   return false;
 };
 
 // При двойном клике по узлу вызываем модальное окно
-canvas.onNodeDblClicked = function (node, event) {
-  // Здесь ваш код для открытия модального окна
+canvas.onNodeDblClicked = function (node) {
+  // Здесь может быть код для открытия модального окна
   console.log(node);
 };
 

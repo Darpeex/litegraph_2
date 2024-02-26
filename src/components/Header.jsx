@@ -1,8 +1,8 @@
-import SideMenu from './SideMenu';
 import { useState } from 'react';
 import { Container } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
 import StopIcon from '@mui/icons-material/Stop';
+import SideMenuFunctions from './SideMenuFunctions';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
@@ -13,7 +13,7 @@ const accauntFeatures = ['Профиль', 'Выход']; // возможнос�
 function Header() {
   const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
-  const [isSideMenuOpen, setSideMenuOpen] = useState(false); // открыто ли боковое меню
+  const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
 
   // Открыть, закрыть список возможностей Профиля
   const handleOpenUserMenu = (event) => {
@@ -31,9 +31,9 @@ function Header() {
     setOpenFileFeatures(null);
   };
 
-  // Открыть боковое меню (SideMenu)
-  const handleOpenSideMenu = () => {
-    setSideMenuOpen(true);
+  // Открыть боковое меню (SideMenuFunctions)
+  const handleOpenSideMenuFunctions = () => {
+    setSideMenuFunctionsOpen(true);
   };
 
   return (
@@ -46,7 +46,7 @@ function Header() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={handleOpenSideMenu}>
+            onClick={handleOpenSideMenuFunctions}>
             <MenuIcon />
           </IconButton>
 
@@ -135,7 +135,7 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
-      <SideMenu menuOpen={isSideMenuOpen} closeMenu={() => setSideMenuOpen(false)} />
+      <SideMenuFunctions menuOpen={isSideMenuFunctionsOpen} closeMenu={() => setSideMenuFunctionsOpen(false)} />
     </AppBar>
   );
 }

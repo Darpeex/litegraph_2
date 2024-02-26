@@ -16,7 +16,7 @@ import {
   handleMountDivisionBlock,
 } from './nodes/functions';
 
-const SideMenu = ({ menuOpen, closeMenu }) => {
+const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
   // Инструменты - раскрывающиеся списки с кнопками вызовов блоков
   const tools = [
     {
@@ -53,7 +53,7 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
     });
   };
 
-  // Вызов функции отрисовки блока и закрытие SideMenu
+  // Вызов функции отрисовки блока и закрытие SideMenuFunctions
   const handleBlockClick = (handler) => {
     handler();
     closeMenu();
@@ -99,4 +99,4 @@ const SideMenu = ({ menuOpen, closeMenu }) => {
 
 // React.memo - чтобы предотвратить ненужные ререндеры
 // так компонент перерисовывается, когда его пропсы изменяются.
-export default React.memo(SideMenu);
+export default React.memo(SideMenuFunctions);

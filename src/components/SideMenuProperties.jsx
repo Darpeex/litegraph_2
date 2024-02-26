@@ -21,29 +21,30 @@ import {
   handleMountDivisionBlock,
 } from './nodes/functions';
 
-const SideMenuProperties = ({ menuOpen, closeMenu }) => {
+const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   // Свойства узла
-  const properties = [
-    { name: 'Рабочая директория', handler: handleMountAdditionalBlock },
-    { name: 'Путь к бинарному файлу', handler: handleMountSubstractionBlock },
-    { name: 'Количество ядер', handler: handleMountMultiplicationBlock },
-    { name: 'Аргументы/Флаги', handler: handleMountDivisionBlock },
-  ];
+  // const properties = [
+  //   { name: 'Рабочая директория', handler: handleMountAdditionalBlock },
+  //   { name: 'Путь к бинарному файлу', handler: handleMountSubstractionBlock },
+  //   { name: 'Количество ядер', handler: handleMountMultiplicationBlock },
+  //   { name: 'Аргументы/Флаги', handler: handleMountDivisionBlock },
+  // ];
 
   // Вызов функции отрисовки блока и закрытие SideMenuProperties
   const handleSave = (handler) => {
     // handler();
     closeMenu();
+    console.log(!node ? 'узел не выбран' : node.properties);
   };
 
   return (
     <Drawer anchor="right" open={menuOpen} onClose={closeMenu} variant="persistent">
-      <List sx={{ width: '350px' }}>
+      <List sx={{ width: '370px' }}>
         <ListItem>
           <ListItemIcon>
             <TuneIcon />
           </ListItemIcon>
-          <ListItemText primary="Свойства узла" />
+          <ListItemText primary={`Свойства узла «${node ? node.title : 'узел не выбран'}»`} />
         </ListItem>
         <Divider />
         <Box
@@ -70,7 +71,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu }) => {
               variant="standard"
             />
             <TextField
-              id="number-of-cores"
+              id="coresNumber"
               label="Количество ядер"
               type="number"
               InputLabelProps={{
@@ -79,7 +80,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu }) => {
               variant="standard"
             />
             <TextField
-              id="standard-helperText"
+              id="argumentsFlags"
               label="Аргументы/Флаги"
               defaultValue=""
               InputLabelProps={{

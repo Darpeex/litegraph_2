@@ -25,28 +25,38 @@ LGraphCanvas.prototype.processContextMenu = function () {
 
 // При двойном клике по узлу выводим свойства узла в консоль
 canvas.onNodeDblClicked = function (node) {
-  console.log(node);
+  console.log(node.properties);
 };
 
 console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 function Main() {
   const [isSideMenuPropertiesOpen, setSideMenuPropertiesOpen] = useState(false); // открыто ли боковое меню
-  // При выборе узла - открываем SideBar со свойствами
-  canvas.onNodeSelected = function () {
-    setSideMenuPropertiesOpen(true);
-  };
+  const [selectedNode, setSelectedNode] = useState(null);
 
   // При выходе с выбранного узла - закрываем свойства
   canvas.onNodeDeselected = function () {
     setSideMenuPropertiesOpen(false);
   };
 
+  // Передача свойств выбранного узла в SideBar
+  useEffect(() => {
+    const getProperties = function (node) {
+      setSelectedNode(node); // Сохраняем выбранный узел в состояние
+      setSideMenuPropertiesOpen(true);
+    };
+    canvas.onNodeSelected = getProperties;
+    // удаляем обработчик события при размонтировании компонента
+    return () => {
+      canvas.onNodeSelected = null;
+    };
+  }, []); // эффект выполняется при монтировании и размонтировании
+
+  // Перезадается размер окна при его изменении в браузере
   useEffect(() => {
     function resizeCanvas() {
       canvas.resize(window.innerWidth, window.innerHeight); // Устанавливаем размеры холста равными размерам окна
       canvas.draw(true); // Перерисовываем холст
     }
-
     // Вызываем функцию resizeCanvas при загрузке страницы и при изменении размеров окна
     window.onload = resizeCanvas;
     window.onresize = resizeCanvas;
@@ -56,7 +66,11 @@ function Main() {
   return (
     <main className="Main">
       <div className="page"></div>
-      <SideMenuProperties menuOpen={isSideMenuPropertiesOpen} closeMenu={() => setSideMenuPropertiesOpen(false)} />
+      <SideMenuProperties
+        menuOpen={isSideMenuPropertiesOpen}
+        closeMenu={() => setSideMenuPropertiesOpen(false)}
+        node={selectedNode ? selectedNode : null}
+      />
     </main>
   );
 }

@@ -1,11 +1,18 @@
 //функция просмотра результата (=);
 import { LiteGraph } from 'litegraph.js';
+import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 //функция класса конструктора узла
 function ResultNode() {
   this.size = [60, 40];
   this.addInput('value', 0, { label: '' });
   this.value = 0;
+  // свойства для SideMenu
+  this.addProperty('workDir', PATH_TO_DIR);
+  this.addProperty('binaryFile', PATH_TO_FILE);
+  this.addProperty('coresNumber', null);
+  this.addProperty('argumentsFlags', '');
+  this.addProperty('checkBox', false);
 
   ResultNode.title_color = '#52b202'; // Цвет заголовка
   ResultNode.shape = LiteGraph.SQUARE_SHAPE; // Форма блока

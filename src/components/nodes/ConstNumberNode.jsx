@@ -1,5 +1,6 @@
 //функция просмотра результата (=);
 import { LiteGraph } from 'litegraph.js';
+import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 function ConstantNumber() {
   this.addOutput('value', 'number');
@@ -7,6 +8,12 @@ function ConstantNumber() {
   this.widget = this.addWidget('number', 'value', 2, 'value');
   this.widgets_up = true;
   this.size = [180, 30];
+  // свойства для SideMenu
+  this.addProperty('workDir', PATH_TO_DIR);
+  this.addProperty('binaryFile', PATH_TO_FILE);
+  this.addProperty('coresNumber', null);
+  this.addProperty('argumentsFlags', '');
+  this.addProperty('checkBox', false);
 
   ConstantNumber.title_color = '#37474f'; // Цвет заголовка
   ConstantNumber.shape = LiteGraph.SQUARE_SHAPE; // Форма блока

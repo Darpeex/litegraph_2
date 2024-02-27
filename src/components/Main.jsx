@@ -23,11 +23,6 @@ LGraphCanvas.prototype.processContextMenu = function () {
   return false;
 };
 
-// При двойном клике по узлу выводим свойства узла в консоль
-canvas.onNodeDblClicked = function (node) {
-  console.log(node.properties);
-};
-
 console.log(LiteGraph.registered_node_types); // обширная информация по узлам
 function Main() {
   const [isSideMenuPropertiesOpen, setSideMenuPropertiesOpen] = useState(false); // открыто ли боковое меню
@@ -36,6 +31,7 @@ function Main() {
   // При выходе с выбранного узла - закрываем свойства
   canvas.onNodeDeselected = function () {
     setSideMenuPropertiesOpen(false);
+    setSelectedNode(null); // стираем данные введенные (но не сохраненные) в поля SideMenu
   };
 
   // Передача свойств выбранного узла в SideBar

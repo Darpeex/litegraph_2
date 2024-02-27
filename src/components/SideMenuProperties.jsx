@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../constants/constants';
 import {
   Box,
@@ -14,31 +14,41 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
-import {
-  handleMountAdditionalBlock,
-  handleMountSubstractionBlock,
-  handleMountMultiplicationBlock,
-  handleMountDivisionBlock,
-} from './nodes/functions';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
-  // Свойства узла
-  // const properties = [
-  //   { name: 'Рабочая директория', handler: handleMountAdditionalBlock },
-  //   { name: 'Путь к бинарному файлу', handler: handleMountSubstractionBlock },
-  //   { name: 'Количество ядер', handler: handleMountMultiplicationBlock },
-  //   { name: 'Аргументы/Флаги', handler: handleMountDivisionBlock },
-  // ];
+  console.log(node);
+  const [pathToWorkDir, setpathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
+  const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
+  const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : null);
+  const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
+  // const [order, setOrder] = useState(node ? node.order : null);
+  // console.log(order);
+  // console.log(node ? node.order : null);
+
+  useEffect(() => {
+    if (node) {
+      setPathToBinaryFile(node.properties.binaryFile);
+    }
+  }, [node]);
 
   // Вызов функции отрисовки блока и закрытие SideMenuProperties
-  const handleSave = (handler) => {
-    // handler();
+  const handleSave = () => {
+    console.log('saved');
+    node.setProperty('workDir', pathToWorkDir);
+    node.setProperty('binaryFile', pathToBinaryFile);
+    node.setProperty('cores', coresNumber);
+    node.setProperty('flags', slurmFlags);
+    // node.setProperty('order', order);
     closeMenu();
-    console.log(!node ? 'узел не выбран' : node.properties);
+  };
+
+  const handleClose = () => {
+    console.log('closed');
+    closeMenu();
   };
 
   return (
-    <Drawer anchor="right" open={menuOpen} onClose={closeMenu} variant="persistent">
+    <Drawer anchor="right" open={menuOpen} onClose={handleClose} variant="persistent">
       <List sx={{ width: '370px' }}>
         <ListItem>
           <ListItemIcon>
@@ -56,7 +66,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
           autoComplete="off">
           <div>
             <TextField
-              id="work-dir"
+              id="workDir"
               label="Рабочая директория"
               defaultValue={PATH_TO_DIR}
               InputProps={{
@@ -65,13 +75,17 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               variant="standard"
             />
             <TextField
-              id="standard-required"
+              id="binaryFile"
               label="Путь к бинарному файлу"
-              defaultValue={PATH_TO_FILE}
+              onChange={function (evt) {
+                const newValue = evt.target.value;
+                setPathToBinaryFile(newValue);
+              }}
+              value={pathToBinaryFile}
               variant="standard"
             />
             <TextField
-              id="coresNumber"
+              id="cores"
               label="Количество ядер"
               type="number"
               InputLabelProps={{
@@ -80,7 +94,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               variant="standard"
             />
             <TextField
-              id="argumentsFlags"
+              id="flags"
               label="Аргументы/Флаги"
               defaultValue=""
               InputLabelProps={{
@@ -94,6 +108,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               control={<Checkbox />}
               label="Запускать сразу"
               labelPlacement="start"
+              // onClick={() => setOrder(1)}
             />
           </div>
         </Box>

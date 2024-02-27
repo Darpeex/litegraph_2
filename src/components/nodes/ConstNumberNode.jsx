@@ -12,7 +12,7 @@ function ConstantNumber() {
   // свойства для SideMenu
   this.addProperty('workDir', PATH_TO_DIR);
   this.addProperty('binaryFile', PATH_TO_FILE);
-  this.addProperty('cores', null);
+  this.addProperty('cores', '');
   this.addProperty('flags', '');
   this.addProperty('checkbox', false);
   // определение некоторых стилей

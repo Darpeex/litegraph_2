@@ -16,10 +16,10 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
-  console.log(node);
+  console.log(node ? node.properties : '');
   const [pathToWorkDir, setpathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
-  const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : null);
+  const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   // const [order, setOrder] = useState(node ? node.order : null);
   // console.log(order);
@@ -27,7 +27,10 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   useEffect(() => {
     if (node) {
+      setpathToWorkDir(node.properties.workDir);
       setPathToBinaryFile(node.properties.binaryFile);
+      setCoresNumber(node.properties.cores);
+      setSlurmFlags(node.properties.flags);
     }
   }, [node]);
 
@@ -68,10 +71,11 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
             <TextField
               id="workDir"
               label="Рабочая директория"
-              defaultValue={PATH_TO_DIR}
-              InputProps={{
-                readOnly: true,
+              onChange={function (evt) {
+                const newValue = evt.target.value;
+                setpathToWorkDir(newValue);
               }}
+              value={pathToWorkDir}
               variant="standard"
             />
             <TextField
@@ -88,18 +92,21 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               id="cores"
               label="Количество ядер"
               type="number"
-              InputLabelProps={{
-                shrink: true,
+              onChange={function (evt) {
+                const newValue = evt.target.value;
+                setCoresNumber(newValue);
               }}
+              value={coresNumber}
               variant="standard"
             />
             <TextField
               id="flags"
               label="Аргументы/Флаги"
-              defaultValue=""
-              InputLabelProps={{
-                shrink: true,
+              onChange={function (evt) {
+                const newValue = evt.target.value;
+                setSlurmFlags(newValue);
               }}
+              value={slurmFlags}
               variant="standard"
             />
             <FormControlLabel

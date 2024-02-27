@@ -3,7 +3,7 @@ import { LiteGraph } from 'litegraph.js';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 //функция класса конструктора вашего узла
-function SubtractNode(node) {
+function SubtractNode() {
   //добавьте несколько слотов ввода
   this.addInput('A', 'number');
   this.addInput('B', 'number');
@@ -19,8 +19,6 @@ function SubtractNode(node) {
   this.addProperty('cores', null);
   this.addProperty('flags', '');
   this.addProperty('checkbox', false);
-  // отображение порядка выполнения
-  this.addWidget('text', 'Порядок запуска', node.dir ? node.dir : '');
 }
 
 //функция для вызова при выполнении узла

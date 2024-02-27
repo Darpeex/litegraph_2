@@ -3,7 +3,7 @@ import { LiteGraph } from 'litegraph.js';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 //функция класса конструктора вашего узла
-function MultiplyNode(node) {
+function MultiplyNode() {
   //слоты ввода
   this.addInput('A', 'number');
   this.addInput('B', 'number');
@@ -33,7 +33,7 @@ MultiplyNode.prototype.onExecute = function () {
 };
 
 // Обновляем порядок выполнения
-MultiplyNode.prototype.onDrawForeground = function (ctx, x, y) {
+MultiplyNode.prototype.onDrawForeground = function (ctx) {
   // Проверяем, есть ли значение порядка выполнения
   if (this.order) {
     // Устанавливаем стиль текста

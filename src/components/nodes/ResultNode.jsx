@@ -3,7 +3,7 @@ import { LiteGraph } from 'litegraph.js';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 //функция класса конструктора узла
-function ResultNode(node) {
+function ResultNode() {
   this.value = 0;
   this.size = [60, 40];
   this.title = 'Результат';
@@ -49,8 +49,14 @@ ResultNode.toString = function (o) {
   }
 };
 
+// Переопределение метода onDrawBackground
+ResultNode.prototype.onDrawBackground = function () {
+  //показать текущее значение
+  this.inputs[0].label = ResultNode.toString(this.value);
+};
+
 // Обновляем порядок выполнения
-ResultNode.prototype.onDrawForeground = function (ctx, x, y) {
+ResultNode.prototype.onDrawForeground = function (ctx) {
   // Проверяем, есть ли значение порядка выполнения
   if (this.order) {
     // Устанавливаем стиль текста
@@ -63,11 +69,6 @@ ResultNode.prototype.onDrawForeground = function (ctx, x, y) {
     // Рисуем текст
     ctx.fillText(text, textX, textY);
   }
-};
-
-// Обновляем виджет с порядком выполнения
-ResultNode.prototype.onDrawForeground = function (ctx, x, y) {
-  this.widgets[0].value = this.order ? this.order : '';
 };
 
 //зарегистрировать в системе

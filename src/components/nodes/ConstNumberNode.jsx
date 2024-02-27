@@ -2,7 +2,7 @@
 import { LiteGraph } from 'litegraph.js';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
-function ConstantNumber(node) {
+function ConstantNumber() {
   this.addProperty('value', 2.0);
   this.addOutput('value', 'number');
   this.title = 'Постоянное число';
@@ -41,7 +41,7 @@ ConstantNumber.prototype.onDrawBackground = function () {
 };
 
 // Обновляем порядок выполнения
-ConstantNumber.prototype.onDrawForeground = function (ctx, x, y) {
+ConstantNumber.prototype.onDrawForeground = function (ctx) {
   // Проверяем, есть ли значение порядка выполнения
   if (this.order) {
     // Устанавливаем стиль текста

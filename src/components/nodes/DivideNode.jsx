@@ -3,7 +3,7 @@ import { LiteGraph } from 'litegraph.js';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 
 //функция класса конструктора узла
-function DivideNode(node) {
+function DivideNode() {
   //слоты ввода
   this.addInput('A', 'number');
   this.addInput('B', 'number');
@@ -33,7 +33,7 @@ DivideNode.prototype.onExecute = function () {
 };
 
 // Обновляем порядок выполнения
-DivideNode.prototype.onDrawForeground = function (ctx, x, y) {
+DivideNode.prototype.onDrawForeground = function (ctx) {
   // Проверяем, есть ли значение порядка выполнения
   if (this.order) {
     // Устанавливаем стиль текста

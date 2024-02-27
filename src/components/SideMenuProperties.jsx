@@ -21,9 +21,6 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
-  // const [order, setOrder] = useState(node ? node.order : null);
-  console.log(checkbox);
-  // console.log(node ? node.order : null);
 
   // При открытии свойств нового узла данные обновляются на сохраненные в узле
   useEffect(() => {
@@ -33,7 +30,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       setCoresNumber(node.properties.cores);
       setSlurmFlags(node.properties.flags);
       setCheckbox(node.properties.checkbox);
-      // node.setProperty('order', node.order);
+      if (node.properties.checkbox === true) {
+        console.log('love');
+        node.setProperty('order', 1);
+      } else {
+        node.setProperty('order', node.order);
+      }
     }
   }, [node]);
 
@@ -45,20 +47,17 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     node.setProperty('cores', coresNumber);
     node.setProperty('flags', slurmFlags);
     node.setProperty('checkbox', checkbox);
+    node.setProperty('order', node.order);
     if (checkbox === true) {
-      // node.setProperty('order', 1);
+      node.setProperty('order', 1);
+    } else {
+      node.setProperty('order', node.order);
     }
-    // node.setProperty('order', node.order);
-    closeMenu();
-  };
-
-  const handleClose = () => {
-    console.log('closed');
     closeMenu();
   };
 
   return (
-    <Drawer anchor="right" open={menuOpen} onClose={handleClose} variant="persistent">
+    <Drawer anchor="right" open={menuOpen} variant="persistent">
       <List sx={{ width: '370px' }}>
         <ListItem>
           <ListItemIcon>

@@ -40,7 +40,6 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   // Вызов функции отрисовки блока и закрытие SideMenuProperties
   const handleSave = () => {
-    console.log('saved');
     node.setProperty('workDir', pathToWorkDir);
     node.setProperty('binaryFile', pathToBinaryFile);
     node.setProperty('cores', coresNumber);

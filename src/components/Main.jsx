@@ -39,6 +39,7 @@ function Main() {
     const getProperties = function (node) {
       setSelectedNode(node); // Сохраняем выбранный узел в состояние
       setSideMenuPropertiesOpen(true);
+      console.log(node);
     };
     canvas.onNodeSelected = getProperties;
     // удаляем обработчик события при размонтировании компонента

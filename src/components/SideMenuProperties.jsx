@@ -16,21 +16,24 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
-  console.log(node ? node.properties : '');
   const [pathToWorkDir, setpathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
   const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
+  const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
   // const [order, setOrder] = useState(node ? node.order : null);
-  // console.log(order);
+  console.log(checkbox);
   // console.log(node ? node.order : null);
 
+  // При открытии свойств нового узла данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
       setpathToWorkDir(node.properties.workDir);
       setPathToBinaryFile(node.properties.binaryFile);
       setCoresNumber(node.properties.cores);
       setSlurmFlags(node.properties.flags);
+      setCheckbox(node.properties.checkbox);
+      // node.setProperty('order', node.order);
     }
   }, [node]);
 
@@ -41,7 +44,11 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     node.setProperty('binaryFile', pathToBinaryFile);
     node.setProperty('cores', coresNumber);
     node.setProperty('flags', slurmFlags);
-    // node.setProperty('order', order);
+    node.setProperty('checkbox', checkbox);
+    if (checkbox === true) {
+      // node.setProperty('order', 1);
+    }
+    // node.setProperty('order', node.order);
     closeMenu();
   };
 
@@ -112,10 +119,9 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
             <FormControlLabel
               color="main"
               sx={{ m: 1, width: '332px', justifyContent: 'start' }}
-              control={<Checkbox />}
+              control={<Checkbox checked={checkbox} onChange={() => setCheckbox(!checkbox)} />}
               label="Запускать сразу"
               labelPlacement="start"
-              // onClick={() => setOrder(1)}
             />
           </div>
         </Box>

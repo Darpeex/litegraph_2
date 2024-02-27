@@ -31,10 +31,9 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       setSlurmFlags(node.properties.flags);
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
-        console.log('love');
-        node.setProperty('order', 1);
+        node.order = 1;
       } else {
-        node.setProperty('order', node.order);
+        node.order;
       }
     }
   }, [node]);
@@ -47,11 +46,10 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     node.setProperty('cores', coresNumber);
     node.setProperty('flags', slurmFlags);
     node.setProperty('checkbox', checkbox);
-    node.setProperty('order', node.order);
     if (checkbox === true) {
-      node.setProperty('order', 1);
+      node.order = 1;
     } else {
-      node.setProperty('order', node.order);
+      node.order;
     }
     closeMenu();
   };

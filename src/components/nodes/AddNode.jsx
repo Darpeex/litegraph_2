@@ -20,7 +20,6 @@ function AddNode() {
   this.addProperty('cores', '');
   this.addProperty('flags', '');
   this.addProperty('checkbox', false);
-  this.addProperty('order', '');
 }
 
 //функция вызова при выполнении узла
@@ -37,12 +36,12 @@ AddNode.prototype.onExecute = function () {
 // Обновляем порядок выполнения
 AddNode.prototype.onDrawForeground = function (ctx) {
   // Проверяем, есть ли значение порядка выполнения
-  if (this.properties.order) {
+  if (this.order) {
     // Устанавливаем стиль текста
     ctx.font = '14px Arial';
     ctx.fillStyle = 'white';
     // Вычисляем позицию для текста, чтобы он отображался в правом верхнем углу
-    const text = `${this.properties.order}`; // отображаем order из свойств узла
+    const text = `${this.order}`; // отображаем order из свойств узла
     const textX = this.size[0] - 15; // Отступ справа
     const textY = -10; // Отступ сверху
     // Рисуем текст

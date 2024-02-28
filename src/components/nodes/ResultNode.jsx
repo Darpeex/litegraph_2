@@ -8,7 +8,7 @@ function ResultNode() {
   this.size = [60, 40];
   this.title = 'Результат';
   this.addInput('value', 0, { label: '' });
-  // свойства для SideMenu
+  // свойства для SideMenuProperties
   this.addProperty('workDir', PATH_TO_DIR);
   this.addProperty('binaryFile', PATH_TO_FILE);
   this.addProperty('cores', '');
@@ -19,12 +19,14 @@ function ResultNode() {
   ResultNode.shape = LiteGraph.SQUARE_SHAPE; // Форма блока
 }
 
+// получить значение инпута
 ResultNode.prototype.onExecute = function () {
   if (this.inputs[0]) {
     this.value = this.getInputData(0);
   }
 };
 
+// отображает заголовок в свернутом и развернутом состоянии
 ResultNode.prototype.getTitle = function () {
   if (this.flags.collapsed) {
     return this.inputs[0].label;
@@ -32,6 +34,7 @@ ResultNode.prototype.getTitle = function () {
   return this.title;
 };
 
+// определяет тип полученных данных и выводит результат
 ResultNode.toString = function (o) {
   if (o == null) {
     return 'null';
@@ -49,9 +52,8 @@ ResultNode.toString = function (o) {
   }
 };
 
-// Переопределение метода onDrawBackground
+//показать текущее значение
 ResultNode.prototype.onDrawBackground = function () {
-  //показать текущее значение
   this.inputs[0].label = ResultNode.toString(this.value);
 };
 
@@ -62,7 +64,7 @@ ResultNode.prototype.onDrawForeground = function (ctx) {
     // Устанавливаем стиль текста
     ctx.font = '14px Arial';
     ctx.fillStyle = 'white';
-    // Вычисляем позицию для текста, чтобы он отображался в правом верхнем углу
+    // Вычисляем позицию текста, для отображения в правом верхнем углу
     const text = `${this.order}`; // отображаем order из свойств узла
     const textX = this.size[0] - 15; // Отступ справа
     const textY = -10; // Отступ сверху

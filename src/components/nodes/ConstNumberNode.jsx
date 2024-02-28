@@ -9,7 +9,7 @@ function ConstantNumber() {
   this.widget = this.addWidget('number', 'value', 2, 'value');
   this.widgets_up = true;
   this.size = [180, 30];
-  // свойства для SideMenu
+  // свойства для SideMenuProperties
   this.addProperty('workDir', PATH_TO_DIR);
   this.addProperty('binaryFile', PATH_TO_FILE);
   this.addProperty('cores', '');
@@ -20,10 +20,12 @@ function ConstantNumber() {
   ConstantNumber.shape = LiteGraph.SQUARE_SHAPE; // Форма блока
 }
 
+// задается значение в виде числа с плавающей точкой
 ConstantNumber.prototype.onExecute = function () {
   this.setOutputData(0, parseFloat(this.properties['value']));
 };
 
+// отображает заголовок в свернутом и развернутом состоянии
 ConstantNumber.prototype.getTitle = function () {
   if (this.flags.collapsed) {
     return this.properties.value;
@@ -31,23 +33,23 @@ ConstantNumber.prototype.getTitle = function () {
   return this.title;
 };
 
+// устанавливает значение в свойство
 ConstantNumber.prototype.setValue = function (v) {
   this.setProperty('value', v);
 };
 
+// отобразить текущее значение
 ConstantNumber.prototype.onDrawBackground = function () {
-  // посмотреть текущее значение
   this.outputs[0].label = this.properties['value'].toFixed(3);
 };
 
 // Обновляем порядок выполнения
 ConstantNumber.prototype.onDrawForeground = function (ctx) {
-  // Проверяем, есть ли значение порядка выполнения
   if (this.order) {
     // Устанавливаем стиль текста
     ctx.font = '14px Arial';
     ctx.fillStyle = 'white';
-    // Вычисляем позицию для текста, чтобы он отображался в правом верхнем углу
+    // Вычисляем позицию текста, для отображения в правом верхнем углу
     const text = `${this.order}`; // отображаем order из свойств узла
     const textX = this.size[0] - 15; // Отступ справа
     const textY = -10; // Отступ сверху

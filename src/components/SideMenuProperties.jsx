@@ -22,6 +22,22 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
 
+  const properties = {
+    name: 'Свойства',
+    props: [
+      { id: 'workDir', label: 'Рабочая директория', type: 'string', setState: setPathToWorkDir, value: pathToWorkDir },
+      {
+        id: 'binaryFile',
+        label: 'Путь к бинарному файлу',
+        type: 'string',
+        setState: setPathToBinaryFile,
+        value: pathToBinaryFile,
+      },
+      { id: 'cores', label: 'Количество ядер', type: 'number', setState: setCoresNumber, value: coresNumber },
+      { id: 'flags', label: 'Аргументы/Флаги', type: 'string', setState: setSlurmFlags, value: slurmFlags },
+    ],
+  };
+
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
@@ -71,47 +87,20 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
           noValidate
           autoComplete="off">
           <div>
-            <TextField
-              id="workDir"
-              label="Рабочая директория"
-              onChange={function (evt) {
-                const newValue = evt.target.value;
-                setPathToWorkDir(newValue);
-              }}
-              value={pathToWorkDir}
-              variant="standard"
-            />
-            <TextField
-              id="binaryFile"
-              label="Путь к бинарному файлу"
-              onChange={function (evt) {
-                const newValue = evt.target.value;
-                setPathToBinaryFile(newValue);
-              }}
-              value={pathToBinaryFile}
-              variant="standard"
-            />
-            <TextField
-              id="cores"
-              label="Количество ядер"
-              type="number"
-              onChange={function (evt) {
-                const newValue = evt.target.value;
-                setCoresNumber(newValue);
-              }}
-              value={coresNumber}
-              variant="standard"
-            />
-            <TextField
-              id="flags"
-              label="Аргументы/Флаги"
-              onChange={function (evt) {
-                const newValue = evt.target.value;
-                setSlurmFlags(newValue);
-              }}
-              value={slurmFlags}
-              variant="standard"
-            />
+            {properties.props.map((prop, index) => (
+              <TextField
+                key={prop + index}
+                id={prop.id}
+                label={prop.label}
+                type={prop.type}
+                onChange={function (evt) {
+                  const newValue = evt.target.value;
+                  prop.setState(newValue);
+                }}
+                value={prop.value}
+                variant="standard"
+              />
+            ))}
             <FormControlLabel
               color="main"
               sx={{ m: 1, width: '332px', justifyContent: 'start' }}

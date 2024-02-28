@@ -16,16 +16,16 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
-  const [pathToWorkDir, setpathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
+  const [pathToWorkDir, setPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
   const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
 
-  // При открытии свойств нового узла данные обновляются на сохраненные в узле
+  // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
-      setpathToWorkDir(node.properties.workDir);
+      setPathToWorkDir(node.properties.workDir);
       setPathToBinaryFile(node.properties.binaryFile);
       setCoresNumber(node.properties.cores);
       setSlurmFlags(node.properties.flags);
@@ -38,7 +38,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     }
   }, [node]);
 
-  // Вызов функции отрисовки блока и закрытие SideMenuProperties
+  // Сохранение свойств узла и закрытие SideMenuProperties
   const handleSave = () => {
     node.setProperty('workDir', pathToWorkDir);
     node.setProperty('binaryFile', pathToBinaryFile);
@@ -76,7 +76,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               label="Рабочая директория"
               onChange={function (evt) {
                 const newValue = evt.target.value;
-                setpathToWorkDir(newValue);
+                setPathToWorkDir(newValue);
               }}
               value={pathToWorkDir}
               variant="standard"

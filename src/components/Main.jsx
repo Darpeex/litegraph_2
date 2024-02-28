@@ -57,6 +57,11 @@ function Main() {
     // Вызываем функцию resizeCanvas при загрузке страницы и при изменении размеров окна
     window.onload = resizeCanvas;
     window.onresize = resizeCanvas;
+    // Очистка обработчиков событий
+    return () => {
+      window.onload = null;
+      window.onresize = null;
+    };
   }, []);
 
   graph.start(); // Запускаем график

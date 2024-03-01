@@ -16,15 +16,18 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
+  const [title, setTitle] = useState(node ? node.title : 'узел не выбран');
   const [pathToWorkDir, setPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
   const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
+  console.log(node);
 
   const properties = {
     name: 'Свойства',
     props: [
+      { id: 'title', label: 'Имя блока', type: 'string', setState: setTitle, value: title },
       { id: 'workDir', label: 'Рабочая директория', type: 'string', setState: setPathToWorkDir, value: pathToWorkDir },
       {
         id: 'binaryFile',
@@ -41,6 +44,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
+      setTitle(node.title);
       setPathToWorkDir(node.properties.workDir);
       setPathToBinaryFile(node.properties.binaryFile);
       setCoresNumber(node.properties.cores);
@@ -56,6 +60,14 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   // Сохранение свойств узла и закрытие SideMenuProperties
   const handleSave = () => {
+    // переименование блока в свойствах
+    node.getTitle = function () {
+      if (node) {
+        node.title = title;
+        return title;
+      }
+      return 'Ошибка';
+    };
     node.setProperty('workDir', pathToWorkDir);
     node.setProperty('binaryFile', pathToBinaryFile);
     node.setProperty('cores', coresNumber);

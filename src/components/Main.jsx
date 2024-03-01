@@ -6,6 +6,7 @@ import DivideNode from './nodes/DivideNode'; // видимо, без подтя�
 import MultiplyNode from './nodes/MultiplyNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import ResultNode from './nodes/ResultNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
+import StartNode from './nodes/StartNode'; // видимо, без подтяжки файла, узел не регистрируется и всё крашится (не рендерится)
 import SideMenuProperties from './SideMenuProperties';
 import { LGraph, LiteGraph, LGraphCanvas } from 'litegraph.js';
 

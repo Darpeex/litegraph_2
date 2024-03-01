@@ -36,3 +36,9 @@ export const handleMountDivisionBlock = () => {
   const node_division = LiteGraph.createNode('basic/division');
   graph.add(node_division);
 };
+
+// Стартовый блок
+export const handleMountStartBlock = () => {
+  const node_base = LiteGraph.createNode('basic/base');
+  graph.add(node_base);
+};

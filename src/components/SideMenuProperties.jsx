@@ -6,16 +6,21 @@ import {
   Button,
   Drawer,
   Divider,
+  Tooltip,
   ListItem,
   Checkbox,
   TextField,
+  Typography,
+  IconButton,
   ListItemIcon,
   ListItemText,
   FormControlLabel,
 } from '@mui/material';
-import { Tune as TuneIcon } from '@mui/icons-material';
+import { Tune as TuneIcon, AddCircleOutline as AddCircleOutlineIcon, Delete as DeleteIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
+  const [inputCounter, setInputCounter] = useState(0);
+  const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массива node.inputs
   const [title, setTitle] = useState(node ? node.title : 'узел не выбран');
   const [pathToWorkDir, setPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
@@ -24,6 +29,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
   console.log(node);
 
+  // Свойства узла
   const properties = {
     name: 'Свойства',
     props: [
@@ -81,6 +87,25 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     closeMenu();
   };
 
+  // Добавить входной порт
+  const handleAddInput = () => {
+    const newInputId = inputCounter + 1;
+    setInputCounter(newInputId);
+
+    node.addInput(`Вход ${newInputId}`);
+    setToggle(!toggle);
+  };
+  // Удалить входной порт
+  const handleRemoveInput = (inputIndex) => {
+    console.log(inputIndex);
+    console.log(node.inputs);
+    node.removeInput(inputIndex);
+    setToggle(!toggle);
+  };
+
+  // Добавить выходной порт
+  const handleAddOutput = () => {};
+
   return (
     <Drawer anchor="right" open={menuOpen} variant="persistent">
       <List sx={{ width: '370px' }}>
@@ -94,7 +119,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         <Box
           component="form"
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '332px' },
+            '& .MuiTextField-root': { m: 1, width: '352px' },
           }}
           noValidate
           autoComplete="off">
@@ -123,6 +148,55 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
           </div>
         </Box>
       </List>
+      <Divider />
+      {/* Входные порты */}
+      <Box sx={{ mt: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
+        <Typography textAlign="center" sx={{ p: 1, pr: 0 }}>
+          Входные порты
+        </Typography>
+        <Tooltip title="Добавить входной порт">
+          <IconButton color="primary" aria-label="add input" onClick={handleAddInput}>
+            <AddCircleOutlineIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      {node &&
+        node.inputs &&
+        node.inputs.length > 0 &&
+        node.inputs.map((input, index) => (
+          <Box key={input.name} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
+            <TextField
+              type="string"
+              // onChange={function (evt) {
+              //   const newValue = evt.target.value;
+              //   prop.setState(newValue);
+              // }}
+              value={input.name}
+              variant="standard"
+              sx={{ flexGrow: 1, pr: 1 }}
+              InputProps={{ disableUnderline: true }}
+            />
+            <IconButton
+              color="primary"
+              aria-label="remove input"
+              sx={{ p: 0 }}
+              onClick={() => handleRemoveInput(index)}>
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        ))}
+      <Divider />
+      {/* Выходные порты */}
+      <Typography textAlign="center" sx={{ mt: 1 }}>
+        Выходные порты
+      </Typography>
+      <Box sx={{ display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
+        <Tooltip title="Добавить выходной порт">
+          <IconButton color="primary" aria-label="add output" onClick={handleAddOutput}>
+            <AddCircleOutlineIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Button sx={{ m: 1 }} variant="contained" onClick={handleSave}>
         Сохранить

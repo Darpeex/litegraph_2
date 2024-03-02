@@ -27,7 +27,6 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
   const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
-  console.log(node);
 
   // Свойства узла
   const properties = {
@@ -97,10 +96,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   };
   // Удалить входной порт
   const handleRemoveInput = (inputIndex) => {
-    console.log(inputIndex);
-    console.log(node.inputs);
     node.removeInput(inputIndex);
     setToggle(!toggle);
+  };
+  const handleInputNameChange = (input, newName) => {
+    input.name = newName;
+    setToggle(!toggle); // Принудительное обновление интерфейса
   };
 
   // Добавить выходной порт
@@ -164,13 +165,13 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         node.inputs &&
         node.inputs.length > 0 &&
         node.inputs.map((input, index) => (
-          <Box key={input.name} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box key={`${input.name}-${index}`} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
             <TextField
               type="string"
-              // onChange={function (evt) {
-              //   const newValue = evt.target.value;
-              //   prop.setState(newValue);
-              // }}
+              onChange={(evt) => {
+                const newValue = evt.target.value;
+                handleInputNameChange(input, newValue);
+              }}
               value={input.name}
               variant="standard"
               sx={{ flexGrow: 1, pr: 1 }}

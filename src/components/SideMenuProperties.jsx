@@ -92,6 +92,8 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     setInputCounter(newInputId);
 
     node.addInput(`Вход ${newInputId}`);
+    // Обновляем массив ссылок, добавляя новую ссылку
+    setInputRefs((prevRefs) => [...prevRefs, React.createRef()]);
     setToggle(!toggle);
   };
   // Удалить входной порт
@@ -99,8 +101,13 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     node.removeInput(inputIndex);
     setToggle(!toggle);
   };
-  const handleInputNameChange = (input, newName) => {
+  // Создайте ссылку на элемент ввода для каждого входного порта
+  const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
+  // Функция для обновления имени входного порта и установки фокуса
+  const handleInputNameChange = (input, newName, index) => {
     input.name = newName;
+    // Установите фокус обратно на элемент ввода после его обновления
+    inputRefs[index].current.focus();
     setToggle(!toggle); // Принудительное обновление интерфейса
   };
 
@@ -165,17 +172,18 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         node.inputs &&
         node.inputs.length > 0 &&
         node.inputs.map((input, index) => (
-          <Box key={`${input.name}-${index}`} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
             <TextField
               type="string"
               onChange={(evt) => {
                 const newValue = evt.target.value;
-                handleInputNameChange(input, newValue);
+                handleInputNameChange(input, newValue, index);
               }}
               value={input.name}
               variant="standard"
               sx={{ flexGrow: 1, pr: 1 }}
               InputProps={{ disableUnderline: true }}
+              inputRef={inputRefs[index]} // ссылка на элемент ввода
             />
             <IconButton
               color="primary"

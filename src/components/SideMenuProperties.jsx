@@ -19,8 +19,12 @@ import {
 import { Tune as TuneIcon, AddCircleOutline as AddCircleOutlineIcon, Delete as DeleteIcon } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
+  // Ссылка на элемент ввода для каждого входного порта
+  const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
+  const [outputRefs, setOutputRefs] = useState(node && node.outputs ? node.outputs.map(() => React.createRef()) : []);
   const [inputCounter, setInputCounter] = useState(0);
-  const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массива node.inputs
+  const [outputCounter, setOutputCounter] = useState(0);
+  const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массивов node.inputs/outputs
   const [title, setTitle] = useState(node ? node.title : 'узел не выбран');
   const [pathToWorkDir, setPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
@@ -101,8 +105,6 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     node.removeInput(inputIndex);
     setToggle(!toggle);
   };
-  // Создайте ссылку на элемент ввода для каждого входного порта
-  const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
   // Функция для обновления имени входного порта и установки фокуса
   const handleInputNameChange = (input, newName, index) => {
     input.name = newName;
@@ -112,7 +114,27 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   };
 
   // Добавить выходной порт
-  const handleAddOutput = () => {};
+  const handleAddOutput = () => {
+    const newOutputId = outputCounter + 1;
+    setOutputCounter(newOutputId);
+
+    node.addOutput(`Выход ${newOutputId}`);
+    // Обновляем массив ссылок, добавляя новую ссылку
+    setOutputRefs((prevRefs) => [...prevRefs, React.createRef()]);
+    setToggle(!toggle);
+  };
+  // Удалить выходной порт
+  const handleRemoveOutput = (outputIndex) => {
+    node.removeOutput(outputIndex);
+    setToggle(!toggle);
+  };
+  // Функция для обновления имени выходного порта и установки фокуса
+  const handleOutputNameChange = (output, newName, index) => {
+    output.name = newName;
+    // Установите фокус обратно на элемент ввода после его обновления
+    outputRefs[index].current.focus();
+    setToggle(!toggle); // Принудительное обновление интерфейса
+  };
 
   return (
     <Drawer anchor="right" open={menuOpen} variant="persistent">
@@ -158,7 +180,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       </List>
       <Divider />
       {/* Входные порты */}
-      <Box sx={{ mt: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
+      <Box sx={{ display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
         <Typography textAlign="center" sx={{ p: 1, pr: 0 }}>
           Входные порты
         </Typography>
@@ -196,16 +218,42 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         ))}
       <Divider />
       {/* Выходные порты */}
-      <Typography textAlign="center" sx={{ mt: 1 }}>
-        Выходные порты
-      </Typography>
       <Box sx={{ display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
+        <Typography textAlign="center" sx={{ p: 1, pr: 0 }}>
+          Выходные порты
+        </Typography>
         <Tooltip title="Добавить выходной порт">
           <IconButton color="primary" aria-label="add output" onClick={handleAddOutput}>
             <AddCircleOutlineIcon />
           </IconButton>
         </Tooltip>
       </Box>
+      {node &&
+        node.outputs &&
+        node.outputs.length > 0 &&
+        node.outputs.map((output, index) => (
+          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
+            <TextField
+              type="string"
+              onChange={(evt) => {
+                const newValue = evt.target.value;
+                handleOutputNameChange(output, newValue, index);
+              }}
+              value={output.name}
+              variant="standard"
+              sx={{ flexGrow: 1, pr: 1 }}
+              InputProps={{ disableUnderline: true }}
+              inputRef={outputRefs[index]} // ссылка на элемент ввода
+            />
+            <IconButton
+              color="primary"
+              aria-label="remove output"
+              sx={{ p: 0 }}
+              onClick={() => handleRemoveOutput(index)}>
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        ))}
       <Box sx={{ flexGrow: 1 }} />
       <Button sx={{ m: 1 }} variant="contained" onClick={handleSave}>
         Сохранить

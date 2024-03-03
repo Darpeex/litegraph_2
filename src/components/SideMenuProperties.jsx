@@ -8,20 +8,30 @@ import {
   Divider,
   Tooltip,
   ListItem,
+  Collapse,
   Checkbox,
   TextField,
   Typography,
   IconButton,
   ListItemIcon,
   ListItemText,
+  ListItemButton,
   FormControlLabel,
 } from '@mui/material';
-import { Tune as TuneIcon, AddCircleOutline as AddCircleOutlineIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+  ExpandLess,
+  ExpandMore,
+  Tune as TuneIcon,
+  Delete as DeleteIcon,
+  AddCircleOutline as AddCircleOutlineIcon,
+} from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   // Ссылка на элемент ввода для каждого входного порта
   const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
   const [outputRefs, setOutputRefs] = useState(node && node.outputs ? node.outputs.map(() => React.createRef()) : []);
+  // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
+  const [openSubMenus, setOpenSubMenus] = useState([false, false]);
   const [inputCounter, setInputCounter] = useState(0);
   const [outputCounter, setOutputCounter] = useState(0);
   const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массивов node.inputs/outputs
@@ -48,6 +58,18 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       { id: 'cores', label: 'Количество ядер', type: 'number', setState: setCoresNumber, value: coresNumber },
       { id: 'flags', label: 'Аргументы/Флаги', type: 'string', setState: setSlurmFlags, value: slurmFlags },
     ],
+  };
+
+  // ВЫНЕСТИ ПОТОМ из SideMenu'шек в константу
+  // Обновляем обработчик, чтобы он принимал индекс нажатого подменю
+  const handleClick = (index) => {
+    setOpenSubMenus((prevOpenSubMenus) => {
+      // Создаем новую копию состояния массива
+      const newOpenSubMenus = [...prevOpenSubMenus];
+      // Переключаем состояние конкретного подменю
+      newOpenSubMenus[index] = !newOpenSubMenus[index];
+      return newOpenSubMenus;
+    });
   };
 
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
@@ -232,8 +254,40 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         node.outputs &&
         node.outputs.length > 0 &&
         node.outputs.map((output, index) => (
-          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
-            <TextField
+          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
+            <Box key={index} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
+              <ListItemButton sx={{ p: 0 }} onClick={() => handleClick(index)}>
+                <ListItemText primary={output.name} />
+                {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <IconButton
+                color="primary"
+                aria-label="remove output"
+                sx={{ p: 0 }}
+                onClick={() => handleRemoveOutput(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding sx={{ pl: 2, width: '352px' }}>
+                {properties.props.map((prop, index) => (
+                  <TextField
+                    key={prop + index}
+                    id={prop.id}
+                    label={prop.label}
+                    type={prop.type}
+                    onChange={function (evt) {
+                      const newValue = evt.target.value;
+                      prop.setState(newValue);
+                    }}
+                    value={prop.value}
+                    variant="standard"
+                    sx={{ mt: 1, width: '100%' }}
+                  />
+                ))}
+              </List>
+            </Collapse>
+            {/* <TextField
               type="string"
               onChange={(evt) => {
                 const newValue = evt.target.value;
@@ -244,14 +298,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
               sx={{ flexGrow: 1, pr: 1 }}
               InputProps={{ disableUnderline: true }}
               inputRef={outputRefs[index]} // ссылка на элемент ввода
-            />
-            <IconButton
-              color="primary"
-              aria-label="remove output"
-              sx={{ p: 0 }}
-              onClick={() => handleRemoveOutput(index)}>
-              <DeleteIcon />
-            </IconButton>
+            /> */}
           </Box>
         ))}
       <Box sx={{ flexGrow: 1 }} />

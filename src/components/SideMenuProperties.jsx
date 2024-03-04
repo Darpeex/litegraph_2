@@ -42,14 +42,17 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [nodeCores, setNodeCores] = useState(node ? node.properties.cores : '');
   const [nodeFlags, setNodeFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
-  // Состояния Свойств выходных Портов
-  const [outputTitle, setOutputTitle] = useState(node && node.outputs ? node.outputs.name : 'порт не выбран');
+  // Состояния Свойств Выходных портов
+  const [outputTitles, setOutputTitles] = useState([]);
   const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
     node ? node.properties.binaryFile : PATH_TO_FILE,
   );
   const [outputCores, setOutputCores] = useState(node ? node.properties.cores : '');
   const [outputFlags, setOutputFlags] = useState(node ? node.properties.flags : '');
+  // Определение порта, у которого меняем свойства
+  const [currentPort, setCurrentPort] = useState({});
+  const [currentPortName, setCurrentPortName] = useState('');
 
   // Свойства узла
   const properties = {
@@ -74,7 +77,13 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
     ],
     outputProps: [
-      { id: 'outputTitle', label: 'Имя порта', type: 'string', setState: setOutputTitle, value: outputTitle },
+      {
+        id: 'outputTitle',
+        label: 'Имя порта',
+        type: 'string',
+        setState: setOutputTitles,
+        value: outputTitles,
+      },
       {
         id: 'outputWorkDir',
         label: 'Рабочая директория',
@@ -106,6 +115,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     });
   };
 
+  // По клику передаем индекс выбранного порта и с его данными работаем
+  const handlePortSelection = (index) => {
+    setCurrentPort(index);
+    setCurrentPortName(node.outputs[index].name);
+  };
+
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
@@ -119,6 +134,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         node.order = 1;
       } else {
         node.order;
+      }
+      // Свойства выходных портов
+      if (node.outputs) {
+        const outputsTitles = node.outputs.map((element) => element.name);
+        console.log(outputsTitles);
+        setOutputTitles(outputsTitles);
       }
     }
   }, [node]);
@@ -175,6 +196,8 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     setOutputCounter(newOutputId);
 
     node.addOutput(`Выход ${newOutputId}`);
+    const outputsTitles = node.outputs.map((element) => element.name);
+    setOutputTitles(outputsTitles);
     // Обновляем массив ссылок, добавляя новую ссылку
     setOutputRefs((prevRefs) => [...prevRefs, React.createRef()]);
     setToggle(!toggle);
@@ -287,22 +310,27 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       {node &&
         node.outputs &&
         node.outputs.length > 0 &&
-        node.outputs.map((output, index) => (
-          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
-            <Box key={index} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
-              <ListItemButton sx={{ p: 0 }} onClick={() => handleClick(index)}>
+        node.outputs.map((output, outputIndex) => (
+          <Box key={outputIndex} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
+            <Box key={outputIndex} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
+              <ListItemButton
+                sx={{ p: 0 }}
+                onClick={() => {
+                  handleClick(outputIndex);
+                  handlePortSelection(outputIndex);
+                }}>
                 <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
-                {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
+                {openSubMenus[outputIndex] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <IconButton
                 color="primary"
                 aria-label="remove output"
                 sx={{ p: 0 }}
-                onClick={() => handleRemoveOutput(index)}>
+                onClick={() => handleRemoveOutput(outputIndex)}>
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
+            <Collapse in={openSubMenus[outputIndex]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ pl: 2, width: '352px' }}>
                 {properties.outputProps.map((prop, index) => (
                   <TextField
@@ -315,7 +343,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
                       prop.setState(newValue);
                       handleOutputNameChange(output, newValue, index);
                     }}
-                    value={prop.value}
+                    value={Array.isArray(prop.value) ? prop.value[outputIndex] : prop.value}
                     variant="standard"
                     sx={{ mt: 1, width: '100%' }}
                     inputRef={outputRefs[index]} // ссылка на элемент ввода

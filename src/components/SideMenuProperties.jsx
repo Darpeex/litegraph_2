@@ -51,8 +51,6 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [outputCores, setOutputCores] = useState(node ? node.properties.cores : '');
   const [outputFlags, setOutputFlags] = useState(node ? node.properties.flags : '');
   // Определение порта, у которого меняем свойства
-  const [currentPort, setCurrentPort] = useState({});
-  const [currentPortName, setCurrentPortName] = useState('');
 
   // Свойства узла
   const properties = {
@@ -105,20 +103,14 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   // ВЫНЕСТИ ПОТОМ из SideMenu'шек в константу
   // Обновляем обработчик, чтобы он принимал индекс нажатого подменю
-  const handleClick = (index) => {
+  const handleClick = (outputIndex) => {
     setOpenSubMenus((prevOpenSubMenus) => {
       // Создаем новую копию состояния массива
       const newOpenSubMenus = [...prevOpenSubMenus];
       // Переключаем состояние конкретного подменю
-      newOpenSubMenus[index] = !newOpenSubMenus[index];
+      newOpenSubMenus[outputIndex] = !newOpenSubMenus[outputIndex];
       return newOpenSubMenus;
     });
-  };
-
-  // По клику передаем индекс выбранного порта и с его данными работаем
-  const handlePortSelection = (index) => {
-    setCurrentPort(index);
-    setCurrentPortName(node.outputs[index].name);
   };
 
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
@@ -312,12 +304,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         node.outputs.map((output, outputIndex) => (
           <Box key={outputIndex} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
             <Box key={outputIndex} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
-              <ListItemButton
-                sx={{ p: 0 }}
-                onClick={() => {
-                  handleClick(outputIndex);
-                  handlePortSelection(outputIndex);
-                }}>
+              <ListItemButton sx={{ p: 0 }} onClick={() => handleClick(outputIndex)}>
                 <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
                 {openSubMenus[outputIndex] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>

@@ -27,11 +27,10 @@ import {
 } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
+  const [outputPorts, setOutputPorts] = useState([]);
   const inputRef = useRef(null);
-  const outputRef = useRef(null);
   // Ссылка на элемент ввода для каждого порта
   const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
-  const [outputRefs, setOutputRefs] = useState(node && node.outputs ? node.outputs.map(() => React.createRef()) : []);
   // Состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
   // Счётчики для портов
@@ -80,28 +79,28 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     ],
     outputProps: [
       {
-        id: 'outputTitle',
+        id: 'name',
         label: 'Имя порта',
         type: 'string',
         setState: setOutputTitlesArr,
         value: outputTitlesArr,
       },
       {
-        id: 'outputWorkDir',
+        id: 'workDir',
         label: 'Рабочая директория',
         type: 'string',
         setState: setOutputPathToWorkDir,
         value: outputPathToWorkDir,
       },
       {
-        id: 'outputBinaryFile',
+        id: 'binaryFile',
         label: 'Путь к бинарному файлу',
         type: 'string',
         setState: setOutputPathToBinaryFile,
         value: outputPathToBinaryFile,
       },
-      { id: 'outputCores', label: 'Количество ядер', type: 'number', setState: setOutputCores, value: outputCores },
-      { id: 'outputFlags', label: 'Аргументы/Флаги', type: 'string', setState: setOutputFlags, value: outputFlags },
+      { id: 'cores', label: 'Количество ядер', type: 'number', setState: setOutputCores, value: outputCores },
+      { id: 'flags', label: 'Аргументы/Флаги', type: 'string', setState: setOutputFlags, value: outputFlags },
     ],
   };
 
@@ -192,26 +191,54 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     const newOutputId = outputCounter + 1;
     setOutputCounter(newOutputId);
 
-    node.addOutput(`Выход ${newOutputId}`);
-    const outputsTitles = node.outputs.map((element) => element.name);
-    setOutputTitlesArr(outputsTitles);
-    // Обновляем массив ссылок, добавляя новую ссылку
-    setOutputRefs((prevRefs) => [...prevRefs, React.createRef()]);
+    const newOutput = {
+      id: newOutputId,
+      name: `Выход ${newOutputId}`,
+      workDir: '',
+      binaryFile: '',
+      cores: '',
+      flags: '',
+    };
+    // Проверяем, существует ли узел node и свойство outputs, и если нет, инициализируем его как пустой массив
+    node.addOutput(newOutput.name);
+    // Добавляем новый порт в node.outputs
+    const updatedOutputs = node.outputs.map((output) => {
+      if (output.name === newOutput.name) {
+        Object.assign(output, newOutput);
+      }
+      return output;
+    });
+    // Обновляем состояние outputPorts
+    setOutputPorts(updatedOutputs);
+    // Добавляем false в openSubMenus для нового порта
+    setOpenSubMenus([...openSubMenus, false]);
     setToggle(!toggle);
   };
   // Удалить выходной порт
   const handleRemoveOutput = (outputIndex) => {
     node.removeOutput(outputIndex);
+    // Обновляем состояние outputPorts
+    setOutputPorts(outputPorts.filter((_, index) => index !== outputIndex));
+    // Удаляем флаг для удаленного порта из openSubMenus
+    setOpenSubMenus(openSubMenus.filter((_, index) => index !== outputIndex));
     setToggle(!toggle);
   };
-  // Функция для обновления имени выходного порта и установки фокуса
-  const handleOutputNameChange = (output, newName) => {
-    output.name = newName;
-    // Установите фокус обратно на элемент ввода после его обновления
-    if (outputRef.current) {
-      outputRef.current.focus();
-    }
-    setToggle(!toggle); // Принудительное обновление интерфейса
+  // Функция для обновления свойств конкретного выходного порта
+  const handleOutputPropertyChange = (outputId, property, newValue) => {
+    setOutputPorts((prevPorts) =>
+      prevPorts.map((port) => {
+        if (port.id === outputId) {
+          const updatedPort = { ...port, [property]: newValue };
+          // Обновляем свойство в node.outputs
+          const nodeOutput = node.outputs.find((output) => output.id === outputId);
+          if (nodeOutput) {
+            nodeOutput[property] = newValue;
+          }
+          return updatedPort;
+        }
+        return port;
+      }),
+    );
   };
 
   return (
@@ -332,22 +359,13 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
                     id={prop.id}
                     label={prop.label}
                     type={prop.type}
-                    onClick={() => console.log(outputIndex)}
                     onChange={function (evt) {
                       const newValue = evt.target.value;
-                      if (prop.label === 'Имя порта') {
-                        prop.setState(() => {
-                          const newArray = outputTitlesArr;
-                          newArray[outputIndex] = newValue;
-                          return newArray;
-                        });
-                        handleOutputNameChange(output, newValue, index);
-                      }
+                      handleOutputPropertyChange(output.id, prop.id, newValue);
                     }}
-                    value={Array.isArray(prop.value) ? prop.value[outputIndex] : prop.value}
+                    value={outputPorts.find((port) => port.id === output.id)?.[prop.id] || ''}
                     variant="standard"
                     sx={{ mt: 1, width: '100%' }}
-                    inputRef={outputRefs[index]} // ссылка на элемент ввода
                   />
                 ))}
               </List>

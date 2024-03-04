@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../constants/constants';
 import {
   Box,
@@ -27,14 +27,18 @@ import {
 } from '@mui/icons-material';
 
 const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
-  // Ссылка на элемент ввода для каждого входного порта
+  const inputRef = useRef(null);
+  const outputRef = useRef(null);
+  // Ссылка на элемент ввода для каждого порта
   const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
   const [outputRefs, setOutputRefs] = useState(node && node.outputs ? node.outputs.map(() => React.createRef()) : []);
-  // Инициализируем массив булевых значений, представляющих открытый или закрытый состояние каждого подменю
+  // Состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
+  // Счётчики для портов
   const [inputCounter, setInputCounter] = useState(0);
   const [outputCounter, setOutputCounter] = useState(0);
-  const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массивов node.inputs/outputs
+  // Отрисовка портов при обновлении массивов node.inputs/outputs
+  const [toggle, setToggle] = useState(true);
   // Состояния Свойств Узла
   const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран');
   const [nodePathToWorkDir, setNodePathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
@@ -52,7 +56,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [outputFlags, setOutputFlags] = useState(node ? node.properties.flags : '');
   // Определение порта, у которого меняем свойства
 
-  // Свойства узла
+  // Свойства узлов и портов
   const properties = {
     name: 'Свойства',
     nodeProps: [
@@ -103,12 +107,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   // ВЫНЕСТИ ПОТОМ из SideMenu'шек в константу
   // Обновляем обработчик, чтобы он принимал индекс нажатого подменю
-  const handleClick = (outputIndex) => {
+  const handleClick = (index) => {
     setOpenSubMenus((prevOpenSubMenus) => {
       // Создаем новую копию состояния массива
       const newOpenSubMenus = [...prevOpenSubMenus];
       // Переключаем состояние конкретного подменю
-      newOpenSubMenus[outputIndex] = !newOpenSubMenus[outputIndex];
+      newOpenSubMenus[index] = !newOpenSubMenus[index];
       return newOpenSubMenus;
     });
   };
@@ -174,10 +178,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     setToggle(!toggle);
   };
   // Функция для обновления имени входного порта и установки фокуса
-  const handleInputNameChange = (input, newName, index) => {
+  const handleInputNameChange = (input, newName) => {
     input.name = newName;
     // Установите фокус обратно на элемент ввода после его обновления
-    inputRefs[index].current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     setToggle(!toggle); // Принудительное обновление интерфейса
   };
 
@@ -199,10 +205,12 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     setToggle(!toggle);
   };
   // Функция для обновления имени выходного порта и установки фокуса
-  const handleOutputNameChange = (output, newName, index) => {
+  const handleOutputNameChange = (output, newName) => {
     output.name = newName;
     // Установите фокус обратно на элемент ввода после его обновления
-    outputRefs[index].current.focus();
+    if (outputRef.current) {
+      outputRef.current.focus();
+    }
     setToggle(!toggle); // Принудительное обновление интерфейса
   };
 
@@ -324,10 +332,17 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
                     id={prop.id}
                     label={prop.label}
                     type={prop.type}
+                    onClick={() => console.log(outputIndex)}
                     onChange={function (evt) {
                       const newValue = evt.target.value;
-                      prop.setState(newValue);
-                      handleOutputNameChange(output, newValue, index);
+                      if (prop.label === 'Имя порта') {
+                        prop.setState(() => {
+                          const newArray = outputTitlesArr;
+                          newArray[outputIndex] = newValue;
+                          return newArray;
+                        });
+                        handleOutputNameChange(output, newValue, index);
+                      }
                     }}
                     value={Array.isArray(prop.value) ? prop.value[outputIndex] : prop.value}
                     variant="standard"

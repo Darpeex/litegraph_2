@@ -43,7 +43,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [nodeFlags, setNodeFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
   // Состояния Свойств Выходных портов
-  const [outputTitles, setOutputTitles] = useState([]);
+  const [outputTitlesArr, setOutputTitlesArr] = useState([]);
   const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
     node ? node.properties.binaryFile : PATH_TO_FILE,
@@ -81,8 +81,8 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
         id: 'outputTitle',
         label: 'Имя порта',
         type: 'string',
-        setState: setOutputTitles,
-        value: outputTitles,
+        setState: setOutputTitlesArr,
+        value: outputTitlesArr,
       },
       {
         id: 'outputWorkDir',
@@ -138,8 +138,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       // Свойства выходных портов
       if (node.outputs) {
         const outputsTitles = node.outputs.map((element) => element.name);
-        console.log(outputsTitles);
-        setOutputTitles(outputsTitles);
+        setOutputTitlesArr(outputsTitles);
       }
     }
   }, [node]);
@@ -197,7 +196,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
     node.addOutput(`Выход ${newOutputId}`);
     const outputsTitles = node.outputs.map((element) => element.name);
-    setOutputTitles(outputsTitles);
+    setOutputTitlesArr(outputsTitles);
     // Обновляем массив ссылок, добавляя новую ссылку
     setOutputRefs((prevRefs) => [...prevRefs, React.createRef()]);
     setToggle(!toggle);

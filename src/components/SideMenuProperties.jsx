@@ -35,28 +35,53 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [inputCounter, setInputCounter] = useState(0);
   const [outputCounter, setOutputCounter] = useState(0);
   const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массивов node.inputs/outputs
-  const [title, setTitle] = useState(node ? node.title : 'узел не выбран');
-  const [pathToWorkDir, setPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
-  const [pathToBinaryFile, setPathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
-  const [coresNumber, setCoresNumber] = useState(node ? node.properties.cores : '');
-  const [slurmFlags, setSlurmFlags] = useState(node ? node.properties.flags : '');
+  const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран');
+  const [nodePathToWorkDir, setNodePathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
+  const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
+  const [nodeCores, setNodeCores] = useState(node ? node.properties.cores : '');
+  const [nodeFlags, setNodeFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
 
   // Свойства узла
   const properties = {
     name: 'Свойства',
-    props: [
-      { id: 'title', label: 'Имя блока', type: 'string', setState: setTitle, value: title },
-      { id: 'workDir', label: 'Рабочая директория', type: 'string', setState: setPathToWorkDir, value: pathToWorkDir },
+    nodeProps: [
+      { id: 'nodeTitle', label: 'Имя блока', type: 'string', setState: setNodeTitle, value: nodeTitle },
       {
-        id: 'binaryFile',
+        id: 'nodeWorkDir',
+        label: 'Рабочая директория',
+        type: 'string',
+        setState: setNodePathToWorkDir,
+        value: nodePathToWorkDir,
+      },
+      {
+        id: 'nodeBinaryFile',
         label: 'Путь к бинарному файлу',
         type: 'string',
-        setState: setPathToBinaryFile,
-        value: pathToBinaryFile,
+        setState: setNodePathToBinaryFile,
+        value: nodePathToBinaryFile,
       },
-      { id: 'cores', label: 'Количество ядер', type: 'number', setState: setCoresNumber, value: coresNumber },
-      { id: 'flags', label: 'Аргументы/Флаги', type: 'string', setState: setSlurmFlags, value: slurmFlags },
+      { id: 'nodeCores', label: 'Количество ядер', type: 'number', setState: setNodeCores, value: nodeCores },
+      { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
+    ],
+    outputProps: [
+      { id: 'outputTitle', label: 'Имя порта', type: 'string', setState: setNodeTitle, value: nodeTitle },
+      {
+        id: 'outputWorkDir',
+        label: 'Рабочая директория',
+        type: 'string',
+        setState: setNodePathToWorkDir,
+        value: nodePathToWorkDir,
+      },
+      {
+        id: 'outputBinaryFile',
+        label: 'Путь к бинарному файлу',
+        type: 'string',
+        setState: setNodePathToBinaryFile,
+        value: nodePathToBinaryFile,
+      },
+      { id: 'outputCores', label: 'Количество ядер', type: 'number', setState: setNodeCores, value: nodeCores },
+      { id: 'outputFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
     ],
   };
 
@@ -75,11 +100,11 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
     if (node) {
-      setTitle(node.title);
-      setPathToWorkDir(node.properties.workDir);
-      setPathToBinaryFile(node.properties.binaryFile);
-      setCoresNumber(node.properties.cores);
-      setSlurmFlags(node.properties.flags);
+      setNodeTitle(node.title);
+      setNodePathToWorkDir(node.properties.workDir);
+      setNodePathToBinaryFile(node.properties.binaryFile);
+      setNodeCores(node.properties.cores);
+      setNodeFlags(node.properties.flags);
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
         node.order = 1;
@@ -94,15 +119,15 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
     // переименование блока в свойствах
     node.getTitle = function () {
       if (node) {
-        node.title = title;
-        return title;
+        node.title = nodeTitle;
+        return nodeTitle;
       }
       return 'Ошибка';
     };
-    node.setProperty('workDir', pathToWorkDir);
-    node.setProperty('binaryFile', pathToBinaryFile);
-    node.setProperty('cores', coresNumber);
-    node.setProperty('flags', slurmFlags);
+    node.setProperty('workDir', nodePathToWorkDir);
+    node.setProperty('binaryFile', nodePathToBinaryFile);
+    node.setProperty('cores', nodeCores);
+    node.setProperty('flags', nodeFlags);
     node.setProperty('checkbox', checkbox);
     if (checkbox === true) {
       node.order = 1;
@@ -176,7 +201,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
           noValidate
           autoComplete="off">
           <div>
-            {properties.props.map((prop, index) => (
+            {properties.nodeProps.map((prop, index) => (
               <TextField
                 key={prop + index}
                 id={prop.id}
@@ -270,7 +295,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
             </Box>
             <Collapse in={openSubMenus[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ pl: 2, width: '352px' }}>
-                {properties.props.map((prop, index) => (
+                {properties.outputProps.map((prop, index) => (
                   <TextField
                     key={prop + index}
                     id={prop.id}

@@ -257,7 +257,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
           <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
             <Box key={index} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
               <ListItemButton sx={{ p: 0 }} onClick={() => handleClick(index)}>
-                <ListItemText primary={output.name} />
+                <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
                 {openSubMenus[index] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <IconButton
@@ -279,30 +279,20 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
                     onChange={function (evt) {
                       const newValue = evt.target.value;
                       prop.setState(newValue);
+                      handleOutputNameChange(output, newValue, index);
                     }}
                     value={prop.value}
                     variant="standard"
                     sx={{ mt: 1, width: '100%' }}
+                    inputRef={outputRefs[index]} // ссылка на элемент ввода
                   />
                 ))}
               </List>
             </Collapse>
-            {/* <TextField
-              type="string"
-              onChange={(evt) => {
-                const newValue = evt.target.value;
-                handleOutputNameChange(output, newValue, index);
-              }}
-              value={output.name}
-              variant="standard"
-              sx={{ flexGrow: 1, pr: 1 }}
-              InputProps={{ disableUnderline: true }}
-              inputRef={outputRefs[index]} // ссылка на элемент ввода
-            /> */}
           </Box>
         ))}
-      <Box sx={{ flexGrow: 1 }} />
-      <Button sx={{ m: 1 }} variant="contained" onClick={handleSave}>
+      <Box sx={{ flexGrow: 1, minHeight: '52.5px' }} />
+      <Button sx={{ m: 1, width: '352px', position: 'fixed', bottom: 0 }} variant="contained" onClick={handleSave}>
         Сохранить
       </Button>
     </Drawer>

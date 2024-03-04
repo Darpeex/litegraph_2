@@ -35,12 +35,21 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [inputCounter, setInputCounter] = useState(0);
   const [outputCounter, setOutputCounter] = useState(0);
   const [toggle, setToggle] = useState(true); // для отрисовки портов в SideBar при обновлении массивов node.inputs/outputs
+  // Состояния Свойств Узла
   const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран');
   const [nodePathToWorkDir, setNodePathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
   const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
   const [nodeCores, setNodeCores] = useState(node ? node.properties.cores : '');
   const [nodeFlags, setNodeFlags] = useState(node ? node.properties.flags : '');
   const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
+  // Состояния Свойств выходных Портов
+  const [outputTitle, setOutputTitle] = useState(node && node.outputs ? node.outputs.name : 'порт не выбран');
+  const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
+  const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
+    node ? node.properties.binaryFile : PATH_TO_FILE,
+  );
+  const [outputCores, setOutputCores] = useState(node ? node.properties.cores : '');
+  const [outputFlags, setOutputFlags] = useState(node ? node.properties.flags : '');
 
   // Свойства узла
   const properties = {
@@ -65,23 +74,23 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
       { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
     ],
     outputProps: [
-      { id: 'outputTitle', label: 'Имя порта', type: 'string', setState: setNodeTitle, value: nodeTitle },
+      { id: 'outputTitle', label: 'Имя порта', type: 'string', setState: setOutputTitle, value: outputTitle },
       {
         id: 'outputWorkDir',
         label: 'Рабочая директория',
         type: 'string',
-        setState: setNodePathToWorkDir,
-        value: nodePathToWorkDir,
+        setState: setOutputPathToWorkDir,
+        value: outputPathToWorkDir,
       },
       {
         id: 'outputBinaryFile',
         label: 'Путь к бинарному файлу',
         type: 'string',
-        setState: setNodePathToBinaryFile,
-        value: nodePathToBinaryFile,
+        setState: setOutputPathToBinaryFile,
+        value: outputPathToBinaryFile,
       },
-      { id: 'outputCores', label: 'Количество ядер', type: 'number', setState: setNodeCores, value: nodeCores },
-      { id: 'outputFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
+      { id: 'outputCores', label: 'Количество ядер', type: 'number', setState: setOutputCores, value: outputCores },
+      { id: 'outputFlags', label: 'Аргументы/Флаги', type: 'string', setState: setOutputFlags, value: outputFlags },
     ],
   };
 

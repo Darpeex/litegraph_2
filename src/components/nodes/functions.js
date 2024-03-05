@@ -1,5 +1,5 @@
 import { LiteGraph } from 'litegraph.js';
-import { graph } from '../Main';
+import { graph } from '../App';
 
 // Задаётся постоянное число
 export const handleMountConstantNumberBlock = () => {

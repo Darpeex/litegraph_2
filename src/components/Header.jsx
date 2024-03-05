@@ -1,11 +1,9 @@
-import { LGraph } from 'litegraph.js';
 import { useState } from 'react';
+import { LGraph } from 'litegraph.js';
 import { Container } from '@mui/system';
 import { lightGreen } from '@mui/material/colors';
-import MenuIcon from '@mui/icons-material/Menu';
-import StopIcon from '@mui/icons-material/Stop';
 import SideMenuFunctions from './SideMenuFunctions';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Menu as MenuIcon, Stop as StopIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
 const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar) - далее будет понятно, что с ними делать, пока оставляю

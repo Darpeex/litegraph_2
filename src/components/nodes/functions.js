@@ -37,6 +37,12 @@ export const handleMountDivisionBlock = () => {
   graph.add(node_division);
 };
 
+// Таймер
+export const handleMountTimerBlock = () => {
+  const node_timer = LiteGraph.createNode('basic/timer');
+  graph.add(node_timer);
+};
+
 // Стартовый блок
 export const handleMountStartBlock = () => {
   const node_base = LiteGraph.createNode('basic/base');

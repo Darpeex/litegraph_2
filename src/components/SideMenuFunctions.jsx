@@ -15,6 +15,7 @@ import {
   handleMountSubstractionBlock,
   handleMountMultiplicationBlock,
   handleMountDivisionBlock,
+  handleMountTimerBlock,
   handleMountStartBlock,
 } from './nodes/functions';
 
@@ -35,8 +36,9 @@ const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
       name: 'Программные блоки',
       icon: <CalculateIcon />,
       blocks: [
-        { name: 'Задать число', handler: handleMountConstantNumberBlock },
-        { name: 'Вывести результат', handler: handleMountResultBlock },
+        { name: 'Константа', handler: handleMountConstantNumberBlock },
+        { name: 'Результат', handler: handleMountResultBlock },
+        { name: 'Таймер', handler: handleMountTimerBlock },
       ],
     },
     {

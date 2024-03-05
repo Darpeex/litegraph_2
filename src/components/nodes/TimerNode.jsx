@@ -37,9 +37,9 @@ TimerEvent.prototype.onDrawBackground = function () {
 };
 
 TimerEvent.prototype.onExecute = function () {
-  let dt = this.graph.elapsed_time * 1000; //in ms
+  const dt = this.graph.elapsed_time * 1000; //in ms
 
-  let trigger = this.time == 0;
+  const trigger = this.time == 0;
 
   this.time += dt;
   this.last_interval = Math.max(1, this.getInputOrProperty('interval') | 0);

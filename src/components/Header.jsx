@@ -12,7 +12,7 @@ const options = ['Настройки', 'Терминал']; // опции вер
 const fileFeatures = ['Создать файл', 'Открыть файл', 'Сохранить как']; // возможности, выпадающие по кнопке Файла
 const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
 
-function Header() {
+function Header({ graph }) {
   const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
@@ -41,15 +41,17 @@ function Header() {
 
   // Запустить выполнение
   const handleStart = () => {
+    graph.start(); // Запускаем график
     console.log('Start');
     setInProgress(true);
-    LGraph.status = LGraph.STATUS_RUNNING; // 1
+    LGraph.status = LGraph.STATUS_RUNNING; // 2
   };
   // Остановить выполнение
   const handleStop = () => {
+    graph.stop();
     console.log('Stop');
     setInProgress(false);
-    LGraph.status = LGraph.STATUS_STOPPED; // 2
+    LGraph.status = LGraph.STATUS_STOPPED; // 1
   };
 
   return (

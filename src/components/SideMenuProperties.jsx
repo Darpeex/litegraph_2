@@ -40,19 +40,25 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [toggle, setToggle] = useState(true);
   // Состояния Свойств Узла
   const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран');
-  const [nodePathToWorkDir, setNodePathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
-  const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(node ? node.properties.binaryFile : PATH_TO_FILE);
-  const [nodeCores, setNodeCores] = useState(node ? node.properties.cores : '');
-  const [nodeFlags, setNodeFlags] = useState(node ? node.properties.flags : '');
-  const [checkbox, setCheckbox] = useState(node ? node.properties.checkbox : false);
+  const [nodePathToWorkDir, setNodePathToWorkDir] = useState(
+    node && node.properties ? node.properties.workDir : PATH_TO_DIR,
+  );
+  const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(
+    node && node.properties ? node.properties.binaryFile : PATH_TO_FILE,
+  );
+  const [nodeCores, setNodeCores] = useState(node && node.properties ? node.properties.cores : '');
+  const [nodeFlags, setNodeFlags] = useState(node && node.properties ? node.properties.flags : '');
+  const [checkbox, setCheckbox] = useState(node && node.properties ? node.properties.checkbox : false);
   // Состояния Свойств Выходных портов
   const [outputTitlesArr, setOutputTitlesArr] = useState([]);
-  const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node ? node.properties.workDir : PATH_TO_DIR);
-  const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
-    node ? node.properties.binaryFile : PATH_TO_FILE,
+  const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(
+    node && node.properties ? node.properties.workDir : PATH_TO_DIR,
   );
-  const [outputCores, setOutputCores] = useState(node ? node.properties.cores : '');
-  const [outputFlags, setOutputFlags] = useState(node ? node.properties.flags : '');
+  const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
+    node && node.properties ? node.properties.binaryFile : PATH_TO_FILE,
+  );
+  const [outputCores, setOutputCores] = useState(node && node.properties ? node.properties.cores : '');
+  const [outputFlags, setOutputFlags] = useState(node && node.properties ? node.properties.flags : '');
   // Определение порта, у которого меняем свойства
 
   // Свойства узлов и портов
@@ -118,7 +124,7 @@ const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
 
   // При открытии свойств нового узла, данные обновляются на сохраненные в узле
   useEffect(() => {
-    if (node) {
+    if (node && node.properties) {
       setNodeTitle(node.title);
       setNodePathToWorkDir(node.properties.workDir);
       setNodePathToBinaryFile(node.properties.binaryFile);

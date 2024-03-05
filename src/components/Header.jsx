@@ -3,7 +3,14 @@ import { LGraph } from 'litegraph.js';
 import { Container } from '@mui/system';
 import { lightGreen } from '@mui/material/colors';
 import SideMenuFunctions from './SideMenuFunctions';
-import { Menu as MenuIcon, Stop as StopIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material';
+import {
+  Menu as MenuIcon,
+  Stop as StopIcon,
+  Download as DownloadIcon,
+  PlayArrow as PlayArrowIcon,
+  CloudUpload as CloudUploadIcon,
+  CloudDownload as CloudDownloadIcon,
+} from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
 const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar) - далее будет понятно, что с ними делать, пока оставляю
@@ -51,6 +58,30 @@ function Header({ graph }) {
     setInProgress(false);
     LGraph.status = LGraph.STATUS_STOPPED; // 1
   };
+
+  // Сохранить схему в localStorage
+  function saveGraph() {
+    const data = graph.serialize();
+    const jsonStr = JSON.stringify(data);
+    localStorage.setItem('graphData', jsonStr);
+  }
+  // Загрузить схему из localStorage
+  function loadGraph() {
+    const data = localStorage.getItem('graphData');
+    if (data) {
+      graph.configure(JSON.parse(data));
+    }
+  }
+  // Загрузить схему из localStorage
+  function downloadGraph() {
+    const data = graph.serialize();
+    const jsonStr = JSON.stringify(data);
+    const blob = new Blob([jsonStr], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'graph.json';
+    link.click();
+  }
 
   return (
     <AppBar position="fixed">
@@ -103,6 +134,25 @@ function Header({ graph }) {
                 {page}
               </Button>
             ))}
+          </Box>
+
+          {/* Сохранение и выгрузка схемы localStorage */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 5 }}>
+            <Tooltip title="Сохранить схему">
+              <IconButton size="large" aria-label="Сохранить схему" color="inherit" onClick={saveGraph}>
+                <CloudDownloadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Загрузить схему">
+              <IconButton size="large" aria-label="Загрузить схему" color="inherit" onClick={loadGraph}>
+                <CloudUploadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Скачать JSON файл">
+              <IconButton size="large" aria-label="Скачать JSON файл" color="inherit" onClick={downloadGraph}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
 
           {/* Запуск и Остановка задачи */}

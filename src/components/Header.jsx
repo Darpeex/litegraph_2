@@ -1,5 +1,7 @@
+import { LGraph } from 'litegraph.js';
 import { useState } from 'react';
 import { Container } from '@mui/system';
+import { lightGreen } from '@mui/material/colors';
 import MenuIcon from '@mui/icons-material/Menu';
 import StopIcon from '@mui/icons-material/Stop';
 import SideMenuFunctions from './SideMenuFunctions';
@@ -14,6 +16,7 @@ function Header() {
   const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
+  const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
 
   // Открыть, закрыть список возможностей Профиля
   const handleOpenUserMenu = (event) => {
@@ -34,6 +37,19 @@ function Header() {
   // Открыть боковое меню (SideMenuFunctions)
   const handleOpenSideMenuFunctions = () => {
     setSideMenuFunctionsOpen(true);
+  };
+
+  // Запустить выполнение
+  const handleStart = () => {
+    console.log('Start');
+    setInProgress(true);
+    LGraph.status = LGraph.STATUS_RUNNING; // 1
+  };
+  // Остановить выполнение
+  const handleStop = () => {
+    console.log('Stop');
+    setInProgress(false);
+    LGraph.status = LGraph.STATUS_STOPPED; // 2
   };
 
   return (
@@ -93,12 +109,12 @@ function Header() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
             <Tooltip title="Запуск задачи">
-              <IconButton size="large" aria-label="Запуск задачи" color="inherit">
-                <PlayArrowIcon />
+              <IconButton size="large" aria-label="Запуск задачи" color="inherit" onClick={handleStart}>
+                <PlayArrowIcon sx={{ color: inProgress ? lightGreen[500] : '' }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Остановка задачи">
-              <IconButton size="large" aria-label="Остановка задачи" color="inherit">
+              <IconButton size="large" aria-label="Остановка задачи" color="inherit" onClick={handleStop}>
                 <StopIcon />
               </IconButton>
             </Tooltip>

@@ -136,7 +136,7 @@ function Header({ graph }) {
             ))}
           </Box>
 
-          {/* Сохранение и выгрузка схемы localStorage */}
+          {/* Сохранение, выгрузка в localStorage и скачивание JSON файла */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 5 }}>
             <Tooltip title="Сохранить схему">
               <IconButton size="large" aria-label="Сохранить схему" color="inherit" onClick={saveGraph}>

@@ -39,14 +39,14 @@ function Header({ graph }) {
 
   // Запустить выполнение
   const handleStart = () => {
-    graph.start(); // Запускаем график
+    graph.start(); // Запускаем выполнение графика
     console.log('Start');
     setInProgress(true);
     LGraph.status = LGraph.STATUS_RUNNING; // 2
   };
   // Остановить выполнение
   const handleStop = () => {
-    graph.stop();
+    graph.stop(); // Останавливаем выполнение графика
     console.log('Stop');
     setInProgress(false);
     LGraph.status = LGraph.STATUS_STOPPED; // 1

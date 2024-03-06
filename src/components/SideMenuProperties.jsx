@@ -246,7 +246,7 @@ const SideMenuProperties = ({ node, menuOpen }) => {
   };
 
   return (
-    <Drawer anchor="right" open={menuOpen} variant="persistent" onChange={handleChangeNodeProperties}>
+    <Drawer anchor="right" open={menuOpen} variant="persistent" onBlur={handleChangeNodeProperties}>
       <List sx={{ width: '370px' }}>
         <ListItem>
           <ListItemIcon>

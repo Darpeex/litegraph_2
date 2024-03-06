@@ -3,6 +3,7 @@ import { PATH_TO_DIR, PATH_TO_FILE } from '../constants/constants';
 import {
   Box,
   List,
+  Button,
   Drawer,
   Divider,
   Tooltip,
@@ -25,7 +26,7 @@ import {
   AddCircleOutline as AddCircleOutlineIcon,
 } from '@mui/icons-material';
 
-const SideMenuProperties = ({ menuOpen, node }) => {
+const SideMenuProperties = ({ menuOpen, closeMenu, node }) => {
   const [outputPorts, setOutputPorts] = useState([]);
   const inputRef = useRef(null);
   // Ссылка на элемент ввода для каждого порта
@@ -144,7 +145,7 @@ const SideMenuProperties = ({ menuOpen, node }) => {
   }, [node]);
 
   // Сохранение свойств узла и закрытие SideMenuProperties
-  const handleChangeNodeProperties = () => {
+  const handleSave = () => {
     // переименование блока в свойствах
     node.getTitle = function () {
       if (node) {
@@ -163,6 +164,7 @@ const SideMenuProperties = ({ menuOpen, node }) => {
     } else {
       node.order;
     }
+    closeMenu();
   };
 
   // Добавить входной порт
@@ -246,7 +248,7 @@ const SideMenuProperties = ({ menuOpen, node }) => {
   };
 
   return (
-    <Drawer anchor="right" open={menuOpen} variant="persistent" onBlur={handleChangeNodeProperties}>
+    <Drawer anchor="right" open={menuOpen} variant="persistent">
       <List sx={{ width: '370px' }}>
         <ListItem>
           <ListItemIcon>
@@ -280,7 +282,7 @@ const SideMenuProperties = ({ menuOpen, node }) => {
             <FormControlLabel
               color="main"
               sx={{ m: 1, width: '332px', justifyContent: 'start' }}
-              control={<Checkbox checked={checkbox} onClick={() => setCheckbox(!checkbox)} />}
+              control={<Checkbox checked={checkbox} onChange={() => setCheckbox(!checkbox)} />}
               label="Запускать сразу"
               labelPlacement="start"
             />
@@ -376,6 +378,10 @@ const SideMenuProperties = ({ menuOpen, node }) => {
             </Collapse>
           </Box>
         ))}
+      <Box sx={{ flexGrow: 1, minHeight: '52.5px' }} />
+      <Button sx={{ m: 1, width: '352px', position: 'fixed', bottom: 0 }} variant="contained" onClick={handleSave}>
+        Сохранить
+      </Button>
     </Drawer>
   );
 };

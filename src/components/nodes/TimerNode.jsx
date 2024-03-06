@@ -2,7 +2,7 @@
 import { LiteGraph } from 'litegraph.js';
 
 function TimerEvent() {
-  this.addProperty('interval', 3000);
+  this.addProperty('Интервал', 3000);
   this.addProperty('event', 'tick');
   this.addInput('Интервал', 'number');
   this.addOutput('Выход', LiteGraph.EVENT); // on_tick
@@ -42,7 +42,7 @@ TimerEvent.prototype.onExecute = function () {
   const trigger = this.time == 0;
 
   this.time += dt;
-  this.last_interval = Math.max(1, this.getInputOrProperty('interval') | 0);
+  this.last_interval = Math.max(1, this.getInputOrProperty('Интервал') | 0);
 
   if (!trigger && (this.time < this.last_interval || isNaN(this.last_interval))) {
     if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
@@ -53,7 +53,7 @@ TimerEvent.prototype.onExecute = function () {
 
   this.triggered = true;
   this.time = this.time % this.last_interval;
-  this.trigger('on_tick', this.properties.event);
+  this.trigger('Выход', this.properties.event); // on_tick
   if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
     this.setOutputData(1, true);
   }

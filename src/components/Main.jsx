@@ -4,7 +4,7 @@ function Main({ selectedNode, isSideMenuPropertiesOpen }) {
   return (
     <main className="Main">
       <div className="page"></div>
-      <SideMenuProperties menuOpen={isSideMenuPropertiesOpen} node={selectedNode ? selectedNode : null} />
+      <SideMenuProperties node={selectedNode ? selectedNode : null} menuOpen={isSideMenuPropertiesOpen} />
     </main>
   );
 }

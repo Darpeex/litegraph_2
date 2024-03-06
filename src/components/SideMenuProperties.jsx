@@ -59,7 +59,6 @@ const SideMenuProperties = ({ node, menuOpen }) => {
   const [outputCores, setOutputCores] = useState(node && node.properties ? node.properties.cores : '');
   const [outputFlags, setOutputFlags] = useState(node && node.properties ? node.properties.flags : '');
   // Определение порта, у которого меняем свойства
-  console.log(outputPorts);
 
   // Свойства узлов и портов
   const properties = {
@@ -140,9 +139,6 @@ const SideMenuProperties = ({ node, menuOpen }) => {
       if (node.outputs) {
         const outputsTitles = node.outputs.map((element) => element.name);
         setOutputTitlesArr(outputsTitles);
-      }
-      if (node && node.outputs) {
-        console.log(node.outputs);
         setOutputPorts(node.outputs);
       }
     }
@@ -232,18 +228,10 @@ const SideMenuProperties = ({ node, menuOpen }) => {
     setOpenSubMenus(openSubMenus.filter((_, index) => index !== outputIndex));
     setToggle(!toggle);
   };
-  // Функция выбора узла для установления её выходных портов
-  // const handleOutputPortsSet = () => {
-  //   if (node && node.outputs) {
-  //     console.log(`1 - ${node.outputs}`);
-  //     setOutputPorts(node.outputs);
-  //   }
-  // };
   // Функция для обновления свойств конкретного выходного порта
   const handleOutputPropertyChange = (outputId, property, newValue) => {
     setOutputPorts((prevPorts) =>
       prevPorts.map((port) => {
-        console.log(port);
         if (port.id === outputId) {
           const updatedPort = { ...port, [property]: newValue };
           // Обновляем свойство в node.outputs

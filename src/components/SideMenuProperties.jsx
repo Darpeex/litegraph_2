@@ -1,3 +1,4 @@
+import { LiteGraph } from 'litegraph.js';
 import React, { useEffect, useState, useRef } from 'react';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../constants/constants';
 import {
@@ -23,6 +24,7 @@ import {
   Tune as TuneIcon,
   Delete as DeleteIcon,
   AddCircleOutline as AddCircleOutlineIcon,
+  AutorenewOutlined as AutorenewOutlinedIcon,
 } from '@mui/icons-material';
 
 const SideMenuProperties = ({ node, menuOpen }) => {
@@ -58,7 +60,6 @@ const SideMenuProperties = ({ node, menuOpen }) => {
   );
   const [outputCores, setOutputCores] = useState(node && node.properties ? node.properties.cores : '');
   const [outputFlags, setOutputFlags] = useState(node && node.properties ? node.properties.flags : '');
-  // Определение порта, у которого меняем свойства
 
   // Свойства узлов и портов
   const properties = {
@@ -348,6 +349,19 @@ const SideMenuProperties = ({ node, menuOpen }) => {
                 <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
                 {openSubMenus[outputIndex] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
+              {node && node.type === 'basic/baseMode' ? (
+                <IconButton
+                  color="primary"
+                  aria-label="remove output"
+                  sx={{ p: 0 }}
+                  onClick={() =>
+                    node.setOutputDataType(outputIndex, output.type === 'number' ? LiteGraph.EVENT : 'number')
+                  }>
+                  <AutorenewOutlinedIcon />
+                </IconButton>
+              ) : (
+                <></>
+              )}
               <IconButton
                 color="primary"
                 aria-label="remove output"

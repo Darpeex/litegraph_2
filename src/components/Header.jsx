@@ -72,7 +72,7 @@ function Header({ graph }) {
       graph.configure(JSON.parse(data));
     }
   }
-  // Загрузить схему из localStorage
+  // Скачать схему
   function downloadGraph() {
     const data = graph.serialize();
     const jsonStr = JSON.stringify(data);
@@ -82,6 +82,10 @@ function Header({ graph }) {
     link.download = 'graph.json';
     link.click();
   }
+  // Открыть JSON файл
+  const handleOpenFile = () => {
+    // на перспективу - https://habr.com/ru/articles/790900/
+  };
 
   return (
     <AppBar position="fixed">
@@ -120,7 +124,16 @@ function Header({ graph }) {
               open={Boolean(isOpenFileFeatures)}
               onClose={handleCloseFileMenu}>
               {fileFeatures.map((feature) => (
-                <MenuItem key={feature} onClick={handleCloseFileMenu}>
+                <MenuItem
+                  key={feature}
+                  onClick={
+                    feature === 'Открыть файл'
+                      ? () => {
+                          handleOpenFile();
+                          handleCloseFileMenu();
+                        }
+                      : handleCloseFileMenu
+                  }>
                   <Typography textAlign="center">{feature}</Typography>
                 </MenuItem>
               ))}

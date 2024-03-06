@@ -4,8 +4,8 @@ import { LiteGraph } from 'litegraph.js';
 function TimerEvent() {
   this.addProperty('interval', 3000);
   this.addProperty('event', 'tick');
-  this.addInput('interval', 'number');
-  this.addOutput('on_tick', LiteGraph.EVENT);
+  this.addInput('Интервал', 'number');
+  this.addOutput('Выход', LiteGraph.EVENT); // on_tick
   this.time = 0;
   this.last_interval = 3000;
   this.triggered = false;

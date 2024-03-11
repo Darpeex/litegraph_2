@@ -22,7 +22,6 @@ import {
 function OutputsPorts({ node, toggle, setToggle }) {
   const [outputPorts, setOutputPorts] = useState([]); // массив портов
   const [outputCounter, setOutputCounter] = useState(0); // счётчик портов
-  const [openSubMenus, setOpenSubMenus] = useState([false, false]); // подменю
   const [outputTitlesArr, setOutputTitlesArr] = useState([]); // массив заголовков портов
   const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node && node.outputs ? node.outputs.workDir : ''); // путь к рабочей директории
   const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
@@ -66,13 +65,10 @@ function OutputsPorts({ node, toggle, setToggle }) {
     }
   }, [node]);
 
-  // Определяем открытое/закрытое подменю по индексу
-  const handleClick = (index) => {
-    setOpenSubMenus((prevOpenSubMenus) => {
-      const newOpenSubMenus = [...prevOpenSubMenus]; // создаем новую копию состояния массива
-      newOpenSubMenus[index] = !newOpenSubMenus[index]; // переключаем состояние конкретного подменю
-      return newOpenSubMenus;
-    });
+  // Определяем открытое/закрытое подменю
+  const handleToggleOpenProps = (output) => {
+    output.opened = !output.opened;
+    setToggle(!toggle);
   };
 
   // Добавить выходной порт
@@ -87,6 +83,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
       binaryFile: '',
       cores: '',
       flags: '',
+      opened: false,
     };
 
     node.addOutput(newOutput.name); // добавляем новый порт в node.outputs
@@ -98,7 +95,6 @@ function OutputsPorts({ node, toggle, setToggle }) {
     });
 
     setOutputPorts(updatedOutputs); // обновляем массив портов
-    setOpenSubMenus([...openSubMenus, false]); // false в openSubMenus для нового порта
     setToggle(!toggle);
   };
 
@@ -106,7 +102,6 @@ function OutputsPorts({ node, toggle, setToggle }) {
   const handleRemoveOutput = (outputIndex) => {
     node.removeOutput(outputIndex);
     setOutputPorts(outputPorts.filter((_, index) => index !== outputIndex)); // удаляем из массива портов
-    setOpenSubMenus(openSubMenus.filter((_, index) => index !== outputIndex)); // удаляем из openSubMenus
     setToggle(!toggle);
   };
 
@@ -147,9 +142,9 @@ function OutputsPorts({ node, toggle, setToggle }) {
         node.outputs.map((output, outputIndex) => (
           <Box key={outputIndex} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
             <Box key={outputIndex} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>
-              <ListItemButton sx={{ p: 0 }} onClick={() => handleClick(outputIndex)}>
+              <ListItemButton sx={{ p: 0 }} onClick={() => handleToggleOpenProps(output)}>
                 <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
-                {openSubMenus[outputIndex] ? <ExpandLess /> : <ExpandMore />}
+                {output.opened ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               {node && node.type === 'basic/baseMode' ? (
                 <IconButton
@@ -172,7 +167,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <Collapse in={openSubMenus[outputIndex]} timeout="auto" unmountOnExit>
+            <Collapse in={output.opened} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ pl: 2, width: '352px' }}>
                 {properties.map((prop, index) => (
                   <TextField

@@ -84,7 +84,28 @@ function Header({ graph }) {
   }
   // Открыть JSON файл
   const handleOpenFile = () => {
-    // на перспективу - https://habr.com/ru/articles/790900/
+    // создали элемент 'input' и присвоили полю тип 'file'
+    const input = document.createElement('input');
+    input.type = 'file';
+
+    input.click(); // открытие диалогового окна для выбора файла
+
+    // когда пользователь выбрал файл - 'onchange'
+    input.onchange = (e) => {
+      const file = e.target.files[0]; // выбранный файл со своими свойствами
+      const reader = new FileReader(); // объект c методами обработки данных
+
+      reader.readAsText(file); // прочитать содержимое файла как текст
+      reader.onload = function () {
+        // преобразовываем JSON и выводим график
+        graph.configure(JSON.parse(reader.result));
+        console.log(reader.result);
+      };
+      // если ошибка, сообщаем в консоли
+      reader.onerror = function () {
+        console.log(reader.error);
+      };
+    };
   };
 
   return (

@@ -1,13 +1,13 @@
 import SideMenuProperties from './SideMenuProperties';
 
-function Main({ selectedNode, isSideMenuPropertiesOpen, canvas }) {
+function Main({ canvas, selectedNode, isSideMenuPropertiesOpen }) {
   return (
     <main className="Main">
       <div className="page"></div>
       <SideMenuProperties
+        canvas={canvas}
         node={selectedNode ? selectedNode : null}
         menuOpen={isSideMenuPropertiesOpen}
-        canvas={canvas}
       />
     </main>
   );

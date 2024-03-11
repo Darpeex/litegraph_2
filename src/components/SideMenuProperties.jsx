@@ -27,7 +27,7 @@ import {
   AutorenewOutlined as AutorenewOutlinedIcon,
 } from '@mui/icons-material';
 
-const SideMenuProperties = ({ node, menuOpen, canvas }) => {
+const SideMenuProperties = ({ canvas, node, menuOpen }) => {
   const [outputPorts, setOutputPorts] = useState([]);
   const inputRef = useRef(null);
   // Ссылка на элемент ввода для каждого порта

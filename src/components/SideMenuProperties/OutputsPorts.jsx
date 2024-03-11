@@ -83,6 +83,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
       binaryFile: '',
       cores: '',
       flags: '',
+      type: 'number',
       opened: false,
     };
 

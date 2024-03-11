@@ -9,6 +9,7 @@ import {
   PlayArrow as PlayArrowIcon,
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
+  DeleteForever as DeleteForeverIcon,
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
@@ -71,6 +72,11 @@ function Header({ graph }) {
       graph.configure(JSON.parse(data));
     }
   }
+  // Очистить граф
+  function clearGraph() {
+    graph.clear();
+  }
+
   // Скачать схему
   function downloadGraph() {
     const data = graph.serialize();
@@ -175,6 +181,11 @@ function Header({ graph }) {
 
           {/* Сохранение, выгрузка в localStorage и скачивание JSON файла */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 5 }}>
+            <Tooltip title="Очистить схему">
+              <IconButton size="large" aria-label="Очистить схему" color="inherit" onClick={clearGraph}>
+                <DeleteForeverIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Сохранить схему">
               <IconButton size="large" aria-label="Сохранить схему" color="inherit" onClick={saveGraph}>
                 <CloudDownloadIcon />

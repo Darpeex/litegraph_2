@@ -18,21 +18,20 @@ import InputsPorts from './InputsPorts';
 import OutputsPorts from './OutputsPorts';
 
 const SideMenuProperties = ({ canvas, node, menuOpen }) => {
-  // Отрисовка портов при обновлении массивов node.inputs/outputs
-  const [toggle, setToggle] = useState(true);
-  // Состояния Свойств Узла
-  const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран');
+  const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
+  const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран'); // имя узла
   const [nodePathToWorkDir, setNodePathToWorkDir] = useState(
     node && node.properties ? node.properties.workDir : PATH_TO_DIR,
-  );
+  ); // путь к рабочей директории
+
   const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(
     node && node.properties ? node.properties.binaryFile : PATH_TO_FILE,
-  );
-  const [nodeCores, setNodeCores] = useState(node && node.properties ? node.properties.cores : '');
-  const [nodeFlags, setNodeFlags] = useState(node && node.properties ? node.properties.flags : '');
-  const [checkbox, setCheckbox] = useState(node && node.properties ? node.properties.checkbox : false);
+  ); // путь к бинарному файлу
+  const [nodeCores, setNodeCores] = useState(node && node.properties ? node.properties.cores : ''); // количество ядер
+  const [nodeFlags, setNodeFlags] = useState(node && node.properties ? node.properties.flags : ''); // флаги/аргументы
+  const [checkbox, setCheckbox] = useState(node && node.properties ? node.properties.checkbox : false); // чекбокс
 
-  // Свойства узлов и портов
+  // Свойства узла
   const nodeProperties = [
     { id: 'nodeTitle', label: 'Имя блока', type: 'string', setState: setNodeTitle, value: nodeTitle },
     {
@@ -53,7 +52,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen }) => {
     { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
   ];
 
-  // При открытии свойств нового узла, данные обновляются на сохраненные в узле
+  // При открытии свойств нового узла, данные обновляются на ранее сохраненные в нём
   useEffect(() => {
     if (node && node.properties) {
       setNodeTitle(node.title);
@@ -70,19 +69,19 @@ const SideMenuProperties = ({ canvas, node, menuOpen }) => {
     }
   }, [node]);
 
-  // Сохранение свойств узла и закрытие SideMenuProperties
+  // Обновление свойств узла при onBlur
   const handleChangeNodeProperties = () => {
-    // переименование блока в свойствах
     if (node) {
       node.getTitle = function () {
         node.title = nodeTitle;
         return nodeTitle;
-      };
+      }; // переименование блока в свойствах
       node.setProperty('workDir', nodePathToWorkDir);
       node.setProperty('binaryFile', nodePathToBinaryFile);
       node.setProperty('cores', nodeCores);
       node.setProperty('flags', nodeFlags);
       node.setProperty('checkbox', checkbox);
+      // изменение порядка выполнения
       if (checkbox === true) {
         node.order = 1;
       } else {

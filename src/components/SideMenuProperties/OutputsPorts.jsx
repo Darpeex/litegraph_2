@@ -20,16 +20,16 @@ import {
 } from '@mui/icons-material';
 
 function OutputsPorts({ node, toggle, setToggle }) {
-  const [outputPorts, setOutputPorts] = useState([]);
-  const [outputCounter, setOutputCounter] = useState(0);
-  const [openSubMenus, setOpenSubMenus] = useState([false, false]); // Состояние подменю
-  const [outputTitlesArr, setOutputTitlesArr] = useState([]);
-  const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node && node.outputs ? node.outputs.workDir : '');
+  const [outputPorts, setOutputPorts] = useState([]); // массив портов
+  const [outputCounter, setOutputCounter] = useState(0); // счётчик портов
+  const [openSubMenus, setOpenSubMenus] = useState([false, false]); // подменю
+  const [outputTitlesArr, setOutputTitlesArr] = useState([]); // массив заголовков портов
+  const [outputPathToWorkDir, setOutputPathToWorkDir] = useState(node && node.outputs ? node.outputs.workDir : ''); // путь к рабочей директории
   const [outputPathToBinaryFile, setOutputPathToBinaryFile] = useState(
     node && node.outputs ? node.outputs.binaryFile : '',
-  );
-  const [outputCores, setOutputCores] = useState(node && node.outputs ? node.outputs.cores : '');
-  const [outputFlags, setOutputFlags] = useState(node && node.outputs ? node.outputs.flags : '');
+  ); // путь к бинарному файлу
+  const [outputCores, setOutputCores] = useState(node && node.outputs ? node.outputs.cores : ''); // количество ядер
+  const [outputFlags, setOutputFlags] = useState(node && node.outputs ? node.outputs.flags : ''); // флаги
 
   const properties = [
     {
@@ -57,7 +57,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
     { id: 'flags', label: 'Аргументы/Флаги', type: 'string', setState: setOutputFlags, value: outputFlags },
   ];
 
-  // При открытии свойств нового узла, данные обновляются на сохраненные в узле
+  // При открытии свойств нового узла, данные обновляются на ранее сохраненные в нём
   useEffect(() => {
     if (node && node.outputs) {
       const outputsTitles = node.outputs.map((element) => element.name);
@@ -66,14 +66,11 @@ function OutputsPorts({ node, toggle, setToggle }) {
     }
   }, [node]);
 
-  // ВЫНЕСТИ ПОТОМ из SideMenu'шек в константу
-  // Обновляем обработчик, чтобы он принимал индекс нажатого подменю
+  // Определяем открытое/закрытое подменю по индексу
   const handleClick = (index) => {
     setOpenSubMenus((prevOpenSubMenus) => {
-      // Создаем новую копию состояния массива
-      const newOpenSubMenus = [...prevOpenSubMenus];
-      // Переключаем состояние конкретного подменю
-      newOpenSubMenus[index] = !newOpenSubMenus[index];
+      const newOpenSubMenus = [...prevOpenSubMenus]; // создаем новую копию состояния массива
+      newOpenSubMenus[index] = !newOpenSubMenus[index]; // переключаем состояние конкретного подменю
       return newOpenSubMenus;
     });
   };
@@ -82,7 +79,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
   const handleAddOutput = () => {
     const newOutputId = outputCounter + 1;
     setOutputCounter(newOutputId);
-
+    // свойства выходного порта
     const newOutput = {
       id: newOutputId,
       name: `Выход ${newOutputId}`,
@@ -91,39 +88,35 @@ function OutputsPorts({ node, toggle, setToggle }) {
       cores: '',
       flags: '',
     };
-    // Проверяем, существует ли узел node и свойство outputs, и если нет, инициализируем его как пустой массив
-    node.addOutput(newOutput.name);
-    // Добавляем новый порт в node.outputs
+
+    node.addOutput(newOutput.name); // добавляем новый порт в node.outputs
     const updatedOutputs = node.outputs.map((output) => {
       if (output.name === newOutput.name) {
-        Object.assign(output, newOutput);
+        Object.assign(output, newOutput); // добавляем свойства новому порту
       }
       return output;
     });
-    // Обновляем состояние outputPorts
-    setOutputPorts(updatedOutputs);
-    // Добавляем false в openSubMenus для нового порта
-    setOpenSubMenus([...openSubMenus, false]);
+
+    setOutputPorts(updatedOutputs); // обновляем массив портов
+    setOpenSubMenus([...openSubMenus, false]); // false в openSubMenus для нового порта
     setToggle(!toggle);
   };
 
   // Удалить выходной порт
   const handleRemoveOutput = (outputIndex) => {
     node.removeOutput(outputIndex);
-    // Обновляем состояние outputPorts
-    setOutputPorts(outputPorts.filter((_, index) => index !== outputIndex));
-    // Удаляем флаг для удаленного порта из openSubMenus
-    setOpenSubMenus(openSubMenus.filter((_, index) => index !== outputIndex));
+    setOutputPorts(outputPorts.filter((_, index) => index !== outputIndex)); // удаляем из массива портов
+    setOpenSubMenus(openSubMenus.filter((_, index) => index !== outputIndex)); // удаляем из openSubMenus
     setToggle(!toggle);
   };
+
   // Функция для обновления свойств конкретного выходного порта
   const handleOutputPropertyChange = (outputId, property, newValue) => {
     setOutputPorts((prevPorts) =>
       prevPorts.map((port) => {
         if (port.id === outputId) {
-          const updatedPort = { ...port, [property]: newValue };
-          // Обновляем свойство в node.outputs
-          const nodeOutput = node.outputs.find((output) => output.id === outputId);
+          const updatedPort = { ...port, [property]: newValue }; // обновляем свойство порта в нашем массиве
+          const nodeOutput = node.outputs.find((output) => output.id === outputId); // обнавляем свойство в node.outputs
           if (nodeOutput) {
             nodeOutput[property] = newValue;
           }
@@ -189,7 +182,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
                       const newValue = evt.target.value;
                       handleOutputPropertyChange(output.id, prop.id, newValue);
                     }}
-                    value={outputPorts.find((port) => port.id === output.id)?.[prop.id] || ''}
+                    value={outputPorts.find((port) => port.id === output.id)?.[prop.id] || ''} // ?. - защита от undefined
                     variant="standard"
                     sx={{ mt: 1, width: '100%' }}
                   />

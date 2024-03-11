@@ -119,9 +119,9 @@ function OutputsPorts({ node, toggle, setToggle }) {
           const nodeOutput = node.outputs.find((output) => output.id === outputId); // обнавляем свойство в node.outputs
           if (nodeOutput) {
             nodeOutput[property] = newValue;
-          }
+          } // возвращаем обновлённый порт
           return updatedPort;
-        }
+        } // возвращаем остальные порты
         return port;
       }),
     );

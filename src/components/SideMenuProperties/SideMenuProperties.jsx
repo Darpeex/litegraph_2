@@ -74,6 +74,9 @@ const SideMenuProperties = ({ canvas, node, menuOpen }) => {
     if (node) {
       node.getTitle = function () {
         node.title = nodeTitle;
+        // обновление размеров узла
+        const newSize = node.computeSize();
+        node.size = [newSize[0] * 1.1, newSize[1]];
         return nodeTitle;
       }; // переименование блока в свойствах
       node.setProperty('workDir', nodePathToWorkDir);

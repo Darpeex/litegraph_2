@@ -1,4 +1,4 @@
-import SideMenuProperties from './SideMenuProperties';
+import SideMenuProperties from './SideMenuProperties/SideMenuProperties';
 
 function Main({ canvas, selectedNode, isSideMenuPropertiesOpen }) {
   return (

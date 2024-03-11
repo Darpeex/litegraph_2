@@ -1,6 +1,6 @@
 import { LiteGraph } from 'litegraph.js';
-import React, { useEffect, useState, useRef } from 'react';
-import { PATH_TO_DIR, PATH_TO_FILE } from '../constants/constants';
+import React, { useEffect, useState } from 'react';
+import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 import {
   Box,
   List,
@@ -26,16 +26,12 @@ import {
   AddCircleOutline as AddCircleOutlineIcon,
   AutorenewOutlined as AutorenewOutlinedIcon,
 } from '@mui/icons-material';
+import InputsPorts from './InputsPorts';
 
 const SideMenuProperties = ({ canvas, node, menuOpen }) => {
   const [outputPorts, setOutputPorts] = useState([]);
-  const inputRef = useRef(null);
-  // Ссылка на элемент ввода для каждого порта
-  const [inputRefs, setInputRefs] = useState(node && node.inputs ? node.inputs.map(() => React.createRef()) : []);
   // Состояние каждого подменю
   const [openSubMenus, setOpenSubMenus] = useState([false, false]);
-  // Счётчики для портов
-  const [inputCounter, setInputCounter] = useState(0);
   const [outputCounter, setOutputCounter] = useState(0);
   // Отрисовка портов при обновлении массивов node.inputs/outputs
   const [toggle, setToggle] = useState(true);
@@ -167,31 +163,6 @@ const SideMenuProperties = ({ canvas, node, menuOpen }) => {
     return 'Ошибка';
   };
 
-  // Добавить входной порт
-  const handleAddInput = () => {
-    const newInputId = inputCounter + 1;
-    setInputCounter(newInputId);
-
-    node.addInput(`Вход ${newInputId}`);
-    // Обновляем массив ссылок, добавляя новую ссылку
-    setInputRefs((prevRefs) => [...prevRefs, React.createRef()]);
-    setToggle(!toggle);
-  };
-  // Удалить входной порт
-  const handleRemoveInput = (inputIndex) => {
-    node.removeInput(inputIndex);
-    setToggle(!toggle);
-  };
-  // Функция для обновления имени входного порта и установки фокуса
-  const handleInputNameChange = (input, newName) => {
-    input.name = newName;
-    // Установите фокус обратно на элемент ввода после его обновления
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-    setToggle(!toggle); // Принудительное обновление интерфейса
-  };
-
   // Добавить выходной порт
   const handleAddOutput = () => {
     const newOutputId = outputCounter + 1;
@@ -297,43 +268,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen }) => {
         </Box>
       </List>
       <Divider />
-      {/* Входные порты */}
-      <Box sx={{ display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
-        <Typography textAlign="center" sx={{ p: 1, pr: 0 }}>
-          Входные порты
-        </Typography>
-        <Tooltip title="Добавить входной порт">
-          <IconButton color="primary" aria-label="add input" onClick={handleAddInput}>
-            <AddCircleOutlineIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-      {node &&
-        node.inputs &&
-        node.inputs.length > 0 &&
-        node.inputs.map((input, index) => (
-          <Box key={index} sx={{ m: 1, display: { xs: 'none', md: 'flex' } }}>
-            <TextField
-              type="string"
-              onChange={(evt) => {
-                const newValue = evt.target.value;
-                handleInputNameChange(input, newValue, index);
-              }}
-              value={input.name}
-              variant="standard"
-              sx={{ flexGrow: 1, pr: 1 }}
-              InputProps={{ disableUnderline: true }}
-              inputRef={inputRefs[index]} // ссылка на элемент ввода
-            />
-            <IconButton
-              color="primary"
-              aria-label="remove input"
-              sx={{ p: 0 }}
-              onClick={() => handleRemoveInput(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        ))}
+      <InputsPorts node={node} toggle={toggle} setToggle={setToggle} /> {/* входные порты */}
       <Divider />
       {/* Выходные порты */}
       <Box sx={{ display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>

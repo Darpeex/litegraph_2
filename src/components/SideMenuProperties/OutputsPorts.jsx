@@ -112,7 +112,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
 
   // Функция для обновления свойств конкретного выходного порта
   const handleOutputPropertyChange = (outputId, property, newValue) => {
-    setOutputPorts((prevPorts) =>
+    setOutputPorts((prevPorts) => // перебераем уже существующие порты
       prevPorts.map((port) => {
         if (port.id === outputId) {
           const updatedPort = { ...port, [property]: newValue }; // обновляем свойство порта в нашем массиве

@@ -76,7 +76,7 @@ function App() {
   return (
     <div className="App">
       <Header graph={graph} />
-      <Main selectedNode={selectedNode} isSideMenuPropertiesOpen={isSideMenuPropertiesOpen} />
+      <Main selectedNode={selectedNode} isSideMenuPropertiesOpen={isSideMenuPropertiesOpen} canvas={canvas} />
     </div>
   );
 }

@@ -27,7 +27,7 @@ import {
   AutorenewOutlined as AutorenewOutlinedIcon,
 } from '@mui/icons-material';
 
-const SideMenuProperties = ({ node, menuOpen }) => {
+const SideMenuProperties = ({ node, menuOpen, canvas }) => {
   const [outputPorts, setOutputPorts] = useState([]);
   const inputRef = useRef(null);
   // Ссылка на элемент ввода для каждого порта
@@ -148,23 +148,23 @@ const SideMenuProperties = ({ node, menuOpen }) => {
   // Сохранение свойств узла и закрытие SideMenuProperties
   const handleChangeNodeProperties = () => {
     // переименование блока в свойствах
-    node.getTitle = function () {
-      if (node) {
+    if (node) {
+      node.getTitle = function () {
         node.title = nodeTitle;
         return nodeTitle;
+      };
+      node.setProperty('workDir', nodePathToWorkDir);
+      node.setProperty('binaryFile', nodePathToBinaryFile);
+      node.setProperty('cores', nodeCores);
+      node.setProperty('flags', nodeFlags);
+      node.setProperty('checkbox', checkbox);
+      if (checkbox === true) {
+        node.order = 1;
+      } else {
+        node.order;
       }
-      return 'Ошибка';
-    };
-    node.setProperty('workDir', nodePathToWorkDir);
-    node.setProperty('binaryFile', nodePathToBinaryFile);
-    node.setProperty('cores', nodeCores);
-    node.setProperty('flags', nodeFlags);
-    node.setProperty('checkbox', checkbox);
-    if (checkbox === true) {
-      node.order = 1;
-    } else {
-      node.order;
     }
+    return 'Ошибка';
   };
 
   // Добавить входной порт
@@ -255,6 +255,13 @@ const SideMenuProperties = ({ node, menuOpen }) => {
             <TuneIcon />
           </ListItemIcon>
           <ListItemText primary={`Свойства узла «${node ? node.title : 'узел не выбран'}»`} />
+          <IconButton
+            color="primary"
+            aria-label="remove input"
+            sx={{ p: 0 }}
+            onClick={() => canvas.deleteSelectedNodes()}>
+            <DeleteIcon />
+          </IconButton>
         </ListItem>
         <Divider />
         <Box

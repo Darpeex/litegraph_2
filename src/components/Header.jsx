@@ -6,15 +6,14 @@ import SideMenuFunctions from './SideMenuFunctions';
 import {
   Menu as MenuIcon,
   Stop as StopIcon,
-  Download as DownloadIcon,
   PlayArrow as PlayArrowIcon,
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar) - далее будет понятно, что с ними делать, пока оставляю
-const fileFeatures = ['Создать файл', 'Открыть файл', 'Сохранить как']; // возможности, выпадающие по кнопке Файла
+const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar)
+const fileFeatures = ['Открыть файл', 'Сохранить файл']; // возможности, выпадающие по кнопке Файла
 const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
 
 function Header({ graph }) {
@@ -147,14 +146,18 @@ function Header({ graph }) {
               {fileFeatures.map((feature) => (
                 <MenuItem
                   key={feature}
-                  onClick={
-                    feature === 'Открыть файл'
-                      ? () => {
-                          handleOpenFile();
-                          handleCloseFileMenu();
-                        }
-                      : handleCloseFileMenu
-                  }>
+                  onClick={() => {
+                    if (feature === 'Открыть файл') {
+                      handleOpenFile();
+                      handleCloseFileMenu();
+                    }
+                    if (feature === 'Сохранить файл') {
+                      downloadGraph();
+                      handleCloseFileMenu();
+                    } else {
+                      handleCloseFileMenu();
+                    }
+                  }}>
                   <Typography textAlign="center">{feature}</Typography>
                 </MenuItem>
               ))}
@@ -180,11 +183,6 @@ function Header({ graph }) {
             <Tooltip title="Загрузить схему">
               <IconButton size="large" aria-label="Загрузить схему" color="inherit" onClick={loadGraph}>
                 <CloudUploadIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Скачать JSON файл">
-              <IconButton size="large" aria-label="Скачать JSON файл" color="inherit" onClick={downloadGraph}>
-                <DownloadIcon />
               </IconButton>
             </Tooltip>
           </Box>

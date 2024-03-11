@@ -143,8 +143,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
         </Tooltip>
       </Box>
       {node &&
-        node.outputs &&
-        node.outputs.length > 0 &&
+        node.outputs?.length > 0 &&
         node.outputs.map((output, outputIndex) => (
           <Box key={outputIndex} sx={{ m: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
             <Box key={outputIndex} sx={{ m: 0, display: { xs: 'none', md: 'flex' } }}>

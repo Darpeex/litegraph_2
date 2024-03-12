@@ -6,6 +6,7 @@ import SideMenuFunctions from './SideMenuFunctions';
 import {
   Menu as MenuIcon,
   Stop as StopIcon,
+  OpenWith as OpenWithIcon,
   PlayArrow as PlayArrowIcon,
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
@@ -75,6 +76,10 @@ function Header({ graph }) {
   // Очистить граф
   function clearGraph() {
     graph.clear();
+  }
+  // Позиционирует график более удобочитаемым образом
+  function arrangeGraph() {
+    graph.arrange(100);
   }
 
   // Скачать схему
@@ -184,6 +189,11 @@ function Header({ graph }) {
             <Tooltip title="Очистить схему">
               <IconButton size="large" aria-label="Очистить схему" color="inherit" onClick={clearGraph}>
                 <DeleteForeverIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Упорядочить узлы">
+              <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={arrangeGraph}>
+                <OpenWithIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Сохранить схему">

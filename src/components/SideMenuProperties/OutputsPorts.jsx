@@ -124,9 +124,6 @@ function OutputsPorts({ node, toggle, setToggle }) {
           return port;
         }),
     );
-    // обновление размеров узла
-    const newSize = node.computeSize();
-    node.size = [newSize[0], newSize[1]];
   };
 
   return (

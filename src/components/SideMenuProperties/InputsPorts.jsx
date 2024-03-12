@@ -32,9 +32,6 @@ function InputsPorts({ node, toggle, setToggle }) {
       inputRef.current.focus();
     }
     setToggle(!toggle);
-    // обновление размеров узла
-    const newSize = node.computeSize();
-    node.size = [newSize[0], newSize[1]];
   };
 
   return (

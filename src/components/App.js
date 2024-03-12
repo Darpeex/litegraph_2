@@ -36,6 +36,7 @@ LGraphCanvas.prototype.processContextMenu = function () {
 function App() {
   const [isSideMenuPropertiesOpen, setSideMenuPropertiesOpen] = useState(false); // открыто ли боковое меню
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
+  const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
 
   // При выходе с выбранного узла - закрываем меню со свойствами
   canvas.onNodeDeselected = function () {
@@ -75,8 +76,14 @@ function App() {
 
   return (
     <div className="App">
-      <Header graph={graph} />
-      <Main canvas={canvas} selectedNode={selectedNode} isSideMenuPropertiesOpen={isSideMenuPropertiesOpen} />
+      <Header graph={graph} canvas={canvas} />
+      <Main
+        canvas={canvas}
+        toggle={toggle}
+        setToggle={setToggle}
+        selectedNode={selectedNode}
+        isSideMenuPropertiesOpen={isSideMenuPropertiesOpen}
+      />
     </div>
   );
 }

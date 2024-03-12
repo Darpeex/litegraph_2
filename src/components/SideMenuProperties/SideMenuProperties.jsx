@@ -17,8 +17,7 @@ import {
 import InputsPorts from './InputsPorts';
 import OutputsPorts from './OutputsPorts';
 
-const SideMenuProperties = ({ canvas, node, menuOpen }) => {
-  const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
+const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
   const [nodeTitle, setNodeTitle] = useState(node ? node.title : 'узел не выбран'); // имя узла
   const [nodePathToWorkDir, setNodePathToWorkDir] = useState(
     node && node.properties ? node.properties.workDir : PATH_TO_DIR,

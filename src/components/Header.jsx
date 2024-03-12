@@ -73,14 +73,6 @@ function Header({ graph }) {
       graph.configure(JSON.parse(data));
     }
   }
-  // Очистить граф
-  function clearGraph() {
-    graph.clear();
-  }
-  // Позиционирует график более удобочитаемым образом
-  function arrangeGraph() {
-    graph.arrange(100);
-  }
 
   // Скачать схему
   function downloadGraph() {
@@ -184,15 +176,15 @@ function Header({ graph }) {
             ))}
           </Box>
 
-          {/* Сохранение, выгрузка в localStorage и скачивание JSON файла */}
+          {/* Функциональные кнопки */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 5 }}>
             <Tooltip title="Очистить схему">
-              <IconButton size="large" aria-label="Очистить схему" color="inherit" onClick={clearGraph}>
+              <IconButton size="large" aria-label="Очистить схему" color="inherit" onClick={() => graph.clear()}>
                 <DeleteForeverIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Упорядочить узлы">
-              <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={arrangeGraph}>
+              <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={() => graph.arrange(100)}>
                 <OpenWithIcon />
               </IconButton>
             </Tooltip>

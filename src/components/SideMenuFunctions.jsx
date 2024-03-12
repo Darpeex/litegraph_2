@@ -17,7 +17,6 @@ import {
   handleMountDivisionBlock,
   handleMountTimerBlock,
   handleMountStartBlock,
-  handleMountStartModeBlock,
 } from './nodes/functions';
 
 const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
@@ -45,10 +44,7 @@ const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
     {
       name: 'Собственные блоки',
       icon: <AddCircleIcon />,
-      blocks: [
-        { name: 'Создать блок', handler: handleMountStartBlock },
-        { name: 'Модифицированный блок', handler: handleMountStartModeBlock },
-      ],
+      blocks: [{ name: 'Создать блок', handler: handleMountStartBlock }],
     },
   ];
 

@@ -48,9 +48,3 @@ export const handleMountStartBlock = () => {
   const node_base = LiteGraph.createNode('basic/base');
   graph.add(node_base);
 };
-
-// Стартовый блок тест
-export const handleMountStartModeBlock = () => {
-  const node_baseMode = LiteGraph.createNode('basic/baseMode');
-  graph.add(node_baseMode);
-};

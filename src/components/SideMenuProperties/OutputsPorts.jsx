@@ -147,7 +147,7 @@ function OutputsPorts({ node, toggle, setToggle }) {
                 <ListItemText primary={output.name} sx={{ maxWidth: '320px', overflowWrap: 'break-word' }} />
                 {output.opened ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              {node && node.type === 'basic/baseMode' ? (
+              {node && node.type === 'basic/base' ? (
                 <IconButton
                   color="primary"
                   aria-label="remove output"

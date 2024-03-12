@@ -5,9 +5,12 @@ import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
 //функция класса конструктора узла
 function StartNode() {
   //свойства
+  this.time = 0;
   this.title = 'Блок';
-  this.properties = { precision: 1 };
-  this.render_execution_order = true; // отслеживание порядка выполнения узлов в графе (true по умолчанию)
+  this.triggered = false;
+  this.last_interval = 3000;
+  this.addProperty('event', 'tick');
+  this.addProperty('interval', 3000);
   // свойства для SideMenuProperties
   this.addProperty('workDir', PATH_TO_DIR);
   this.addProperty('binaryFile', PATH_TO_FILE);
@@ -15,6 +18,51 @@ function StartNode() {
   this.addProperty('flags', '');
   this.addProperty('checkbox', false);
 }
+
+// Для теста таймера
+StartNode.on_color = '#F8D568';
+StartNode.off_color = '#222';
+
+StartNode.prototype.onStart = function () {
+  this.time = 0;
+};
+
+StartNode.prototype.onExecute = function () {
+  const dt = this.graph.elapsed_time * 1000; //in ms
+
+  const trigger = this.time == 0;
+
+  this.time += dt;
+  this.last_interval = Math.max(1, this.getInputOrProperty('interval') | 0);
+
+  // инородное
+  const inputInterval = this.getInputData(0);
+  if (inputInterval !== undefined && !isNaN(inputInterval)) {
+    this.last_interval = Math.max(1, inputInterval);
+  }
+
+  if (!trigger && (this.time < this.last_interval || isNaN(this.last_interval))) {
+    if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
+      this.setOutputData(1, false);
+    }
+    return;
+  }
+
+  this.triggered = true;
+  this.time = this.time % this.last_interval;
+  this.trigger(this.outputs.name, this.properties.event);
+  if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
+    this.setOutputData(1, true);
+  }
+};
+
+StartNode.prototype.onGetInputs = function () {
+  return [['interval', 'number']];
+};
+
+StartNode.prototype.onGetOutputs = function () {
+  return [['tick', 'boolean']];
+};
 
 // Отображение порядка выполнения
 StartNode.prototype.onDrawForeground = function (ctx) {

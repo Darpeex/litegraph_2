@@ -46,7 +46,7 @@ function Header({ graph }) {
     setSideMenuFunctionsOpen(true);
   };
 
-  const nodes = graph._nodes_in_order; // все функции графа
+  let nodes = graph._nodes_in_order; // все функции графа
   // Настройка запуска
   const startupSettings = () => {
     nodes.map((node) => {
@@ -61,6 +61,12 @@ function Header({ graph }) {
   let shouldExecute = true; // Переменная для контроля выполнения
   // Функция для выполнения узлов по порядку с периодическим изменением цвета
   const executeNodesInOrder = async (_, currentIndex = 0) => {
+    // Проверяем, обновлен ли массив nodes
+    if (nodes.length === 0) {
+      // Обновляем массив nodes, если он пуст
+      graph.change();
+      nodes = graph._nodes_in_order;
+    }
     if (!shouldExecute) {
       console.log('Закончили выполнение');
       return;

@@ -7,6 +7,7 @@ import {
   Menu as MenuIcon,
   Stop as StopIcon,
   OpenWith as OpenWithIcon,
+  SkipNext as SkipNextIcon,
   PlayArrow as PlayArrowIcon,
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
@@ -45,6 +46,64 @@ function Header({ graph }) {
     setSideMenuFunctionsOpen(true);
   };
 
+  const nodes = graph._nodes_in_order; // все функции графа
+  // Настройка запуска
+  const startupSettings = () => {
+    nodes.map((node) => {
+      if (node.order % 2 === 0) {
+        node.properties.interval = 3200; // интервал четных
+      } else {
+        node.properties.interval = 4200; // интервал нечетных
+      }
+    });
+  };
+
+  let shouldExecute = true; // Переменная для контроля выполнения
+  // Функция для выполнения узлов по порядку с периодическим изменением цвета
+  const executeNodesInOrder = async (_, currentIndex = 0) => {
+    if (!shouldExecute) {
+      console.log('Закончили выполнение');
+      return;
+    }
+    if (currentIndex >= nodes.length) {
+      nodes.map((node) => (node.boxcolor = '#222'));
+      console.log('выполнение окончено');
+      return; // Все узлы были выполнены
+    }
+    const node = nodes[currentIndex];
+    const nodeInterval = node.properties.interval;
+
+    const intervalId = setInterval(() => {
+      node.boxcolor = node.boxcolor === '#222' ? '#F8D568' : '#222';
+      console.log('цвет изменен');
+      graph.change();
+    }, 600); // изменяем каждую секунду
+
+    // Задержка перед следующим узлом
+    await new Promise((resolve) => setTimeout(resolve, nodeInterval));
+    // Очищаем интервал после завершения интервала выполнения узла
+    clearInterval(intervalId);
+    if (node && node.outputs) {
+      console.log(node && node.outputs && node.outputs.name !== undefined);
+      node.trigger(node.outputs.name, node.properties.event);
+      if (node.inputs && node.inputs.length > 1 && node.inputs[1]) {
+        node.setOutputData(1, true);
+      }
+    }
+    node.boxcolor = '#222';
+    graph.change();
+    // Выполняем следующий узел
+    await executeNodesInOrder(nodes, currentIndex + 1);
+  };
+  // Поэтапное выполнение узлов
+  const handleStepByStep = () => {
+    startupSettings();
+    shouldExecute = true; // Устанавливаем переменную в true перед запуском
+    executeNodesInOrder();
+    console.log(graph);
+    console.log(nodes);
+    console.log('Step');
+  };
   // Запустить выполнение
   const handleStart = () => {
     graph.start(); // Запускаем выполнение графика
@@ -57,6 +116,7 @@ function Header({ graph }) {
     graph.stop(); // Останавливаем выполнение графика
     console.log('Stop');
     setInProgress(false);
+    shouldExecute = false; // Устанавливаем переменную в false для остановки
     LGraph.status = LGraph.STATUS_STOPPED; // 1
   };
 
@@ -203,6 +263,11 @@ function Header({ graph }) {
           {/* Запуск и Остановка задачи */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
+            <Tooltip title="Запуск по шагам">
+              <IconButton size="large" aria-label="Запуск по шагам" color="inherit" onClick={handleStepByStep}>
+                <SkipNextIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Запуск задачи">
               <IconButton size="large" aria-label="Запуск задачи" color="inherit" onClick={handleStart}>
                 <PlayArrowIcon sx={{ color: inProgress ? lightGreen[500] : '' }} />

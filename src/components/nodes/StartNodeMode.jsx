@@ -17,24 +17,27 @@ function StartNodeMode() {
   this.addProperty('cores', '');
   this.addProperty('flags', '');
   this.addProperty('checkbox', false);
+  // // виджеты
+  // this.widget = this.addWidget('number', 'Время(мс)', this.last_interval, 'interval');
+  // this.widgets_up = true;
 }
 
 // Для теста таймера
-StartNodeMode.on_color = '#AAA';
+StartNodeMode.on_color = '#F8D568';
 StartNodeMode.off_color = '#222';
 
 StartNodeMode.prototype.onStart = function () {
   this.time = 0;
 };
 
-StartNodeMode.prototype.getTitle = function () {
-  return this.title + ' ' + this.last_interval.toString() + 'мс';
-};
+// StartNodeMode.prototype.getTitle = function () {
+//   return this.title + ' ' + this.last_interval.toString() + 'мс';
+// };
 
-StartNodeMode.prototype.onDrawBackground = function () {
-  this.boxcolor = this.triggered ? StartNodeMode.on_color : StartNodeMode.off_color;
-  this.triggered = false;
-};
+// StartNodeMode.prototype.onDrawBackground = function () {
+//   this.boxcolor = this.triggered ? StartNodeMode.on_color : StartNodeMode.off_color;
+//   this.triggered = false;
+// };
 
 StartNodeMode.prototype.onExecute = function () {
   const dt = this.graph.elapsed_time * 1000; //in ms

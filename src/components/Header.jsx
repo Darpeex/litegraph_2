@@ -25,6 +25,8 @@ function Header({ graph, canvas }) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
   const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
+  let shouldExecute = true; // переменная для контроля выполнения
+  let nodes = graph._nodes_in_order; // все узлы графа
 
   // Открыть, закрыть список возможностей Профиля
   const handleOpenUserMenu = (event) => {
@@ -47,20 +49,7 @@ function Header({ graph, canvas }) {
     setSideMenuFunctionsOpen(true);
   };
 
-  let nodes = graph._nodes_in_order; // все функции графа
-  // Настройка запуска
-  const startupSettings = () => {
-    nodes.map((node) => {
-      if (node.order % 2 === 0) {
-        node.properties.interval = 3200; // интервал четных
-      } else {
-        node.properties.interval = 4200; // интервал нечетных
-      }
-    });
-  };
-
-  let shouldExecute = true; // Переменная для контроля выполнения
-  // Функция для выполнения узлов по порядку с периодическим изменением цвета
+  // Выполнение узлов поочереди с анимациями
   const executeNodesInOrder = async (_, currentIndex = 0) => {
     if (nodes.length === 0) {
       graph.change();
@@ -68,38 +57,37 @@ function Header({ graph, canvas }) {
     } // обновляем массив nodes, если он пуст
     if (!shouldExecute) {
       return;
-    }
+    } // если переменная false - останавливаем
     if (currentIndex >= nodes.length) {
       nodes.map((node) => (node.boxcolor = '#222'));
-      return; // все узлы выполнены
-    }
+      return;
+    } // когда все узлы выполнены
     const node = nodes[currentIndex];
     const nodeInterval = node.properties.interval;
 
     const intervalId = setInterval(() => {
       node.boxcolor = node.boxcolor === '#222' ? '#F8D568' : '#222';
       console.log('цвет изменён');
-      graph.change();
+      graph.change(); // обновляем, чтобы отобразилось изменение цвета
     }, 600); // период изменения в мс
 
     // Задержка перед следующим узлом
     await new Promise((resolve) => setTimeout(resolve, nodeInterval));
-    // Очищаем интервал после завершения интервала выполнения узла
-    clearInterval(intervalId);
+    clearInterval(intervalId); // очищаем интервал после выполнения узла
     if (node && node.outputs) {
       node.trigger(node.outputs.name, node.properties.event);
       if (node.inputs && node.inputs.length > 1 && node.inputs[1]) {
         node.setOutputData(1, true);
       }
-    }
-    node.boxcolor = '#222';
-    graph.change();
+    } // на выходе EVENT срабатывает trigger анимируя связь
+    node.boxcolor = '#222'; // сбрасываем цвет
+    graph.change(); // обновляем график
     // Выполняем следующий узел
     await executeNodesInOrder(nodes, currentIndex + 1);
   };
+
   // Поэтапное выполнение узлов
   const handleStepByStep = () => {
-    startupSettings();
     shouldExecute = true; // Устанавливаем переменную в true перед запуском
     executeNodesInOrder();
     console.log('Step');
@@ -151,7 +139,6 @@ function Header({ graph, canvas }) {
     input.type = 'file';
 
     input.click(); // открытие диалогового окна для выбора файла
-
     // когда пользователь выбрал файл - 'onchange'
     input.onchange = (e) => {
       const file = e.target.files[0]; // выбранный файл со своими свойствами
@@ -161,7 +148,6 @@ function Header({ graph, canvas }) {
       reader.onload = function () {
         // преобразовываем JSON и выводим график
         graph.configure(JSON.parse(reader.result));
-        console.log(reader.result);
       };
       // если ошибка, сообщаем в консоли
       reader.onerror = function () {
@@ -255,7 +241,7 @@ function Header({ graph, canvas }) {
                 color="inherit"
                 onClick={() => {
                   canvas.ds.offset[0] = 0;
-                  canvas.ds.offset[1] = 0 + 64;
+                  canvas.ds.offset[1] = 0;
                   canvas.ds.scale = 1;
                   graph.change();
                 }}>

@@ -12,6 +12,7 @@ import {
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
   DeleteForever as DeleteForeverIcon,
+  FilterCenterFocus as FilterCenterFocusIcon,
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
@@ -19,7 +20,7 @@ const options = ['Настройки', 'Терминал']; // опции вер
 const fileFeatures = ['Открыть файл', 'Сохранить файл']; // возможности, выпадающие по кнопке Файла
 const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
 
-function Header({ graph }) {
+function Header({ graph, canvas }) {
   const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
@@ -61,36 +62,31 @@ function Header({ graph }) {
   let shouldExecute = true; // Переменная для контроля выполнения
   // Функция для выполнения узлов по порядку с периодическим изменением цвета
   const executeNodesInOrder = async (_, currentIndex = 0) => {
-    // Проверяем, обновлен ли массив nodes
     if (nodes.length === 0) {
-      // Обновляем массив nodes, если он пуст
       graph.change();
       nodes = graph._nodes_in_order;
-    }
+    } // обновляем массив nodes, если он пуст
     if (!shouldExecute) {
-      console.log('Закончили выполнение');
       return;
     }
     if (currentIndex >= nodes.length) {
       nodes.map((node) => (node.boxcolor = '#222'));
-      console.log('выполнение окончено');
-      return; // Все узлы были выполнены
+      return; // все узлы выполнены
     }
     const node = nodes[currentIndex];
     const nodeInterval = node.properties.interval;
 
     const intervalId = setInterval(() => {
       node.boxcolor = node.boxcolor === '#222' ? '#F8D568' : '#222';
-      console.log('цвет изменен');
+      console.log('цвет изменён');
       graph.change();
-    }, 600); // изменяем каждую секунду
+    }, 600); // период изменения в мс
 
     // Задержка перед следующим узлом
     await new Promise((resolve) => setTimeout(resolve, nodeInterval));
     // Очищаем интервал после завершения интервала выполнения узла
     clearInterval(intervalId);
     if (node && node.outputs) {
-      console.log(node && node.outputs && node.outputs.name !== undefined);
       node.trigger(node.outputs.name, node.properties.event);
       if (node.inputs && node.inputs.length > 1 && node.inputs[1]) {
         node.setOutputData(1, true);
@@ -106,8 +102,6 @@ function Header({ graph }) {
     startupSettings();
     shouldExecute = true; // Устанавливаем переменную в true перед запуском
     executeNodesInOrder();
-    console.log(graph);
-    console.log(nodes);
     console.log('Step');
   };
   // Запустить выполнение
@@ -252,6 +246,20 @@ function Header({ graph }) {
             <Tooltip title="Упорядочить узлы">
               <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={() => graph.arrange(100)}>
                 <OpenWithIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Фокус на центр">
+              <IconButton
+                size="large"
+                aria-label="Фокус на центр"
+                color="inherit"
+                onClick={() => {
+                  canvas.ds.offset[0] = 0;
+                  canvas.ds.offset[1] = 0 + 64;
+                  canvas.ds.scale = 1;
+                  graph.change();
+                }}>
+                <FilterCenterFocusIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Сохранить схему">

@@ -75,7 +75,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header graph={graph} />
+      <Header graph={graph} canvas={canvas} />
       <Main
         canvas={canvas}
         toggle={toggle}

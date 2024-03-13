@@ -61,7 +61,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       setNodePathToBinaryFile(node.properties.binaryFile);
       setNodeCores(node.properties.cores);
       setNodeFlags(node.properties.flags);
-      setNodeInterval(node.properties.interval);
+      setNodeInterval(node.last_interval ? node.last_interval : node.properties.interval);
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
         node.order = 1;

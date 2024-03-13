@@ -26,6 +26,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
   const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(
     node && node.properties ? node.properties.binaryFile : PATH_TO_FILE,
   ); // путь к бинарному файлу
+  const [nodeInterval, setNodeInterval] = useState(node && node.properties ? node.properties.interval : ''); // интервал
   const [nodeCores, setNodeCores] = useState(node && node.properties ? node.properties.cores : ''); // количество ядер
   const [nodeFlags, setNodeFlags] = useState(node && node.properties ? node.properties.flags : ''); // флаги/аргументы
   const [checkbox, setCheckbox] = useState(node && node.properties ? node.properties.checkbox : false); // чекбокс
@@ -49,6 +50,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
     },
     { id: 'nodeCores', label: 'Количество ядер', type: 'number', setState: setNodeCores, value: nodeCores },
     { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
+    { id: 'nodeInterval', label: 'Время выполнения', type: 'number', setState: setNodeInterval, value: nodeInterval },
   ];
 
   // При открытии свойств нового узла, данные обновляются на ранее сохраненные в нём
@@ -59,6 +61,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       setNodePathToBinaryFile(node.properties.binaryFile);
       setNodeCores(node.properties.cores);
       setNodeFlags(node.properties.flags);
+      setNodeInterval(node.properties.interval);
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
         node.order = 1;
@@ -80,6 +83,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       }; // переименование блока в свойствах
       node.setProperty('workDir', nodePathToWorkDir);
       node.setProperty('binaryFile', nodePathToBinaryFile);
+      node.setProperty('interval', nodeInterval);
       node.setProperty('cores', nodeCores);
       node.setProperty('flags', nodeFlags);
       node.setProperty('checkbox', checkbox);

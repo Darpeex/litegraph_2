@@ -19,6 +19,10 @@ const nodeStyles = () => {
   LiteGraph.NODE_TEXT_SIZE = 14; // Размер текста в узлах (14)
   LiteGraph.NODE_SUBTEXT_SIZE = 12; // Размер подтекста в узлах (12)
   LiteGraph.DEFAULT_GROUP_FONT = 24; // Размер шрифта группы узлов (24)
+
+  LiteGraph.LINK_COLOR = '#f00'; // Пока не понял (красный)
+  LiteGraph.EVENT_LINK_COLOR = '#F8D568'; // Соединение события (желтый)
+  LiteGraph.CONNECTING_LINK_COLOR = '#00FA9A'; // Соединение блоков (зеленый)
 };
 
 export default nodeStyles;

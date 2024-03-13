@@ -1,5 +1,5 @@
 import { LiteGraph } from 'litegraph.js';
-import { graph } from '../Main';
+import { graph } from '../App';
 
 // Задаётся постоянное число
 export const handleMountConstantNumberBlock = () => {
@@ -35,4 +35,16 @@ export const handleMountMultiplicationBlock = () => {
 export const handleMountDivisionBlock = () => {
   const node_division = LiteGraph.createNode('basic/division');
   graph.add(node_division);
+};
+
+// Таймер
+export const handleMountTimerBlock = () => {
+  const node_timer = LiteGraph.createNode('basic/timer');
+  graph.add(node_timer);
+};
+
+// Стартовый блок
+export const handleMountStartBlock = () => {
+  const node_base = LiteGraph.createNode('basic/base');
+  graph.add(node_base);
 };

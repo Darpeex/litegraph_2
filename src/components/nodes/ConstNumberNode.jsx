@@ -14,6 +14,7 @@ function ConstantNumber() {
   this.addProperty('binaryFile', PATH_TO_FILE);
   this.addProperty('cores', '');
   this.addProperty('flags', '');
+  this.addProperty('interval', 0);
   this.addProperty('checkbox', false);
   // определение некоторых стилей
   ConstantNumber.title_color = '#37474f'; // Цвет заголовка

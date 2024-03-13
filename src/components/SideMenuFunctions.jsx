@@ -6,6 +6,7 @@ import {
   Settings as SettingsIcon,
   Functions as FunctionsIcon,
   Calculate as CalculateIcon,
+  AddCircle as AddCircleIcon,
 } from '@mui/icons-material';
 import {
   handleMountConstantNumberBlock,
@@ -14,6 +15,8 @@ import {
   handleMountSubstractionBlock,
   handleMountMultiplicationBlock,
   handleMountDivisionBlock,
+  handleMountTimerBlock,
+  handleMountStartBlock,
 } from './nodes/functions';
 
 const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
@@ -33,9 +36,15 @@ const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
       name: 'Программные блоки',
       icon: <CalculateIcon />,
       blocks: [
-        { name: 'Задать число', handler: handleMountConstantNumberBlock },
-        { name: 'Вывести результат', handler: handleMountResultBlock },
+        { name: 'Константа', handler: handleMountConstantNumberBlock },
+        { name: 'Результат', handler: handleMountResultBlock },
+        { name: 'Таймер', handler: handleMountTimerBlock },
       ],
+    },
+    {
+      name: 'Собственные блоки',
+      icon: <AddCircleIcon />,
+      blocks: [{ name: 'Создать блок', handler: handleMountStartBlock }],
     },
   ];
 

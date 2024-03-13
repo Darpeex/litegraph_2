@@ -10,12 +10,12 @@ function StartNode() {
   this.triggered = false;
   this.last_interval = 3000;
   this.addProperty('event', 'tick');
-  this.addProperty('interval', 3000);
   // свойства для SideMenuProperties
   this.addProperty('workDir', PATH_TO_DIR);
   this.addProperty('binaryFile', PATH_TO_FILE);
   this.addProperty('cores', '');
   this.addProperty('flags', '');
+  this.addProperty('interval', 0);
   this.addProperty('checkbox', false);
 }
 

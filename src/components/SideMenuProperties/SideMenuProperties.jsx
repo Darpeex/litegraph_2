@@ -67,7 +67,13 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       setNodePathToBinaryFile(node.properties.binaryFile);
       setNodeCores(node.properties.cores);
       setNodeFlags(node.properties.flags);
-      setNodeInterval(node.properties.interval);
+      if (node.inputs && node.last_interval && node.inputs.some((input) => input.link !== null)) {
+        node.properties.interval = node.last_interval;
+        setNodeInterval(node.last_interval);
+      } // для блоков с входом и свойством last_interval, если хотя бы 1 вход подключен
+      else {
+        setNodeInterval(node.properties.interval);
+      }
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
         node.order = 1;
@@ -90,6 +96,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       node.setProperty('workDir', nodePathToWorkDir);
       node.setProperty('binaryFile', nodePathToBinaryFile);
       node.setProperty('interval', nodeInterval);
+      node.last_interval = node.properties.interval;
       node.setProperty('cores', nodeCores);
       node.setProperty('flags', nodeFlags);
       node.setProperty('checkbox', checkbox);

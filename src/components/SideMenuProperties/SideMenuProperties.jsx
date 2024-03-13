@@ -50,7 +50,13 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
     },
     { id: 'nodeCores', label: 'Количество ядер', type: 'number', setState: setNodeCores, value: nodeCores },
     { id: 'nodeFlags', label: 'Аргументы/Флаги', type: 'string', setState: setNodeFlags, value: nodeFlags },
-    { id: 'nodeInterval', label: 'Время выполнения', type: 'number', setState: setNodeInterval, value: nodeInterval },
+    {
+      id: 'nodeInterval',
+      label: 'Время выполнения (мс)',
+      type: 'number',
+      setState: setNodeInterval,
+      value: nodeInterval,
+    },
   ];
 
   // При открытии свойств нового узла, данные обновляются на ранее сохраненные в нём
@@ -61,7 +67,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
       setNodePathToBinaryFile(node.properties.binaryFile);
       setNodeCores(node.properties.cores);
       setNodeFlags(node.properties.flags);
-      setNodeInterval(node.last_interval ? node.last_interval : node.properties.interval);
+      setNodeInterval(node.properties.interval);
       setCheckbox(node.properties.checkbox);
       if (node.properties.checkbox === true) {
         node.order = 1;

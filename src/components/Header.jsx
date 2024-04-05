@@ -23,7 +23,7 @@ function Header({ graph, canvas, onNodeDeselected }) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
   let shouldExecute = true; // переменная для контроля выполнения
-  let nodes = graph._nodes_in_order; // все узлы графа
+  let nodes = graph._nodes_in_order; // все блоки графа
 
   // Открыть, закрыть список возможностей Файла
   const handleOpenFileMenu = (event) => {
@@ -45,7 +45,7 @@ function Header({ graph, canvas, onNodeDeselected }) {
     if (currentIndex >= nodes.length) {
       nodes.map((node) => (node.boxcolor = '#222'));
       return;
-    } // когда все узлы выполнены
+    } // когда все блоки выполнены
     const node = nodes[currentIndex];
     const nodeInterval = node.properties.interval;
 
@@ -220,8 +220,12 @@ function Header({ graph, canvas, onNodeDeselected }) {
                 <CloudUploadIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Упорядочить узлы">
-              <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={() => graph.arrange(100)}>
+            <Tooltip title="Упорядочить блоки">
+              <IconButton
+                size="large"
+                aria-label="Упорядочить блоки"
+                color="inherit"
+                onClick={() => graph.arrange(100)}>
                 <OpenWithIcon />
               </IconButton>
             </Tooltip>

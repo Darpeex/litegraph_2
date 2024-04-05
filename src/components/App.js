@@ -37,11 +37,13 @@ function App() {
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
   const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
 
-  // При выходе с выбранного узла - закрываем меню со свойствами
-  canvas.onNodeDeselected = function () {
+  // Закрываем меню со свойствами
+  const onNodeDeselected = () => {
     setSideMenuPropertiesOpen(false);
     setSelectedNode(null); // стираем введенные данные в поля выбранного узла
   };
+  // При выходе с выбранного узла - закрываем меню со свойствами
+  canvas.onNodeDeselected = onNodeDeselected;
 
   // Передача свойств выбранного узла в SideBar
   useEffect(() => {
@@ -75,7 +77,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header graph={graph} canvas={canvas} />
+      <Header graph={graph} canvas={canvas} onNodeDeselected={onNodeDeselected} />
       <Main
         canvas={canvas}
         toggle={toggle}

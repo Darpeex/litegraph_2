@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar)
+const options = ['Настройки']; // опции верхней панели (AppBar)
 const fileFeatures = ['Открыть файл', 'Сохранить файл']; // возможности, выпадающие по кнопке Файла
 const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
 
@@ -278,36 +278,6 @@ function Header({ graph, canvas }) {
                 <StopIcon />
               </IconButton>
             </Tooltip>
-          </Box>
-
-          {/* Кнопка профиля */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Открыть возможности">
-              <Button color="inherit" variant="outlined" onClick={handleOpenUserMenu}>
-                Профиль
-              </Button>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={isOpenUserFeatures}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(isOpenUserFeatures)}
-              onClose={handleCloseUserMenu}>
-              {accauntFeatures.map((feature) => (
-                <MenuItem key={feature} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{feature}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>

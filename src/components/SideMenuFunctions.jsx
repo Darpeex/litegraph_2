@@ -22,25 +22,25 @@ import {
 const SideMenuFunctions = ({ menuOpen, closeMenu }) => {
   // Инструменты - раскрывающиеся списки с кнопками вызовов блоков
   const tools = [
-    // {
-    //   name: 'Функциональные блоки',
-    //   icon: <FunctionsIcon />,
-    //   blocks: [
-    //     { name: 'Сложение', handler: handleMountAdditionalBlock },
-    //     { name: 'Вычитание', handler: handleMountSubstractionBlock },
-    //     { name: 'Умножение', handler: handleMountMultiplicationBlock },
-    //     { name: 'Деление', handler: handleMountDivisionBlock },
-    //   ],
-    // },
-    // {
-    //   name: 'Программные блоки',
-    //   icon: <CalculateIcon />,
-    //   blocks: [
-    //     { name: 'Константа', handler: handleMountConstantNumberBlock },
-    //     { name: 'Результат', handler: handleMountResultBlock },
-    //     { name: 'Таймер', handler: handleMountTimerBlock },
-    //   ],
-    // },
+    {
+      name: 'Функциональные блоки',
+      icon: <FunctionsIcon />,
+      blocks: [
+        { name: 'Сложение', handler: handleMountAdditionalBlock },
+        { name: 'Вычитание', handler: handleMountSubstractionBlock },
+        { name: 'Умножение', handler: handleMountMultiplicationBlock },
+        { name: 'Деление', handler: handleMountDivisionBlock },
+      ],
+    },
+    {
+      name: 'Программные блоки',
+      icon: <CalculateIcon />,
+      blocks: [
+        { name: 'Константа', handler: handleMountConstantNumberBlock },
+        { name: 'Результат', handler: handleMountResultBlock },
+        { name: 'Таймер', handler: handleMountTimerBlock },
+      ],
+    },
     {
       name: 'Собственные блоки',
       icon: <AddCircleIcon />,

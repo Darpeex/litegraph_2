@@ -54,6 +54,14 @@ StartNode.prototype.onExecute = function () {
   if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
     this.setOutputData(1, true);
   }
+  // this.outputs.map((output, index) => {
+  //   if (output.type === -1) {
+  //     this.setOutputData(1, false);
+  //   }
+  //   if (output.type === 'number') {
+  //     this.setOutputData(index, this.getInputOrProperty('interval') | 0);
+  //   }
+  // });
 };
 
 StartNode.prototype.onGetInputs = function () {

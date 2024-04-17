@@ -3,37 +3,34 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-  ],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [".eslintrc.{js,cjs, jsx}"],
+      files: ['.eslintrc.{js,cjs, jsx}'],
       parserOptions: {
-        sourceType: "script",
+        sourceType: 'script',
       },
     },
   ],
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
-  plugins: ["react"],
+  plugins: ['react'],
   rules: {
-    "no-var": "error",
-    "prefer-const": "warn",
-    "no-unused-vars": "warn",
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-    "prettier/prettier": [
-      "warn",
+    'no-var': 'error',
+    'prefer-const': 'warn',
+    'no-unused-vars': 'warn',
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    'no-inline-comments': 'off',
+    'prettier/prettier': [
+      'warn',
       {
-        endOfLine: "auto",
+        endOfLine: 'auto',
       },
     ],
   },

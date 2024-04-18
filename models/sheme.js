@@ -2,30 +2,30 @@ const mongoose = require('mongoose'); // нужна для создании сх
 const validator = require('validator'); // библиотека для валидации данных
 
 // Создаём схему и задаём её поля
-const movieSchema = new mongoose.Schema(
+const shemeSchema = new mongoose.Schema(
   {
-    country: { // страна создания фильма
+    country: { // страна создания схемы
       type: String,
       // при не соответствии условиям в [] - выдаются ошибки
       required: [true, 'Поле "country" должно быть заполнено'],
     },
-    director: { // режиссёр фильма
+    director: { // режиссёр схемыа
       type: String,
       required: [true, 'Поле "director" должно быть заполнено'],
     },
-    duration: { // длительность фильма
+    duration: { // длительность схемыа
       type: Number,
       required: [true, 'Поле "duration" должно быть заполнено'],
     },
-    year: { // год выпуска фильма
+    year: { // год выпуска схемыа
       type: String,
       required: [true, 'Поле "year" должно быть заполнено'],
     },
-    description: { // описание фильма
+    description: { // описание схемыа
       type: String,
       required: [true, 'Поле "description" должно быть заполнено'],
     },
-    image: { // ссылка на постер к фильму
+    image: { // ссылка на постер к схемыу
       type: String,
       required: [true, 'Поле "image" должно быть заполнено'],
       validate: { // проверка на соответствие url
@@ -33,7 +33,7 @@ const movieSchema = new mongoose.Schema(
         message: 'Некорректный URL',
       },
     },
-    trailerLink: { // ссылка на трейлер фильма
+    trailerLink: { // ссылка на трейлер схемыа
       type: String,
       required: [true, 'Поле "trailerLink" должно быть заполнено'],
       validate: { // проверка на соответствие url
@@ -41,7 +41,7 @@ const movieSchema = new mongoose.Schema(
         message: 'Некорректный URL',
       },
     },
-    thumbnail: { // миниатюрное изображение постера к фильму
+    thumbnail: { // миниатюрное изображение постера к схемыу
       type: String,
       required: [true, 'Поле "thumbnail" должно быть заполнено'],
       validate: { // проверка на соответствие url
@@ -49,20 +49,20 @@ const movieSchema = new mongoose.Schema(
         message: 'Некорректный URL',
       },
     },
-    owner: { // _id пользователя, который сохранил фильм.
+    owner: { // _id пользователя, который сохранил схемы.
       type: mongoose.Schema.Types.ObjectId, // тип данных для работы с идентификаторами(ObjectId)
       required: [true, 'Поле "owner" должно быть заполнено'],
       ref: 'User',
     },
-    movieId: { // id фильма, который содержится в ответе сервиса MoviesExplorer
+    shemeId: { // id схемы, который содержится в ответе сервиса shemesExplorer
       type: Number,
-      required: [true, 'Поле "movieId" должно быть заполнено'],
+      required: [true, 'Поле "shemeId" должно быть заполнено'],
     },
-    nameRU: { // название фильма на русском языке
+    nameRU: { // название схемы на русском языке
       type: String,
       required: [true, 'Поле "nameRU" должно быть заполнено'],
     },
-    nameEN: { // название фильма на английском языке
+    nameEN: { // название схемы на английском языке
       type: String,
       required: [true, 'Поле "nameEN" должно быть заполнено'],
     },
@@ -70,5 +70,5 @@ const movieSchema = new mongoose.Schema(
   { versionKey: false }, // убирает поле '__v' из ответа
 );
 
-const Movie = mongoose.model('movie', movieSchema); // создание модели
-module.exports = Movie; // экспорт модели
+const Scheme = mongoose.model('sheme', shemeSchema); // создание модели
+module.exports = Scheme; // экспорт модели

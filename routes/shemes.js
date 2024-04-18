@@ -4,8 +4,8 @@ const { getMovies, createMovie, deleteMovie } = require('../controllers/movies')
 
 const RegExp = /^(http|https):\/\/(www\.)?[a-zA-Z0-9\--._~:/?#[\]@!$&'()*+,;=]+#?$/;
 
-router.get('/movies', getMovies); // возвращает все сохранённые пользователем фильмы
-router.post('/movies', celebrate({ // создаёт фильм
+router.get('/movies', getMovies); // возвращает все схемы
+router.post('/movies', celebrate({ // создаёт схему
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -20,7 +20,7 @@ router.post('/movies', celebrate({ // создаёт фильм
     movieId: Joi.number().integer().required(),
   }),
 }), createMovie);
-router.delete('/movies/:movieId', celebrate({ // удаляет фильм по идентификатору
+router.delete('/movies/:movieId', celebrate({ // удаляет схему по идентификатору
   params: Joi.object().keys({ // проверяет req.params на соответсвие
     movieId: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F
   }),

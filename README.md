@@ -1,5 +1,5 @@
-# movies-explorer-api
+# litegraph-api
 
-Frontend domain: https://diploma.darpeex.nomoredomainsrocks.ru/
+Frontend domain: https://localhost:3000
 
-Backend domain: https://api.diploma.darpeex.nomoredomainsrocks.ru/
+Backend domain: mongodb://localhost:27017

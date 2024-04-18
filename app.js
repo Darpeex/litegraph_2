@@ -11,32 +11,16 @@ const NotFoundError = require('./errors/not-found-err'); // экземпляр �
 const { requestLogger, errorLogger } = require('./middlewares/logger'); // логгер
 const errorHandler = require('./middlewares/error-handler'); // мидлвар для централизованной обработки ошибок
 
-// контроллеры для создания пользователя, аутентификации, авторизации и выхода
-const { createUser, login } = require('./controllers/users');
-const { logout } = require('./middlewares/logout');
-const auth = require('./middlewares/auth');
-
-// маршруты для пользователей и карточек:
-const userRouter = require('./routes/users');
-const movieRouter = require('./routes/movies');
-
-// валидаторы для роутов
-const { signupValidator } = require('./validators/signup-validator');
-const { signinValidator } = require('./validators/signin-validator');
+// маршрут для схем:
+const schemeRouter = require('./routes/schemes');
 
 dotenv.config(); // для получения данных из .env. Можно короче "require('dotenv').config();"
-const { PORT = 3000, BD_URL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env; // порт и ссылка на БД
+const { PORT = 3000, BD_URL = 'mongodb://localhost:27017/litegraphsdb' } = process.env; // порт и ссылка на БД
 
 const app = express(); // cоздаём объект приложения
 
-const whitelist = [ // список разрешенных доменов
-  'https://diploma.darpeex.nomoredomainsrocks.ru',
-  'https://diploma.darpeex.nomoredomainsrocks.ru',
-  'https://localhost:3001',
-  'http://localhost:3001',
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-];
+// список разрешенных доменов
+const whitelist = ['https://localhost:3001', 'http://localhost:3001'];
 
 const corsOptions = {
   origin: whitelist, // источник домена (откуда запрос)
@@ -51,26 +35,21 @@ app.use(helmet()); // использование модуля безопасно
 app.use(express.json()); // для сборки JSON-формата
 app.use(express.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-mongoose.connect(BD_URL, { // подключение к mongodb
-  useNewUrlParser: true, // обеспечивает совместимость с будущими версиями MongoDB
-}).then(() => console.log('Подключились к БД'));
+// подключение к mongodb
+mongoose
+  .connect(BD_URL, {
+    useNewUrlParser: true, // обеспечивает совместимость с будущими версиями MongoDB
+  })
+  .then(() => console.log('Подключились к БД'));
 
 // логгер запросов
 app.use(requestLogger);
 
-// роуты, не требующие авторизации
-app.post('/signup', signupValidator, createUser); // регистрируемся
-app.post('/signin', signinValidator, login); // заходим под пользователя
+// роуты
+app.use(schemeRouter);
 
-// авторизация
-app.use(auth);
-
-// роуты, которым авторизация нужна
-app.use(userRouter);
-app.use(movieRouter);
-app.post('/signout', logout); // выходим из под пользователя
-
-app.use((req, res, next) => { // предупреждаем переход по отсутсвующему пути
+// предупреждаем переход по отсутсвующему пути
+app.use((req, res, next) => {
   next(new NotFoundError('Путь не найден'));
 });
 

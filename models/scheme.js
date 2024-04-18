@@ -1,13 +1,13 @@
 const mongoose = require('mongoose'); // нужна для создании схем
 
 // Создаём схему и задаём её поля
-const shemeSchema = new mongoose.Schema(
+const schemeSchema = new mongoose.Schema(
   {
-    shemeData: {
+    schemeData: {
       type: String,
       required: [true, 'Данные JSON схемы не переданы'],
     },
-    shemeId: {
+    schemeId: {
       type: Number,
       required: [true, 'Id схемы не передан'],
     },
@@ -15,5 +15,5 @@ const shemeSchema = new mongoose.Schema(
   { versionKey: false }, // убирает поле '__v' из ответа
 );
 
-const Scheme = mongoose.model('sheme', shemeSchema); // создание модели
+const Scheme = mongoose.model('scheme', schemeSchema); // создание модели
 module.exports = Scheme; // экспорт модели

@@ -1,30 +1,30 @@
 const { celebrate, Joi } = require('celebrate'); // библиотека для валидации данных
 const router = require('express').Router(); // создание нового экземпляра маршрутизатора вместо app
-const { getShemes, getSheme, createSheme, deleteSheme } = require('../controllers/shemes'); // контроллеры
+const { getSchemes, getScheme, createScheme, deleteScheme } = require('../controllers/schemes'); // контроллеры
 
-router.get('/shemes', getShemes); // возвращает все схемы
-router.get('/shemes', getSheme); // возвращает конкретную схему
+router.get('/schemes', getSchemes); // возвращает все схемы
+router.get('/schemes', getScheme); // возвращает конкретную схему
 router.post(
-  '/shemes',
+  '/schemes',
   celebrate({
     // создаёт схему
     body: Joi.object().keys({
-      shemeData: Joi.string().required(),
-      shemeId: Joi.number().integer().required(),
+      schemeData: Joi.string().required(),
+      schemeId: Joi.number().integer().required(),
     }),
   }),
-  createSheme,
+  createScheme,
 );
 router.delete(
-  '/shemes/:shemeId',
+  '/schemes/:schemeId',
   celebrate({
     // удаляет схему по идентификатору
     params: Joi.object().keys({
       // проверяет req.params на соответсвие
-      shemeId: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F
+      schemeId: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F
     }),
   }),
-  deleteSheme,
+  deleteScheme,
 );
 
 module.exports = router;

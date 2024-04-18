@@ -1,29 +1,29 @@
-const Sheme = require('../models/sheme'); // импортируем модель
+const Scheme = require('../models/scheme'); // импортируем модель
 
 // классы с ответами об ошибках
 const RequestError = require('../errors/req-err'); // 400
 const NotFoundError = require('../errors/not-found-err'); // 404
 
 // возвращает все схемы
-module.exports.getShemes = (res, next) => {
-  Sheme.find({}) // status(200) добавляется по дефолту
-    .then((shemes) => res.send(shemes.reverse())) // успешно - возвращаем схемы
+module.exports.getSchemes = (res, next) => {
+  Scheme.find({}) // status(200) добавляется по дефолту
+    .then((schemes) => res.send(schemes.reverse())) // успешно - возвращаем схемы
     .catch(next); // переходим в центролизованный обработчик
 };
 
 // возвращает конкретную схему
-module.exports.getSheme = (req, res, next) => {
-  const { shemeId } = req.params; // извлекаем значение shemeId из объекта req.params
-  Sheme.find({ shemeId }) // status(200) добавляется по дефолту
-    .then((shemes) => res.send(shemes.reverse())) // успешно - возвращаем схемы
+module.exports.getScheme = (req, res, next) => {
+  const { schemeId } = req.params; // извлекаем значение schemeId из объекта req.params
+  Scheme.find({ schemeId }) // status(200) добавляется по дефолту
+    .then((schemes) => res.send(schemes.reverse())) // успешно - возвращаем схемы
     .catch(next); // переходим в центролизованный обработчик
 };
 
 // добавляет схему в БД
-module.exports.createSheme = (req, res, next) => {
-  const { shemeData, shemeId } = req.body; // данные из тела запроса
-  Sheme.create({ shemeData, shemeId })
-    .then((sheme) => res.status(201).send(sheme))
+module.exports.createScheme = (req, res, next) => {
+  const { schemeData, schemeId } = req.body; // данные из тела запроса
+  Scheme.create({ schemeData, schemeId })
+    .then((scheme) => res.status(201).send(scheme))
     .catch((err) => {
       // если данные некорректны, передаём сообщение об ошибке и код '400'
       if (err.name === 'ValidationError') {
@@ -34,15 +34,15 @@ module.exports.createSheme = (req, res, next) => {
 };
 
 // удаляет схему по идентификатору
-module.exports.deleteSheme = (req, res, next) => {
-  const { shemeId } = req.params;
-  return Sheme.findById({ shemeId })
-    .orFail(new Error('shemeNotFound'))
-    .then((sheme) => {
-      return Sheme.deleteOne(sheme).then(() => res.status(200).send({ message: 'Схема успешно удалена' }));
+module.exports.deleteScheme = (req, res, next) => {
+  const { schemeId } = req.params;
+  return Scheme.findById({ schemeId })
+    .orFail(new Error('schemeNotFound'))
+    .then((scheme) => {
+      return Scheme.deleteOne(scheme).then(() => res.status(200).send({ message: 'Схема успешно удалена' }));
     })
     .catch((err) => {
-      if (err.message === 'shemeNotFound') {
+      if (err.message === 'schemeNotFound') {
         return next(new NotFoundError('Схема не найдена'));
       }
       if (err.name === 'CastError') {

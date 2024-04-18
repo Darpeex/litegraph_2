@@ -1,13 +1,15 @@
 const { celebrate, Joi } = require('celebrate'); // библиотека для валидации данных
 const router = require('express').Router(); // создание нового экземпляра маршрутизатора вместо app
-const { getShemes, createSheme, deleteSheme } = require('../controllers/shemes'); // контроллеры
+const { getShemes, getSheme, createSheme, deleteSheme } = require('../controllers/shemes'); // контроллеры
 
 router.get('/shemes', getShemes); // возвращает все схемы
+router.get('/shemes', getSheme); // возвращает конкретную схему
 router.post(
   '/shemes',
   celebrate({
     // создаёт схему
     body: Joi.object().keys({
+      shemeData: Joi.string().required(),
       shemeId: Joi.number().integer().required(),
     }),
   }),

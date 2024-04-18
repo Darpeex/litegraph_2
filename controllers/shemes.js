@@ -11,27 +11,21 @@ module.exports.getShemes = (res, next) => {
     .catch(next); // переходим в центролизованный обработчик
 };
 
-// создаёт схему
+// возвращает конкретную схему
+module.exports.getShemes = (req, res, next) => {
+  const { shemeId } = req.params; // извлекаем значение shemeId из объекта req.params
+  Sheme.find({ shemeId }) // status(200) добавляется по дефолту
+    .then((shemes) => res.send(shemes.reverse())) // успешно - возвращаем схемы
+    .catch(next); // переходим в центролизованный обработчик
+};
+
+// добавляет схему в БД
 module.exports.createSheme = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail, shemeId } =
-    req.body; // данные из тела запроса
-  Sheme.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    nameRU,
-    nameEN,
-    thumbnail,
-    shemeId,
-    owner: req.user._id,
-  })
+  const { shemeData, shemeId } = req.body; // данные из тела запроса
+  Sheme.create({ shemeData, shemeId })
     .then((sheme) => res.status(201).send(sheme))
     .catch((err) => {
-      // если введённые данные некорректны, передаём сообщение об ошибке и код '400'
+      // если данные некорректны, передаём сообщение об ошибке и код '400'
       if (err.name === 'ValidationError') {
         return next(new RequestError('Переданы некорректные данные схемы'));
       }
@@ -41,9 +35,8 @@ module.exports.createSheme = (req, res, next) => {
 
 // удаляет схему по идентификатору
 module.exports.deleteSheme = (req, res, next) => {
-  // req.params содержит параметры маршрута, которые передаются в URL
-  const { shemeId } = req.params; // извлекаем значение shemeId из объекта req.params
-  return Sheme.findById({ _id: shemeId })
+  const { shemeId } = req.params;
+  return Sheme.findById({ shemeId })
     .orFail(new Error('shemeNotFound'))
     .then((sheme) => {
       return Sheme.deleteOne(sheme).then(() => res.status(200).send({ message: 'Схема успешно удалена' }));

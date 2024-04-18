@@ -19,7 +19,7 @@ class MainApi {
     }
   }
 
-  // Возвращает все сохранённые схемы
+  // Возвращает все схемы
   getSchemes() {
     // по умолчанию метод get
     return fetch(`${this.#url}/schemes`, {
@@ -35,7 +35,7 @@ class MainApi {
     }).then(this.#handleResponse);
   }
 
-  // Сохранение схемы
+  // Сохранение новой схемы в БД
   saveScheme(data) {
     return fetch(`${this.#url}/schemes`, {
       method: 'POST',

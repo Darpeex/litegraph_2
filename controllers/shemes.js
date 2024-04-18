@@ -12,7 +12,7 @@ module.exports.getShemes = (res, next) => {
 };
 
 // возвращает конкретную схему
-module.exports.getShemes = (req, res, next) => {
+module.exports.getSheme = (req, res, next) => {
   const { shemeId } = req.params; // извлекаем значение shemeId из объекта req.params
   Sheme.find({ shemeId }) // status(200) добавляется по дефолту
     .then((shemes) => res.send(shemes.reverse())) // успешно - возвращаем схемы

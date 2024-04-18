@@ -28,14 +28,14 @@ class MainApi {
   }
 
   // Открытие выбранной схемы
-  openScheme(id) {
+  getScheme(id) {
     return fetch(`${this.#url}/schemes/${id}`, {
       headers: this.#headers,
     }).then(this.#handleResponse);
   }
 
-  // Сохранение новой схемы в БД
-  getSheme(data) {
+  // Добавление новой схемы в БД
+  createSheme(data) {
     return fetch(`${this.#url}/schemes`, {
       method: 'POST',
       headers: this.#headers,

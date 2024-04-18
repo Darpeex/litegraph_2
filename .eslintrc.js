@@ -3,18 +3,13 @@ module.exports = {
     browser: false,
     es2021: true,
   },
-  extends: [
-    'airbnb-base',
-    'eslint:recommended',
-  ],
+  extends: ['airbnb-base', 'eslint:recommended'],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -28,6 +23,7 @@ module.exports = {
     'no-console': 'off',
     'func-names': 'off',
     'consistent-return': 'off',
+    'no-inline-comments': 'off',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
 };

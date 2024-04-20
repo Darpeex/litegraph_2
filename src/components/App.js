@@ -9,6 +9,8 @@ import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без п
 import TimerNode from './nodes/TimerNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import StartNode from './nodes/StartNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import { LGraph, LGraphCanvas } from 'litegraph.js';
+import { ModalSchemeList } from './ModalSchemeList';
+import { ModalSaveSchemeForm } from './ModalSaveSchemeForm';
 
 // Компоненты
 import Header from './Header';
@@ -77,6 +79,8 @@ function App() {
 
   return (
     <div className="App">
+      <ModalSaveSchemeForm />
+      <ModalSchemeList />
       <Header graph={graph} canvas={canvas} onNodeDeselected={onNodeDeselected} />
       <Main
         canvas={canvas}

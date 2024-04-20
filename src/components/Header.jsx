@@ -16,8 +16,11 @@ import {
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
+const SCHEME_LIST = 'Список схем';
+const SAVE_SCHEME = 'Сохранить схему';
+
 const options = ['Настройки']; // опции верхней панели (AppBar)
-const fileFeatures = ['Открыть файл', 'Сохранить файл']; // возможности, выпадающие по кнопке Файла
+const fileFeatures = [SCHEME_LIST, SAVE_SCHEME]; // возможности, выпадающие по кнопке Файла
 
 function Header({ graph, canvas, onNodeDeselected }) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
@@ -116,16 +119,16 @@ function Header({ graph, canvas, onNodeDeselected }) {
     link.download = 'graph.json';
     link.click();
   }
-  // Открыть JSON файл
+  // Открыть JSON схему
   const handleOpenFile = () => {
     // создали элемент 'input' и присвоили полю тип 'file'
     const input = document.createElement('input');
     input.type = 'file';
 
     input.click(); // открытие диалогового окна для выбора файла
-    // когда пользователь выбрал файл - 'onchange'
+    // когда пользователь выбрал схему - 'onchange'
     input.onchange = (e) => {
-      const file = e.target.files[0]; // выбранный файл со своими свойствами
+      const file = e.target.files[0]; // выбранная схема со своими свойствами
       const reader = new FileReader(); // объект c методами обработки данных
 
       reader.readAsText(file); // прочитать содержимое файла как текст
@@ -170,11 +173,11 @@ function Header({ graph, canvas, onNodeDeselected }) {
                 <MenuItem
                   key={feature}
                   onClick={() => {
-                    if (feature === 'Открыть файл') {
+                    if (feature === SCHEME_LIST) {
                       handleOpenFile();
                       handleCloseFileMenu();
                     }
-                    if (feature === 'Сохранить файл') {
+                    if (feature === SAVE_SCHEME) {
                       downloadGraph();
                       handleCloseFileMenu();
                     } else {

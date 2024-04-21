@@ -3,6 +3,7 @@ import { LGraph } from 'litegraph.js';
 import { Container } from '@mui/system';
 import { lightGreen } from '@mui/material/colors';
 import { handleMountStartBlock } from './nodes/functions';
+import { mainApi } from '../utils/MainApi'; // Запросы на сервер
 import {
   Stop as StopIcon,
   OpenWith as OpenWithIcon,
@@ -22,7 +23,7 @@ const SAVE_SCHEME = 'Сохранить схему';
 const options = ['Настройки']; // опции верхней панели (AppBar)
 const fileFeatures = [SCHEME_LIST, SAVE_SCHEME]; // возможности, выпадающие по кнопке Файла
 
-function Header({ graph, canvas, onNodeDeselected }) {
+function Header({ graph, canvas, onNodeDeselected, setOpenModalSchemeList, setOpenModalSaveSchemeForm }) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
   let shouldExecute = true; // переменная для контроля выполнения
@@ -109,40 +110,6 @@ function Header({ graph, canvas, onNodeDeselected }) {
     }
   }
 
-  // Скачать схему
-  function downloadGraph() {
-    const data = graph.serialize();
-    const jsonStr = JSON.stringify(data);
-    const blob = new Blob([jsonStr], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'graph.json';
-    link.click();
-  }
-  // Открыть JSON схему
-  const handleOpenFile = () => {
-    // создали элемент 'input' и присвоили полю тип 'file'
-    const input = document.createElement('input');
-    input.type = 'file';
-
-    input.click(); // открытие диалогового окна для выбора файла
-    // когда пользователь выбрал схему - 'onchange'
-    input.onchange = (e) => {
-      const file = e.target.files[0]; // выбранная схема со своими свойствами
-      const reader = new FileReader(); // объект c методами обработки данных
-
-      reader.readAsText(file); // прочитать содержимое файла как текст
-      reader.onload = function () {
-        // преобразовываем JSON и выводим график
-        graph.configure(JSON.parse(reader.result));
-      };
-      // если ошибка, сообщаем в консоли
-      reader.onerror = function () {
-        console.log(reader.error);
-      };
-    };
-  };
-
   return (
     <AppBar position="fixed">
       <Container maxWidth="x2">
@@ -174,12 +141,13 @@ function Header({ graph, canvas, onNodeDeselected }) {
                   key={feature}
                   onClick={() => {
                     if (feature === SCHEME_LIST) {
-                      handleOpenFile();
+                      mainApi.getSchemes();
                       handleCloseFileMenu();
+                      setOpenModalSchemeList(true);
                     }
                     if (feature === SAVE_SCHEME) {
-                      downloadGraph();
                       handleCloseFileMenu();
+                      setOpenModalSaveSchemeForm(true);
                     } else {
                       handleCloseFileMenu();
                     }

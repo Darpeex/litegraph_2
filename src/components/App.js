@@ -36,6 +36,8 @@ LGraphCanvas.prototype.processContextMenu = function () {
 
 function App() {
   const [isSideMenuPropertiesOpen, setSideMenuPropertiesOpen] = useState(false); // открыто ли боковое меню
+  const [openModalSaveSchemeForm, setOpenModalSaveSchemeForm] = useState(false); // модальное окно сохранения
+  const [openModalSchemeList, setOpenModalSchemeList] = useState(false); // молальное окно со списком схем
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
   const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
 
@@ -79,9 +81,18 @@ function App() {
 
   return (
     <div className="App">
-      <ModalSaveSchemeForm />
-      <ModalSchemeList />
-      <Header graph={graph} canvas={canvas} onNodeDeselected={onNodeDeselected} />
+      <ModalSaveSchemeForm
+        openModalSaveSchemeForm={openModalSaveSchemeForm}
+        setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
+      />
+      <ModalSchemeList openModalSchemeList={openModalSchemeList} setOpenModalSchemeList={setOpenModalSchemeList} />
+      <Header
+        graph={graph}
+        canvas={canvas}
+        onNodeDeselected={onNodeDeselected}
+        setOpenModalSchemeList={setOpenModalSchemeList}
+        setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
+      />
       <Main
         canvas={canvas}
         toggle={toggle}

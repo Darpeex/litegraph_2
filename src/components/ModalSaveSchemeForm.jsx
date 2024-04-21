@@ -1,14 +1,22 @@
-import { useState } from 'react';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Modal, Typography, Button, IconButton, TextField } from '@mui/material';
 
-export function ModalSaveSchemeForm() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export function ModalSaveSchemeForm({ openModalSaveSchemeForm, setOpenModalSaveSchemeForm }) {
+  const handleClose = () => setOpenModalSaveSchemeForm(false);
+
+  // Скачать схему
+  // function downloadGraph() {
+  //   const data = graph.serialize();
+  //   const jsonStr = JSON.stringify(data);
+  //   const blob = new Blob([jsonStr], { type: 'text/plain;charset=utf-8' });
+  //   const link = document.createElement('a');
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = 'graph.json';
+  //   link.click();
+  // }
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={openModalSaveSchemeForm} onClose={handleClose}>
       <Box
         sx={{
           p: 3,
@@ -21,7 +29,7 @@ export function ModalSaveSchemeForm() {
           left: '50%',
           transform: 'translate(-50%, -50%)',
         }}>
-        <IconButton aria-label="close modal" sx={{ p: 0, position: 'absolute', right: 24 }} onClick={''}>
+        <IconButton aria-label="close modal" sx={{ p: 0, position: 'absolute', right: 24 }} onClick={handleClose}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" component="h2" textAlign="center" sx={{ mt: 3 }}>

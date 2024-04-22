@@ -11,14 +11,6 @@ module.exports.getSchemes = (req, res, next) => {
     .catch(next); // переходим в центролизованный обработчик
 };
 
-// возвращает конкретную схему
-module.exports.getScheme = (req, res, next) => {
-  const { schemeId } = req.params; // извлекаем значение schemeId из объекта req.params
-  Scheme.find({ schemeId }) // status(200) добавляется по дефолту
-    .then((schemes) => res.send(schemes.reverse())) // успешно - возвращаем схемы
-    .catch(next); // переходим в центролизованный обработчик
-};
-
 // добавляет схему в БД
 module.exports.createScheme = (req, res, next) => {
   const { schemeData, schemeId } = req.body; // данные из тела запроса

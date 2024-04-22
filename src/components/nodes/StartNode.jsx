@@ -50,7 +50,9 @@ StartNode.prototype.onExecute = function () {
 
   this.triggered = true;
   this.time = this.time % this.last_interval;
-  this.trigger(this.outputs.name, this.properties.event);
+  if (this.outputs && this.properties) {
+    this.trigger(this.outputs.name, this.properties.event);
+  }
   if (this.inputs && this.inputs.length > 1 && this.inputs[1]) {
     this.setOutputData(1, true);
   }

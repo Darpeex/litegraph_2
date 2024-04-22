@@ -56,7 +56,7 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
                 textOverflow: 'ellipsis',
                 maxWidth: 'fit-content',
               }}>
-              {scheme._id}
+              {scheme.schemeName}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <IconButton color="primary" aria-label="remove scheme" sx={{ p: 0 }} onClick={deleteScheme}>

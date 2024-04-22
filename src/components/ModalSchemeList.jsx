@@ -59,7 +59,7 @@ export function ModalSchemeList({
         <Divider sx={{ mt: 1.5, mb: 1.5 }} />
 
         {schemesFromDB.map((scheme, index) => (
-          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }} onClick={(evt) => deleteScheme(index, scheme)}>
+          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
             <Typography
               onClick={(evt) => handleClickScheme(evt, scheme)}
               sx={{
@@ -71,7 +71,11 @@ export function ModalSchemeList({
               {scheme.schemeName}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <IconButton color="primary" aria-label="remove scheme" sx={{ p: 0 }}>
+            <IconButton
+              color="primary"
+              aria-label="remove scheme"
+              sx={{ p: 0 }}
+              onClick={() => deleteScheme(index, scheme)}>
               <DeleteIcon />
             </IconButton>
           </Box>

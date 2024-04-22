@@ -100,6 +100,7 @@ function App() {
       <ModalSchemeList
         graph={graph}
         schemesFromDB={schemesFromDB}
+        setSchemesFromDB={setSchemesFromDB}
         openModalSchemeList={openModalSchemeList}
         setOpenModalSchemeList={setOpenModalSchemeList}
       />

@@ -1,8 +1,15 @@
 import { useRef } from 'react';
+import { mainApi } from '../utils/MainApi';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Box, Divider, Modal, Typography, IconButton } from '@mui/material';
 
-export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, setOpenModalSchemeList }) {
+export function ModalSchemeList({
+  graph,
+  schemesFromDB,
+  setSchemesFromDB,
+  openModalSchemeList,
+  setOpenModalSchemeList,
+}) {
   // закрыть модальное окно
   const handleClose = () => {
     setOpenModalSchemeList(false);
@@ -11,7 +18,6 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
   const timer = useRef();
   const handleClickScheme = (evt, scheme) => {
     clearTimeout(timer.current);
-
     // когда происходит одиночный клик, устанавливается таймер, который будет вызывать функцию через 200 миллисекунд. Если раньше этого произойдёт двойной клик - очищаем таймер и вызоваем вторую функцию
     if (evt.detail === 1) {
       // передаём функцию, а не её результат, чтобы отложить её вызов
@@ -24,7 +30,13 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
     }
   };
 
-  const deleteScheme = () => {};
+  // Удаление схемы
+  const deleteScheme = (index, scheme) => {
+    const updatedSchemes = [...schemesFromDB];
+    updatedSchemes.splice(index, 1);
+    setSchemesFromDB(updatedSchemes);
+    mainApi.deleteScheme(scheme._id);
+  };
 
   return (
     <Modal open={openModalSchemeList} onClose={handleClose}>
@@ -46,8 +58,8 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
         </Typography>
         <Divider sx={{ mt: 1.5, mb: 1.5 }} />
 
-        {schemesFromDB.map((scheme) => (
-          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
+        {schemesFromDB.map((scheme, index) => (
+          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }} onClick={(evt) => deleteScheme(index, scheme)}>
             <Typography
               onClick={(evt) => handleClickScheme(evt, scheme)}
               sx={{
@@ -59,7 +71,7 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
               {scheme.schemeName}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <IconButton color="primary" aria-label="remove scheme" sx={{ p: 0 }} onClick={deleteScheme}>
+            <IconButton color="primary" aria-label="remove scheme" sx={{ p: 0 }}>
               <DeleteIcon />
             </IconButton>
           </Box>

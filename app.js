@@ -4,7 +4,6 @@ const express = require('express'); // фреймворк для создани�
 const mongoose = require('mongoose'); // модуль для работы с базой данных MongoDB
 const { errors } = require('celebrate'); // мидлвэр для ошибок валидации полей
 const dotenv = require('dotenv'); // модуль для получения данных из .env
-const cookieParser = require('cookie-parser'); // модуль чтения cookie
 const cors = require('cors'); // модуль для защиты запросов к api
 
 const NotFoundError = require('./errors/not-found-err'); // экземпляр класса с ошибкой 404
@@ -15,7 +14,7 @@ const errorHandler = require('./middlewares/error-handler'); // мидлвар �
 const schemeRouter = require('./routes/schemes');
 
 dotenv.config(); // для получения данных из .env. Можно короче "require('dotenv').config();"
-const { PORT = 3000, BD_URL = 'mongodb://localhost:27017/litegraphsdb' } = process.env; // порт и ссылка на БД
+const { PORT = 3000, BD_URL = 'mongodb://localhost:27017/litegraphdb' } = process.env; // порт и ссылка на БД
 
 const app = express(); // cоздаём объект приложения
 
@@ -26,11 +25,9 @@ const corsOptions = {
   origin: whitelist, // источник домена (откуда запрос)
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // методы
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization', // заголовки
-  credentials: true, // обмен учетными данными (cookies)
 };
 
 app.use(cors(corsOptions)); // доступ для других доменов
-app.use(cookieParser()); // парсер для чтения cookie
 app.use(helmet()); // использование модуля безопасности
 app.use(express.json()); // для сборки JSON-формата
 app.use(express.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса

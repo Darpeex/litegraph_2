@@ -5,7 +5,7 @@ const RequestError = require('../errors/req-err'); // 400
 const NotFoundError = require('../errors/not-found-err'); // 404
 
 // возвращает все схемы
-module.exports.getSchemes = (res, next) => {
+module.exports.getSchemes = (req, res, next) => {
   Scheme.find({}) // status(200) добавляется по дефолту
     .then((schemes) => res.send(schemes.reverse())) // успешно - возвращаем схемы
     .catch(next); // переходим в центролизованный обработчик

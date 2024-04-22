@@ -8,20 +8,19 @@ router.post(
   celebrate({
     // создаёт схему
     body: Joi.object().keys({
-      schemeData: Joi.string().required(),
-      // schemeName: Joi.string().required(),
-      schemeId: Joi.number().integer().required(),
+      schemeJSON: Joi.string().required(),
+      schemeName: Joi.string().required(),
     }),
   }),
   createScheme,
 );
 router.delete(
-  '/schemes/:schemeId',
+  '/schemes/:_id',
   celebrate({
     // удаляет схему по идентификатору
     params: Joi.object().keys({
       // проверяет req.params на соответсвие
-      schemeId: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F
+      _id: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F
     }),
   }),
   deleteScheme,

@@ -13,8 +13,8 @@ module.exports.getSchemes = (req, res, next) => {
 
 // добавляет схему в БД
 module.exports.createScheme = (req, res, next) => {
-  const { schemeData, schemeId } = req.body; // данные из тела запроса
-  Scheme.create({ schemeData, schemeId })
+  const { schemeJSON, schemeName } = req.body; // данные из тела запроса
+  Scheme.create({ schemeJSON, schemeName })
     .then((scheme) => res.status(201).send(scheme))
     .catch((err) => {
       // если данные некорректны, передаём сообщение об ошибке и код '400'
@@ -27,8 +27,8 @@ module.exports.createScheme = (req, res, next) => {
 
 // удаляет схему по идентификатору
 module.exports.deleteScheme = (req, res, next) => {
-  const { schemeId } = req.params;
-  return Scheme.findById({ schemeId })
+  const { _id } = req.params;
+  return Scheme.findById({ _id })
     .orFail(new Error('schemeNotFound'))
     .then((scheme) => {
       return Scheme.deleteOne(scheme).then(() => res.status(200).send({ message: 'Схема успешно удалена' }));

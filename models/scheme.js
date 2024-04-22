@@ -3,13 +3,13 @@ const mongoose = require('mongoose'); // нужна для создании сх
 // Создаём схему и задаём её поля
 const schemeSchema = new mongoose.Schema(
   {
-    schemeData: {
+    schemeJSON: {
       type: String,
       required: [true, 'Данные JSON схемы не переданы'],
     },
-    schemeId: {
-      type: Number,
-      required: [true, 'Id схемы не передан'],
+    schemeName: {
+      type: String,
+      required: [true, 'Имя схемы не передано'],
     },
   },
   { versionKey: false }, // убирает поле '__v' из ответа

@@ -3,10 +3,10 @@ const router = require('express').Router(); // создание нового э�
 const { getSchemes, createScheme, deleteScheme } = require('../controllers/schemes'); // контроллеры
 
 router.get('/schemes', getSchemes); // возвращает все схемы
+// создаёт схему
 router.post(
   '/schemes',
   celebrate({
-    // создаёт схему
     body: Joi.object().keys({
       schemeJSON: Joi.string().required(),
       schemeName: Joi.string().required(),
@@ -14,10 +14,10 @@ router.post(
   }),
   createScheme,
 );
+// удаляет схему по идентификатору
 router.delete(
   '/schemes/:_id',
   celebrate({
-    // удаляет схему по идентификатору
     params: Joi.object().keys({
       // проверяет req.params на соответсвие
       _id: Joi.string().length(24).hex().required(), // hex() - от 0 до 9 и букв от A до F

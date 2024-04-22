@@ -16,7 +16,7 @@ export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, set
     if (evt.detail === 1) {
       // передаём функцию, а не её результат, чтобы отложить её вызов
       timer.current = setTimeout(() => {
-        graph.configure(JSON.parse(scheme.schemeData)); // Открыть JSON схему
+        graph.configure(JSON.parse(scheme.schemeJSON)); // Открыть JSON схему
         handleClose();
       }, 250);
     } else if (evt.detail === 2) {

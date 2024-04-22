@@ -2,16 +2,10 @@ import { useRef } from 'react';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Box, Divider, Modal, Typography, IconButton } from '@mui/material';
 
-export function ModalSchemeList({ openModalSchemeList, setOpenModalSchemeList }) {
+export function ModalSchemeList({ schemesFromDB, openModalSchemeList, setOpenModalSchemeList }) {
   const handleClose = () => {
     setOpenModalSchemeList(false);
   };
-
-  const schemes = [
-    { schemeId: 'Схема 1', JSON: 'something' },
-    { schemeId: 'Схема 2', JSON: 'somethingElse' },
-    { schemeId: 'Схема 3', JSON: 'somethingAndElse' },
-  ];
 
   const timer = useRef();
   const handleClickScheme = (evt) => {
@@ -72,8 +66,8 @@ export function ModalSchemeList({ openModalSchemeList, setOpenModalSchemeList })
         </Typography>
         <Divider sx={{ mt: 1.5, mb: 1.5 }} />
 
-        {schemes.map((scheme) => (
-          <Box key={scheme.schemeId} sx={{ display: 'flex', mt: 1.5 }}>
+        {schemesFromDB.map((scheme) => (
+          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
             <Typography
               onClick={handleClickScheme}
               sx={{
@@ -82,7 +76,7 @@ export function ModalSchemeList({ openModalSchemeList, setOpenModalSchemeList })
                 textOverflow: 'ellipsis',
                 maxWidth: 'fit-content',
               }}>
-              {scheme.schemeId}
+              {scheme._id}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <IconButton color="primary" aria-label="remove scheme" sx={{ p: 0 }} onClick={deleteScheme}>

@@ -35,7 +35,7 @@ class MainApi {
   }
 
   // Добавление новой схемы в БД
-  createSheme(data) {
+  createScheme(data) {
     return fetch(`${this.#url}/schemes`, {
       method: 'POST',
       headers: this.#headers,

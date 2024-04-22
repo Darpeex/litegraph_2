@@ -8,22 +8,18 @@ import ResultNode from './nodes/ResultNode'; // видимо, без подтя�
 import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import TimerNode from './nodes/TimerNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import StartNode from './nodes/StartNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
+import { mainApi } from '../utils/MainApi'; // запросы на сервер
 import { LGraph, LGraphCanvas } from 'litegraph.js';
-import { ModalSchemeList } from './ModalSchemeList';
-import { ModalSaveSchemeForm } from './ModalSaveSchemeForm';
 
 // Компоненты
-import Header from './Header';
 import Main from './Main';
+import Header from './Header';
+import { ModalSchemeList } from './ModalSchemeList';
+import { ModalSaveSchemeForm } from './ModalSaveSchemeForm';
 
 nodeStyles(); // Стили узлов по умолчанию
 export const graph = new LGraph(); // Создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст, передаём html-элемент и graph в параметры
-
-// Параметры фона холста
-// canvas.background_color = '#fafafa';
-// canvas.background_image = 'data:image/png;base64, здесь должна быть картинка в кодировке base64';
-// console.log(LiteGraph.registered_node_types); // информация по зарегистрированным узлам
 
 // Отменяем стандартное контекстное меню по двойному клику
 LGraphCanvas.prototype.showSearchBox = function () {
@@ -40,6 +36,21 @@ function App() {
   const [openModalSchemeList, setOpenModalSchemeList] = useState(false); // молальное окно со списком схем
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
   const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
+  // состояния для схем
+  const [schemesFromDB, setSchemesFromDB] = useState([]);
+
+  // Получение схем с сервера
+  useEffect(() => {
+    mainApi
+      .getSchemes() // получаем схемы
+      .then((data) => {
+        console.log(data);
+        setSchemesFromDB(data); // обновляем список схем
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }, []);
 
   // Закрываем меню со свойствами
   const onNodeDeselected = () => {
@@ -85,7 +96,11 @@ function App() {
         openModalSaveSchemeForm={openModalSaveSchemeForm}
         setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
       />
-      <ModalSchemeList openModalSchemeList={openModalSchemeList} setOpenModalSchemeList={setOpenModalSchemeList} />
+      <ModalSchemeList
+        schemesFromDB={schemesFromDB}
+        openModalSchemeList={openModalSchemeList}
+        setOpenModalSchemeList={setOpenModalSchemeList}
+      />
       <Header
         graph={graph}
         canvas={canvas}

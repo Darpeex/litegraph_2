@@ -27,13 +27,6 @@ class MainApi {
     }).then(this.#handleResponse);
   }
 
-  // Открытие выбранной схемы
-  getScheme(id) {
-    return fetch(`${this.#url}/schemes/${id}`, {
-      headers: this.#headers,
-    }).then(this.#handleResponse);
-  }
-
   // Добавление новой схемы в БД
   createScheme(data) {
     return fetch(`${this.#url}/schemes`, {

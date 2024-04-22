@@ -97,6 +97,7 @@ function App() {
         setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
       />
       <ModalSchemeList
+        graph={graph}
         schemesFromDB={schemesFromDB}
         openModalSchemeList={openModalSchemeList}
         setOpenModalSchemeList={setOpenModalSchemeList}

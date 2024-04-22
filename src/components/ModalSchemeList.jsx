@@ -2,47 +2,27 @@ import { useRef } from 'react';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Box, Divider, Modal, Typography, IconButton } from '@mui/material';
 
-export function ModalSchemeList({ schemesFromDB, openModalSchemeList, setOpenModalSchemeList }) {
+export function ModalSchemeList({ graph, schemesFromDB, openModalSchemeList, setOpenModalSchemeList }) {
+  // закрыть модальное окно
   const handleClose = () => {
     setOpenModalSchemeList(false);
   };
 
   const timer = useRef();
-  const handleClickScheme = (evt) => {
+  const handleClickScheme = (evt, scheme) => {
     clearTimeout(timer.current);
 
     // когда происходит одиночный клик, устанавливается таймер, который будет вызывать функцию через 200 миллисекунд. Если раньше этого произойдёт двойной клик - очищаем таймер и вызоваем вторую функцию
     if (evt.detail === 1) {
       // передаём функцию, а не её результат, чтобы отложить её вызов
-      timer.current = setTimeout(() => console.log('handleClick'), 400);
+      timer.current = setTimeout(() => {
+        graph.configure(JSON.parse(scheme.schemeData)); // Открыть JSON схему
+        handleClose();
+      }, 250);
     } else if (evt.detail === 2) {
       console.log('onDoubleClick');
     }
   };
-
-  // Открыть JSON схему
-  // const handleOpenScheme = () => {
-  //   // создали элемент 'input' и присвоили полю тип 'file'
-  //   const input = document.createElement('input');
-  //   input.type = 'file';
-
-  //   input.click(); // открытие диалогового окна для выбора файла
-  //   // когда пользователь выбрал схему - 'onchange'
-  //   input.onchange = (e) => {
-  //     const file = e.target.files[0]; // выбранная схема со своими свойствами
-  //     const reader = new FileReader(); // объект c методами обработки данных
-
-  //     reader.readAsText(file); // прочитать содержимое файла как текст
-  //     reader.onload = function () {
-  //       // преобразовываем JSON и выводим график
-  //       graph.configure(JSON.parse(reader.result));
-  //     };
-  //     // если ошибка, сообщаем в консоли
-  //     reader.onerror = function () {
-  //       console.log(reader.error);
-  //     };
-  //   };
-  // };
 
   const deleteScheme = () => {};
 
@@ -69,7 +49,7 @@ export function ModalSchemeList({ schemesFromDB, openModalSchemeList, setOpenMod
         {schemesFromDB.map((scheme) => (
           <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
             <Typography
-              onClick={handleClickScheme}
+              onClick={(evt) => handleClickScheme(evt, scheme)}
               sx={{
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',

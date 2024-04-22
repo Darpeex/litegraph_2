@@ -1,19 +1,26 @@
+import { useState } from 'react';
+import { mainApi } from '../utils/MainApi';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Modal, Typography, Button, IconButton, TextField } from '@mui/material';
 
-export function ModalSaveSchemeForm({ openModalSaveSchemeForm, setOpenModalSaveSchemeForm }) {
+export function ModalSaveSchemeForm({ graph, openModalSaveSchemeForm, setOpenModalSaveSchemeForm }) {
   const handleClose = () => setOpenModalSaveSchemeForm(false);
+  const [schemeNameValue, setSchemeNameValue] = useState('');
 
-  // Скачать схему
-  // function downloadGraph() {
-  //   const data = graph.serialize();
-  //   const jsonStr = JSON.stringify(data);
-  //   const blob = new Blob([jsonStr], { type: 'text/plain;charset=utf-8' });
-  //   const link = document.createElement('a');
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = 'graph.json';
-  //   link.click();
-  // }
+  // Возвращает имя схемы
+  const setSchemeName = (evt) => {
+    const value = evt.target.value;
+    setSchemeNameValue(value);
+  };
+
+  // Сохранить схему
+  function saveGraph() {
+    const json = graph.serialize();
+    const jsonStr = JSON.stringify(json);
+    const data = { schemeName: schemeNameValue, schemeJSON: jsonStr };
+    mainApi.createScheme(data);
+    handleClose();
+  }
 
   return (
     <Modal open={openModalSaveSchemeForm} onClose={handleClose}>
@@ -47,11 +54,8 @@ export function ModalSaveSchemeForm({ openModalSaveSchemeForm, setOpenModalSaveS
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
           }}
-          onChange={function (evt) {
-            const newValue = evt.target.value;
-            console.log(newValue);
-          }}></TextField>
-        <Button variant="contained" onClick={''}>
+          onChange={(evt) => setSchemeName(evt)}></TextField>
+        <Button variant="contained" onClick={saveGraph}>
           Сохранить
         </Button>
       </Box>

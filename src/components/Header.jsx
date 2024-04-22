@@ -23,7 +23,14 @@ const SAVE_SCHEME = 'Сохранить схему';
 const options = ['Настройки']; // опции верхней панели (AppBar)
 const fileFeatures = [SCHEME_LIST, SAVE_SCHEME]; // возможности, выпадающие по кнопке Файла
 
-function Header({ graph, canvas, onNodeDeselected, setOpenModalSchemeList, setOpenModalSaveSchemeForm }) {
+function Header({
+  graph,
+  canvas,
+  setSchemesFromDB,
+  onNodeDeselected,
+  setOpenModalSchemeList,
+  setOpenModalSaveSchemeForm,
+}) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
   const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
   let shouldExecute = true; // переменная для контроля выполнения
@@ -141,9 +148,11 @@ function Header({ graph, canvas, onNodeDeselected, setOpenModalSchemeList, setOp
                   key={feature}
                   onClick={() => {
                     if (feature === SCHEME_LIST) {
-                      mainApi.getSchemes();
-                      handleCloseFileMenu();
-                      setOpenModalSchemeList(true);
+                      mainApi.getSchemes().then((schemes) => {
+                        setSchemesFromDB(schemes);
+                        handleCloseFileMenu();
+                        setOpenModalSchemeList(true);
+                      });
                     }
                     if (feature === SAVE_SCHEME) {
                       handleCloseFileMenu();

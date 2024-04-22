@@ -93,6 +93,7 @@ function App() {
   return (
     <div className="App">
       <ModalSaveSchemeForm
+        graph={graph}
         openModalSaveSchemeForm={openModalSaveSchemeForm}
         setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
       />
@@ -105,6 +106,7 @@ function App() {
       <Header
         graph={graph}
         canvas={canvas}
+        setSchemesFromDB={setSchemesFromDB}
         onNodeDeselected={onNodeDeselected}
         setOpenModalSchemeList={setOpenModalSchemeList}
         setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}

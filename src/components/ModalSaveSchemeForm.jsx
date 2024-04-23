@@ -7,7 +7,7 @@ export function ModalSaveSchemeForm({ graph, openModalSaveSchemeForm, setOpenMod
   const handleClose = () => setOpenModalSaveSchemeForm(false);
   const [schemeNameValue, setSchemeNameValue] = useState('');
 
-  // Возвращает имя схемы
+  // Устанавливает имя схемы
   const setSchemeName = (evt) => {
     const value = evt.target.value;
     setSchemeNameValue(value);
@@ -46,6 +46,7 @@ export function ModalSaveSchemeForm({ graph, openModalSaveSchemeForm, setOpenMod
         <TextField
           label="Введите имя файла"
           variant="standard"
+          autoFocus="true"
           sx={{
             mt: 3,
             mb: 2,

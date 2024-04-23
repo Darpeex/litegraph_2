@@ -1,7 +1,12 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { mainApi } from '../utils/MainApi';
-import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
-import { Box, Divider, Modal, Typography, IconButton } from '@mui/material';
+import { Box, Divider, Modal, Typography, TextField, IconButton } from '@mui/material';
+import {
+  Close as CloseIcon,
+  Check as CheckIcon,
+  Delete as DeleteIcon,
+  ModeEdit as ModeEditIcon,
+} from '@mui/icons-material';
 
 export function ModalSchemeList({
   graph,
@@ -10,24 +15,20 @@ export function ModalSchemeList({
   openModalSchemeList,
   setOpenModalSchemeList,
 }) {
+  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [schemeNameValue, setSchemeNameValue] = useState('');
+  const [schemeRenameField, setSchemeRenameField] = useState(false);
+
+  // Устанавливает имя схемы
+  const setSchemeName = (evt) => {
+    const value = evt.target.value;
+    setSchemeNameValue(value);
+  };
+
   // закрыть модальное окно
   const handleClose = () => {
     setOpenModalSchemeList(false);
-  };
-
-  const timer = useRef();
-  const handleClickScheme = (evt, scheme) => {
-    clearTimeout(timer.current);
-    // когда происходит одиночный клик, устанавливается таймер, который будет вызывать функцию через 200 миллисекунд. Если раньше этого произойдёт двойной клик - очищаем таймер и вызоваем вторую функцию
-    if (evt.detail === 1) {
-      // передаём функцию, а не её результат, чтобы отложить её вызов
-      timer.current = setTimeout(() => {
-        graph.configure(JSON.parse(scheme.schemeJSON)); // Открыть JSON схему
-        handleClose();
-      }, 250);
-    } else if (evt.detail === 2) {
-      console.log('onDoubleClick');
-    }
+    setSchemeRenameField(false);
   };
 
   // Удаление схемы
@@ -54,32 +55,82 @@ export function ModalSchemeList({
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" component="h2" textAlign="center" sx={{ mt: 2 }}>
-          Доступные схемы
+          Сохраненные схемы
         </Typography>
         <Divider sx={{ mt: 1.5, mb: 1.5 }} />
 
-        {schemesFromDB.map((scheme, index) => (
-          <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
-            <Typography
-              onClick={(evt) => handleClickScheme(evt, scheme)}
-              sx={{
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                maxWidth: 'fit-content',
-              }}>
-              {scheme.schemeName}
-            </Typography>
-            <Box sx={{ flexGrow: 1 }} />
-            <IconButton
-              color="primary"
-              aria-label="remove scheme"
-              sx={{ p: 0 }}
-              onClick={() => deleteScheme(index, scheme)}>
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        ))}
+        {schemesFromDB.length === 0 ? (
+          <Typography
+            sx={{
+              pt: 1,
+              pb: 1,
+              textAlign: 'center',
+            }}>
+            Доступных схем пока нет
+          </Typography>
+        ) : (
+          schemesFromDB.map((scheme, index) => (
+            <Box key={scheme._id} sx={{ display: 'flex', mt: 1.5 }}>
+              {schemeRenameField && index === selectedScheme ? (
+                <>
+                  <TextField
+                    label="Введите новое имя"
+                    variant="standard"
+                    defaultValue={scheme.schemeName}
+                    onChange={(evt) => setSchemeName(evt)}
+                    sx={{ width: '100%' }}
+                  />
+                  <IconButton
+                    color="primary"
+                    aria-label="rename scheme"
+                    onClick={() => {
+                      console.log(schemeNameValue);
+                      const data = { _id: scheme._id, schemeName: schemeNameValue };
+                      mainApi.renameScheme(data).then(() => {
+                        scheme.schemeName = schemeNameValue;
+                        setSchemeRenameField(false);
+                      });
+                    }}>
+                    <CheckIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <>
+                  <Typography
+                    onClick={() => {
+                      graph.configure(JSON.parse(scheme.schemeJSON)); // Открыть JSON схему
+                      handleClose();
+                    }}
+                    onChange={(evt) => setSchemeName(evt)}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                      maxWidth: 'fit-content',
+                    }}>
+                    {scheme.schemeName}
+                  </Typography>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <IconButton
+                    color="primary"
+                    aria-label="rename scheme"
+                    onClick={() => {
+                      setSelectedScheme(index);
+                      setSchemeRenameField(true);
+                      setSchemeNameValue(scheme.schemeName);
+                    }}>
+                    <ModeEditIcon />
+                  </IconButton>
+                </>
+              )}
+              <IconButton color="primary" aria-label="remove scheme" onClick={() => deleteScheme(index, scheme)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          ))
+        )}
       </Box>
     </Modal>
   );

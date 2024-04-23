@@ -27,6 +27,16 @@ class MainApi {
     }).then(this.#handleResponse);
   }
 
+  // Переименование схемы в БД
+  renameScheme(data) {
+    console.log(JSON.stringify(data));
+    return fetch(`${this.#url}/schemes`, {
+      method: 'PATCH',
+      headers: this.#headers,
+      body: JSON.stringify(data),
+    }).then(this.#handleResponse);
+  }
+
   // Добавление новой схемы в БД
   createScheme(data) {
     return fetch(`${this.#url}/schemes`, {

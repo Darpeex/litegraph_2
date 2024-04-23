@@ -11,6 +11,34 @@ module.exports.getSchemes = (req, res, next) => {
     .catch(next); // переходим в центролизованный обработчик
 };
 
+// переименовывает схему
+module.exports.renameScheme = (req, res, next) => {
+  // runValidators проверяет поля перед сохранением в БД, new - возвращает обновленный документ
+  const options = { runValidators: true, new: true }; // включена валидация и сразу обновление
+  const id = req.body._id;
+
+  return Scheme.findByIdAndUpdate(id, { schemeName: req.body.schemeName }, options) // передаём id и новые данные
+    .then((scheme) => {
+      // если обновление имени выполнено успешно, выполнится след. блок
+      if (scheme === null) {
+        // если возвращенное значение scheme пустое, ошибка
+        throw new NotFoundError('Схема не найдена');
+      } // иначе отправим клиенту новые данные
+      return res.status(200).send(scheme);
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        return next(new SchemeExistenceError('Схема с данным именем уже существует'));
+      } // если введённые данные некорректны, возвращается ошибка с кодом '400'
+      if (err.schemeName === 'ValidationError') {
+        next(new RequestError('Переданы некорректные данные схемы'));
+      } else {
+        // иначе, по-умолчанию, ошибка с кодом '500'
+        return next(err); // переходим в центролизованный обработчик приложения
+      }
+    });
+};
+
 // добавляет схему в БД
 module.exports.createScheme = (req, res, next) => {
   const { schemeJSON, schemeName } = req.body; // данные из тела запроса

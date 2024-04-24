@@ -36,15 +36,13 @@ function App() {
   const [openModalSchemeList, setOpenModalSchemeList] = useState(false); // молальное окно со списком схем
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
   const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
-  // состояния для схем
-  const [schemesFromDB, setSchemesFromDB] = useState([]);
+  const [schemesFromDB, setSchemesFromDB] = useState([]); // схемы с сервера
 
   // Получение схем с сервера
   useEffect(() => {
     mainApi
       .getSchemes() // получаем схемы
       .then((data) => {
-        console.log(data);
         setSchemesFromDB(data); // обновляем список схем
       })
       .catch((err) => {

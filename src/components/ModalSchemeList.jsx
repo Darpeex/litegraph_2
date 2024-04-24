@@ -84,7 +84,6 @@ export function ModalSchemeList({
                     color="primary"
                     aria-label="rename scheme"
                     onClick={() => {
-                      console.log(schemeNameValue);
                       const data = { _id: scheme._id, schemeName: schemeNameValue };
                       mainApi.renameScheme(data).then(() => {
                         scheme.schemeName = schemeNameValue;

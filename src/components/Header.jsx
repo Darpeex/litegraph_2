@@ -62,7 +62,6 @@ function Header({
 
     const intervalId = setInterval(() => {
       node.boxcolor = node.boxcolor === '#222' ? '#F8D568' : '#222';
-      console.log('цвет изменён');
       graph.change(); // обновляем, чтобы отобразилось изменение цвета
     }, 600); // период изменения в мс
 

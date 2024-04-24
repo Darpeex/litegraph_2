@@ -46,7 +46,7 @@ export function ModalSaveSchemeForm({ graph, openModalSaveSchemeForm, setOpenMod
         <TextField
           label="Введите имя файла"
           variant="standard"
-          autoFocus="true"
+          autoFocus={true}
           sx={{
             mt: 3,
             mb: 2,

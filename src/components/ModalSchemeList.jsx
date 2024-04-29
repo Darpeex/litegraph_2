@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { mainApi } from '../utils/MainApi';
-import { Box, Divider, Modal, Typography, TextField, IconButton } from '@mui/material';
+// import { grey } from '@mui/material/colors';
+import { Box, Divider, Modal, Typography, TextField, IconButton, Button } from '@mui/material';
 import {
   Close as CloseIcon,
   Check as CheckIcon,
@@ -76,7 +77,7 @@ export function ModalSchemeList({
                   <TextField
                     label="Введите новое имя"
                     variant="standard"
-                    defaultValue={scheme.schemeName}
+                    defaultValue={scheme.schemename}
                     onChange={(evt) => setSchemeName(evt)}
                     sx={{ width: '100%' }}
                   />
@@ -84,9 +85,9 @@ export function ModalSchemeList({
                     color="primary"
                     aria-label="rename scheme"
                     onClick={() => {
-                      const data = { _id: scheme._id, schemeName: schemeNameValue };
+                      const data = { _id: scheme._id, schemename: schemeNameValue };
                       mainApi.renameScheme(data).then(() => {
-                        scheme.schemeName = schemeNameValue;
+                        scheme.schemename = schemeNameValue;
                         setSchemeRenameField(false);
                       });
                     }}>
@@ -95,9 +96,10 @@ export function ModalSchemeList({
                 </>
               ) : (
                 <>
+                  {/* <Button variant="text" color={grey[900]}> */}
                   <Typography
                     onClick={() => {
-                      graph.configure(JSON.parse(scheme.schemeJSON)); // Открыть JSON схему
+                      graph.configure(scheme.schemejson); // Открыть JSON схему
                       handleClose();
                     }}
                     onChange={(evt) => setSchemeName(evt)}
@@ -109,8 +111,9 @@ export function ModalSchemeList({
                       textOverflow: 'ellipsis',
                       maxWidth: 'fit-content',
                     }}>
-                    {scheme.schemeName}
+                    {scheme.schemename}
                   </Typography>
+                  {/* </Button> */}
                   <Box sx={{ flexGrow: 1 }} />
                   <IconButton
                     color="primary"
@@ -118,7 +121,7 @@ export function ModalSchemeList({
                     onClick={() => {
                       setSelectedScheme(index);
                       setSchemeRenameField(true);
-                      setSchemeNameValue(scheme.schemeName);
+                      setSchemeNameValue(scheme.schemename);
                     }}>
                     <ModeEditIcon />
                   </IconButton>

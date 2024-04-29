@@ -29,7 +29,6 @@ class MainApi {
 
   // Переименование схемы в БД
   renameScheme(data) {
-    console.log(JSON.stringify(data));
     return fetch(`${this.#url}/schemes`, {
       method: 'PATCH',
       headers: this.#headers,
@@ -47,8 +46,8 @@ class MainApi {
   }
 
   // Удаление схемы
-  deleteScheme(id) {
-    return fetch(`${this.#url}/schemes/${id}`, {
+  deleteScheme(_id) {
+    return fetch(`${this.#url}/schemes/${_id}`, {
       method: 'DELETE',
       headers: this.#headers,
     }).then(this.#handleResponse);

@@ -16,7 +16,7 @@ export function ModalSaveSchemeForm({ graph, openModalSaveSchemeForm, setOpenMod
   // Сохранить схему
   function saveGraph() {
     const json = graph.serialize();
-    const data = { schemeJSON: json, schemeName: schemeNameValue };
+    const data = { schemename: schemeNameValue, schemejson: json };
     mainApi.createScheme(data);
     handleClose();
   }

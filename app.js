@@ -1,10 +1,8 @@
-// const path = require('path'); // модуль - используем для разрешения доступа к папкам
 const helmet = require('helmet'); // модуль для обеспечения безопасности приложения Express
 const express = require('express'); // фреймворк для создания веб-приложений на Node.js
-// const mongoose = require('mongoose'); // модуль для работы с базой данных MongoDB
-const { errors } = require('celebrate'); // мидлвэр для ошибок валидации полей
 const dotenv = require('dotenv'); // модуль для получения данных из .env
 const cors = require('cors'); // модуль для защиты запросов к api
+const { errors } = require('celebrate'); // мидлвэр для валидации полей
 
 const NotFoundError = require('./errors/not-found-err'); // экземпляр класса с ошибкой 404
 const { requestLogger, errorLogger } = require('./middlewares/logger'); // логгер
@@ -32,13 +30,6 @@ app.use(helmet()); // использование модуля безопасно
 app.use(express.json()); // для сборки JSON-формата
 app.use(express.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-// подключение к mongodb
-// mongoose
-//   .connect(BD_URL, {
-//     useNewUrlParser: true, // обеспечивает совместимость с будущими версиями MongoDB
-//   })
-//   .then(() => console.log('Подключились к БД'));
-
 // логгер запросов
 app.use(requestLogger);
 
@@ -59,7 +50,6 @@ app.use(errors());
 // централизованный обработчик
 app.use(errorHandler);
 
-// app.use(express.static(path.join(__dirname, 'public'))); // делаем папку общедоступной
 app.listen(PORT, () => {
   console.log(`Порт приложения: ${PORT}`);
 });

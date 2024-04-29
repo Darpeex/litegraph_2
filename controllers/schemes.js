@@ -1,4 +1,4 @@
-const db = require('../db'); // файл с подключением к БД
+const db = require('../utils/db'); // файл с подключением к БД
 
 class SchemeController {
   // возвращает все схемы
@@ -18,11 +18,11 @@ class SchemeController {
 
   // добавляет схему в БД
   async createScheme(req, res) {
-    const { schemeJSON, schemeName } = req.body; // данные из тела запроса
-    // SQL-запрос: scheme - таблица, (schemeJSON, schemeName) - поля, ($1, $2) - значения из массива [schemeJSON, schemeName]
-    const newScheme = await db.query(`INSERT INTO scheme (schemeJSON, schemeName) values ($1, $2) RETURNING *`, [
-      schemeJSON,
-      schemeName,
+    const { schemename, schemejson } = req.body; // данные из тела запроса
+    // SQL-запрос: scheme - таблица, (schemename, schemejson) - поля, ($1, $2) - значения из массива [schemejson, schemename]
+    const newScheme = await db.query(`INSERT INTO scheme (schemename, schemejson) values ($1, $2) RETURNING *`, [
+      schemename,
+      schemejson,
     ]);
     res.json(newScheme.rows[0]);
   }

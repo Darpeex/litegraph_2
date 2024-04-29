@@ -1,5 +1,5 @@
 create TABLE scheme(
   _id SERIAL PRIMARY KEY,
-  schemeJSON JSON,
-  schemeName VARCHAR(255)
+  schemename VARCHAR(255),
+  schemejson JSON
 )

@@ -19,8 +19,8 @@ router.post(
   '/schemes',
   celebrate({
     body: Joi.object().keys({
-      schemeJSON: Joi.object().required(),
-      schemeName: Joi.string().required(),
+      schemename: Joi.string().required(),
+      schemejson: Joi.object().required(),
     }),
   }),
   schemeController.createScheme,

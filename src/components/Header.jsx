@@ -190,13 +190,13 @@ function Header({
                 <DeleteForeverIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Сохранить схему">
-              <IconButton size="large" aria-label="Сохранить схему" color="inherit" onClick={saveGraph}>
+            <Tooltip title="Сохранить схему в localStorage">
+              <IconButton size="large" aria-label="Сохранить схему в localStorage" color="inherit" onClick={saveGraph}>
                 <CloudDownloadIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Загрузить схему">
-              <IconButton size="large" aria-label="Загрузить схему" color="inherit" onClick={loadGraph}>
+            <Tooltip title="Загрузить схему из localStorage">
+              <IconButton size="large" aria-label="Загрузить схему из localStorage" color="inherit" onClick={loadGraph}>
                 <CloudUploadIcon />
               </IconButton>
             </Tooltip>

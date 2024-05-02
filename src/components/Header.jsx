@@ -148,7 +148,8 @@ function Header({
                   onClick={() => {
                     if (feature === SCHEME_LIST) {
                       mainApi.getSchemes().then((schemes) => {
-                        setSchemesFromDB(schemes);
+                        // reverse() - новые схемы сверху списка
+                        setSchemesFromDB(schemes.reverse());
                         handleCloseFileMenu();
                         setOpenModalSchemeList(true);
                       });

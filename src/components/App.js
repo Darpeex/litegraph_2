@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
 import nodeStyles from './nodes/nodeStyles';
-import AddNode from './nodes/AddNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import SubtractNode from './nodes/SubtractNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import DivideNode from './nodes/DivideNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import MultiplyNode from './nodes/MultiplyNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import ResultNode from './nodes/ResultNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import TimerNode from './nodes/TimerNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import StartNode from './nodes/StartNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import { mainApi } from '../utils/MainApi'; // запросы на сервер
 import { LGraph, LGraphCanvas } from 'litegraph.js';

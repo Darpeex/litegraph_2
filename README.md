@@ -79,4 +79,12 @@ ResultNode.prototype.onDrawBackground = function (ctx) {
 - LiteGraph.DEFAULT_GROUP_FONT = 24; // Размер шрифта группы узлов
 ```
 
+#### Параметры фона холста
+
+```javascript
+canvas.background_color = '#fafafa';
+canvas.background_image = 'data:image/png;base64, здесь должна быть картинка в кодировке base64';
+console.log(LiteGraph.registered_node_types); // информация по зарегистрированным узлам
+```
+
 <!-- Ссылка на автора иконки приложения https://www.freepik.com/icon/graphic-file_803122#fromView=search&term=%D1%81%D1%85%D0%B5%D0%BC%D0%BD%D1%8B%D0%B9+%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%BE%D1%80&track=ais&page=1&position=2&uuid=38266817-1e90-4215-9810-e15e680179a4 -->

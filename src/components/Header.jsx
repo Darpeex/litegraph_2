@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { LGraph } from 'litegraph.js';
 import { Container } from '@mui/system';
 import { lightGreen } from '@mui/material/colors';
-import SideMenuFunctions from './SideMenuFunctions';
+import { handleMountStartBlock } from './nodes/functions';
+import { mainApi } from '../utils/MainApi'; // Запросы на сервер
 import {
-  Menu as MenuIcon,
   Stop as StopIcon,
   OpenWith as OpenWithIcon,
   SkipNext as SkipNextIcon,
@@ -12,29 +12,29 @@ import {
   CloudUpload as CloudUploadIcon,
   CloudDownload as CloudDownloadIcon,
   DeleteForever as DeleteForeverIcon,
+  AddCircleOutline as AddCircleOutlineIcon,
   FilterCenterFocus as FilterCenterFocusIcon,
 } from '@mui/icons-material';
 import { AppBar, Button, Toolbar, Typography, Box, Menu, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-const options = ['Настройки', 'Терминал']; // опции верхней панели (AppBar)
-const fileFeatures = ['Открыть файл', 'Сохранить файл']; // возможности, выпадающие по кнопке Файла
-const accauntFeatures = ['Профиль', 'Выход']; // возможности, выпадающие по кнопке Профиля
+const SCHEME_LIST = 'Список схем';
+const SAVE_SCHEME = 'Сохранить схему';
 
-function Header({ graph, canvas }) {
-  const [isOpenUserFeatures, setOpenUserFeatures] = useState(null); // открыто ли окно с возможностями Профиля
+const options = ['Настройки']; // опции верхней панели (AppBar)
+const fileFeatures = [SCHEME_LIST, SAVE_SCHEME]; // возможности, выпадающие по кнопке Файла
+
+function Header({
+  graph,
+  canvas,
+  setSchemesFromDB,
+  onNodeDeselected,
+  setOpenModalSchemeList,
+  setOpenModalSaveSchemeForm,
+}) {
   const [isOpenFileFeatures, setOpenFileFeatures] = useState(null); // открыто ли окно с возможностями Файла
-  const [isSideMenuFunctionsOpen, setSideMenuFunctionsOpen] = useState(false); // открыто ли боковое меню
   const [inProgress, setInProgress] = useState(false); // запущен ли процесс выполнения задачи
   let shouldExecute = true; // переменная для контроля выполнения
-  let nodes = graph._nodes_in_order; // все узлы графа
-
-  // Открыть, закрыть список возможностей Профиля
-  const handleOpenUserMenu = (event) => {
-    setOpenUserFeatures(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setOpenUserFeatures(null);
-  };
+  let nodes = graph._nodes_in_order; // все блоки графа
 
   // Открыть, закрыть список возможностей Файла
   const handleOpenFileMenu = (event) => {
@@ -42,11 +42,6 @@ function Header({ graph, canvas }) {
   };
   const handleCloseFileMenu = () => {
     setOpenFileFeatures(null);
-  };
-
-  // Открыть боковое меню (SideMenuFunctions)
-  const handleOpenSideMenuFunctions = () => {
-    setSideMenuFunctionsOpen(true);
   };
 
   // Выполнение узлов поочереди с анимациями
@@ -61,13 +56,12 @@ function Header({ graph, canvas }) {
     if (currentIndex >= nodes.length) {
       nodes.map((node) => (node.boxcolor = '#222'));
       return;
-    } // когда все узлы выполнены
+    } // когда все блоки выполнены
     const node = nodes[currentIndex];
     const nodeInterval = node.properties.interval;
 
     const intervalId = setInterval(() => {
       node.boxcolor = node.boxcolor === '#222' ? '#F8D568' : '#222';
-      console.log('цвет изменён');
       graph.change(); // обновляем, чтобы отобразилось изменение цвета
     }, 600); // период изменения в мс
 
@@ -122,54 +116,10 @@ function Header({ graph, canvas }) {
     }
   }
 
-  // Скачать схему
-  function downloadGraph() {
-    const data = graph.serialize();
-    const jsonStr = JSON.stringify(data);
-    const blob = new Blob([jsonStr], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'graph.json';
-    link.click();
-  }
-  // Открыть JSON файл
-  const handleOpenFile = () => {
-    // создали элемент 'input' и присвоили полю тип 'file'
-    const input = document.createElement('input');
-    input.type = 'file';
-
-    input.click(); // открытие диалогового окна для выбора файла
-    // когда пользователь выбрал файл - 'onchange'
-    input.onchange = (e) => {
-      const file = e.target.files[0]; // выбранный файл со своими свойствами
-      const reader = new FileReader(); // объект c методами обработки данных
-
-      reader.readAsText(file); // прочитать содержимое файла как текст
-      reader.onload = function () {
-        // преобразовываем JSON и выводим график
-        graph.configure(JSON.parse(reader.result));
-      };
-      // если ошибка, сообщаем в консоли
-      reader.onerror = function () {
-        console.log(reader.error);
-      };
-    };
-  };
-
   return (
     <AppBar position="fixed">
       <Container maxWidth="x2">
         <Toolbar disableGutters>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={handleOpenSideMenuFunctions}>
-            <MenuIcon />
-          </IconButton>
-
           {/* Кнопка файла */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip>
@@ -196,13 +146,17 @@ function Header({ graph, canvas }) {
                 <MenuItem
                   key={feature}
                   onClick={() => {
-                    if (feature === 'Открыть файл') {
-                      handleOpenFile();
-                      handleCloseFileMenu();
+                    if (feature === SCHEME_LIST) {
+                      mainApi.getSchemes().then((schemes) => {
+                        // reverse() - новые схемы сверху списка
+                        setSchemesFromDB(schemes.reverse());
+                        handleCloseFileMenu();
+                        setOpenModalSchemeList(true);
+                      });
                     }
-                    if (feature === 'Сохранить файл') {
-                      downloadGraph();
+                    if (feature === SAVE_SCHEME) {
                       handleCloseFileMenu();
+                      setOpenModalSaveSchemeForm(true);
                     } else {
                       handleCloseFileMenu();
                     }
@@ -225,12 +179,33 @@ function Header({ graph, canvas }) {
           {/* Функциональные кнопки */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 5 }}>
             <Tooltip title="Очистить схему">
-              <IconButton size="large" aria-label="Очистить схему" color="inherit" onClick={() => graph.clear()}>
+              <IconButton
+                size="large"
+                aria-label="Очистить схему"
+                color="inherit"
+                onClick={() => {
+                  graph.clear();
+                  onNodeDeselected();
+                }}>
                 <DeleteForeverIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Упорядочить узлы">
-              <IconButton size="large" aria-label="Упорядочить узлы" color="inherit" onClick={() => graph.arrange(100)}>
+            <Tooltip title="Сохранить схему в localStorage">
+              <IconButton size="large" aria-label="Сохранить схему в localStorage" color="inherit" onClick={saveGraph}>
+                <CloudDownloadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Загрузить схему из localStorage">
+              <IconButton size="large" aria-label="Загрузить схему из localStorage" color="inherit" onClick={loadGraph}>
+                <CloudUploadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Упорядочить блоки">
+              <IconButton
+                size="large"
+                aria-label="Упорядочить блоки"
+                color="inherit"
+                onClick={() => graph.arrange(100)}>
                 <OpenWithIcon />
               </IconButton>
             </Tooltip>
@@ -248,21 +223,16 @@ function Header({ graph, canvas }) {
                 <FilterCenterFocusIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Сохранить схему">
-              <IconButton size="large" aria-label="Сохранить схему" color="inherit" onClick={saveGraph}>
-                <CloudDownloadIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Загрузить схему">
-              <IconButton size="large" aria-label="Загрузить схему" color="inherit" onClick={loadGraph}>
-                <CloudUploadIcon />
+            <Tooltip title="Добавить блок">
+              <IconButton size="large" aria-label="Добавить блок" color="inherit" onClick={handleMountStartBlock}>
+                <AddCircleOutlineIcon />
               </IconButton>
             </Tooltip>
           </Box>
 
           {/* Запуск и Остановка задачи */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Tooltip title="Запуск по шагам">
               <IconButton size="large" aria-label="Запуск по шагам" color="inherit" onClick={handleStepByStep}>
                 <SkipNextIcon />
@@ -279,39 +249,8 @@ function Header({ graph, canvas }) {
               </IconButton>
             </Tooltip>
           </Box>
-
-          {/* Кнопка профиля */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Открыть возможности">
-              <Button color="inherit" variant="outlined" onClick={handleOpenUserMenu}>
-                Профиль
-              </Button>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={isOpenUserFeatures}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(isOpenUserFeatures)}
-              onClose={handleCloseUserMenu}>
-              {accauntFeatures.map((feature) => (
-                <MenuItem key={feature} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{feature}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
         </Toolbar>
       </Container>
-      <SideMenuFunctions menuOpen={isSideMenuFunctionsOpen} closeMenu={() => setSideMenuFunctionsOpen(false)} />
     </AppBar>
   );
 }

@@ -1,27 +1,18 @@
 import { useEffect, useState } from 'react';
 import nodeStyles from './nodes/nodeStyles';
-import AddNode from './nodes/AddNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import SubtractNode from './nodes/SubtractNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import DivideNode from './nodes/DivideNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import MultiplyNode from './nodes/MultiplyNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import ResultNode from './nodes/ResultNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import ConstantNumber from './nodes/ConstNumberNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
-import TimerNode from './nodes/TimerNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
 import StartNode from './nodes/StartNode'; // видимо, без подтяжки файла, узел не регистрируется и всё ломается
+import { mainApi } from '../utils/MainApi'; // запросы на сервер
 import { LGraph, LGraphCanvas } from 'litegraph.js';
 
 // Компоненты
-import Header from './Header';
 import Main from './Main';
+import Header from './Header';
+import { ModalSchemeList } from './ModalSchemeList';
+import { ModalSaveSchemeForm } from './ModalSaveSchemeForm';
 
 nodeStyles(); // Стили узлов по умолчанию
 export const graph = new LGraph(); // Создаём граф
 const canvas = new LGraphCanvas('#mycanvas', graph); // Создаём холст, передаём html-элемент и graph в параметры
-
-// Параметры фона холста
-// canvas.background_color = '#fafafa';
-// canvas.background_image = 'data:image/png;base64, здесь должна быть картинка в кодировке base64';
-// console.log(LiteGraph.registered_node_types); // информация по зарегистрированным узлам
 
 // Отменяем стандартное контекстное меню по двойному клику
 LGraphCanvas.prototype.showSearchBox = function () {
@@ -34,14 +25,31 @@ LGraphCanvas.prototype.processContextMenu = function () {
 
 function App() {
   const [isSideMenuPropertiesOpen, setSideMenuPropertiesOpen] = useState(false); // открыто ли боковое меню
+  const [openModalSaveSchemeForm, setOpenModalSaveSchemeForm] = useState(false); // модальное окно сохранения
+  const [openModalSchemeList, setOpenModalSchemeList] = useState(false); // молальное окно со списком схем
   const [selectedNode, setSelectedNode] = useState(null); // выбранный узел с параметрами
   const [toggle, setToggle] = useState(true); // принудительное обновление интерфейса
+  const [schemesFromDB, setSchemesFromDB] = useState([]); // схемы с сервера
 
-  // При выходе с выбранного узла - закрываем меню со свойствами
-  canvas.onNodeDeselected = function () {
+  // Получение схем с сервера
+  useEffect(() => {
+    mainApi
+      .getSchemes() // получаем схемы
+      .then((data) => {
+        setSchemesFromDB(data); // обновляем список схем
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }, []);
+
+  // Закрываем меню со свойствами
+  const onNodeDeselected = () => {
     setSideMenuPropertiesOpen(false);
     setSelectedNode(null); // стираем введенные данные в поля выбранного узла
   };
+  // При выходе с выбранного узла - закрываем меню со свойствами
+  canvas.onNodeDeselected = onNodeDeselected;
 
   // Передача свойств выбранного узла в SideBar
   useEffect(() => {
@@ -75,7 +83,26 @@ function App() {
 
   return (
     <div className="App">
-      <Header graph={graph} canvas={canvas} />
+      <ModalSaveSchemeForm
+        graph={graph}
+        openModalSaveSchemeForm={openModalSaveSchemeForm}
+        setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
+      />
+      <ModalSchemeList
+        graph={graph}
+        schemesFromDB={schemesFromDB}
+        setSchemesFromDB={setSchemesFromDB}
+        openModalSchemeList={openModalSchemeList}
+        setOpenModalSchemeList={setOpenModalSchemeList}
+      />
+      <Header
+        graph={graph}
+        canvas={canvas}
+        setSchemesFromDB={setSchemesFromDB}
+        onNodeDeselected={onNodeDeselected}
+        setOpenModalSchemeList={setOpenModalSchemeList}
+        setOpenModalSaveSchemeForm={setOpenModalSaveSchemeForm}
+      />
       <Main
         canvas={canvas}
         toggle={toggle}

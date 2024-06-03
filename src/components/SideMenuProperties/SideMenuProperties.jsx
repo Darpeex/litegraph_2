@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PATH_TO_DIR, PATH_TO_FILE } from '../../constants/constants';
-import { Tune as TuneIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Tune as TuneIcon, Delete as DeleteIcon, Palette as PaletteIcon } from '@mui/icons-material';
 import {
   Box,
   List,
@@ -22,6 +22,7 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
   const [nodePathToWorkDir, setNodePathToWorkDir] = useState(
     node && node.properties ? node.properties.workDir : PATH_TO_DIR,
   ); // путь к рабочей директории
+  // const [openPalette, setOpenPalette] = useState(false); // палитра цветов
 
   const [nodePathToBinaryFile, setNodePathToBinaryFile] = useState(
     node && node.properties ? node.properties.binaryFile : PATH_TO_FILE,
@@ -118,10 +119,17 @@ const SideMenuProperties = ({ canvas, node, menuOpen, toggle, setToggle }) => {
             <TuneIcon />
           </ListItemIcon>
           <ListItemText primary={`Свойства узла «${node ? node.title : 'узел не выбран'}»`} />
+          {/* <IconButton
+            color="primary"
+            sx={{ p: 0, pr: 1 }}
+            aria-label="change color"
+            onClick={() => setOpenPalette(!openPalette)}>
+            <PaletteIcon />
+          </IconButton> */}
           <IconButton
             color="primary"
-            aria-label="remove input"
             sx={{ p: 0 }}
+            aria-label="remove input"
             onClick={() => canvas.deleteSelectedNodes()}>
             <DeleteIcon />
           </IconButton>
